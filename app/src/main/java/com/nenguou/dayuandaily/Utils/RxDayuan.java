@@ -191,7 +191,7 @@ public class RxDayuan {
 
                     @Override
                     public void onNext(Class aClass) {
-                       Log.d("DaYuanTag1",aClass.getData().getData().toString());
+                        //Log.d("DaYuanTag1",aClass.getData().getData().toString());
                         dayuanDailyDatabase.saveClass(aClass);
                     }
                 });

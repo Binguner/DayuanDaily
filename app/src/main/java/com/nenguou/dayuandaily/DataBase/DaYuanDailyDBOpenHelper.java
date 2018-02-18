@@ -53,13 +53,17 @@ public class DaYuanDailyDBOpenHelper extends SQLiteOpenHelper{
             "id integer primary key autoincrement," +
             "schedule_id integer," +
             "term text," +
-            "year integer;" +
+            "year integer," +
             "class_name text," +
             "college_name text," +
             "major_name text," +
             "week_num integer," +
-            "class_num integer," +
-            "classtable_name text)";
+            "course_num integer," +
+            "course_name text," +
+            "course_place text," +
+            "course_detial_place text," +
+            "teacher_name text," +
+            "course_time text)";
     public DaYuanDailyDBOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
