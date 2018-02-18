@@ -30,4 +30,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <Button
+        android:id="@+id/test_loadYearColleg"
+        android:text="test_loadYearCollege"
+        app:layout_constraintTop_toBottomOf="@id/test_Class"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/test_loadMajor"
+        android:text="test_loadMajor"
+        app:layout_constraintTop_toBottomOf="@id/test_loadYearColleg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/test_loadClassName"
+        android:text="test_loadClassName"
+        app:layout_constraintTop_toBottomOf="@id/test_loadMajor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/test_loadClass"
+        android:text="test_loadClass"
+        app:layout_constraintTop_toBottomOf="@id/test_loadClassName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
 </android.support.constraint.ConstraintLayout>
