@@ -309,7 +309,7 @@ public class DayuanDailyDatabase {
     /**
      * @param schedule_id 传入课表的唯一 id
      * @return 如果数据库中存在这个课表，返回为 true
-     * @throws Exception 「不知道什么」异常
+     * @throws Exception 「不知道什么」异常c
      */
     public boolean isExitThisSchedule(int schedule_id) throws Exception{
         Cursor cursor = sqLiteDatabase.query("Schedule",null,"schedule_id = ?",new String[]{String.valueOf(schedule_id)},null,null,null);
