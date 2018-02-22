@@ -9,6 +9,7 @@
     <Button
         android:id="@+id/test_YearCollege"
         android:text="test_YearCollege"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <Button
@@ -53,6 +54,12 @@
         android:id="@+id/test_loadClass"
         android:text="test_loadClass"
         app:layout_constraintTop_toBottomOf="@id/test_loadClassName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/go_to_choose_class_aty"
+        app:layout_constraintTop_toBottomOf="@id/test_loadClass"
+        android:text="go_to_choose_class_aty"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

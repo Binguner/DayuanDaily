@@ -1,6 +1,8 @@
 package com.nenguou.dayuandaily.Utils;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -119,6 +121,10 @@ public class RxDayuan {
                     public void onNext(YearCollege collegesBean) {
                         if (collegesBean != null){
                             dayuanDailyDatabase.saveYearCollege(collegesBean);
+                            String term = collegesBean.getData().getTerms().get(0).getName();
+                            SharedPreferences.Editor editor = context.getSharedPreferences("User_YearCollege",Context.MODE_PRIVATE).edit();
+                            editor.putString("term",term);
+                            editor.commit();
                         }
                     }
                 });
@@ -143,7 +149,9 @@ public class RxDayuan {
                     @Override
                     public void onNext(Major major) {
                         //Log.d("DaYuanTag",major.getData().get(0).getMajor());
-                        dayuanDailyDatabase.saveMajor(major);
+                        if(major!=null) {
+                            dayuanDailyDatabase.saveMajor(major);
+                        }
                     }
                 });
     }
@@ -167,7 +175,9 @@ public class RxDayuan {
                     @Override
                     public void onNext(ClassName className) {
                         //Log.d("DaYuanTag",className.getData().size()+"");
-                        dayuanDailyDatabase.saveClassName(className,name,year);
+                        if(className != null) {
+                            dayuanDailyDatabase.saveClassName(className, name, year);
+                        }
 
                     }
                 });
@@ -192,7 +202,12 @@ public class RxDayuan {
                     @Override
                     public void onNext(Class aClass) {
                         //Log.d("DaYuanTag1",aClass.getData().getData().toString());
-                        dayuanDailyDatabase.saveClass(aClass);
+                        if(aClass!=null) {
+                            SharedPreferences.Editor editor = context.getSharedPreferences("User_YearCollege", Context.MODE_PRIVATE).edit();
+                            editor.putInt("schedule_id", aClass.getData().getId());
+                            editor.commit();
+                            dayuanDailyDatabase.saveClass(aClass);
+                        }
                     }
                 });
     }

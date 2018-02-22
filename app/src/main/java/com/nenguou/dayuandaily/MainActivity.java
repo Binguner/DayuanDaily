@@ -1,5 +1,6 @@
 package com.nenguou.dayuandaily;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,13 +10,15 @@ import android.widget.Button;
 import com.nenguou.dayuandaily.DataBase.DayuanDailyDatabase;
 import com.nenguou.dayuandaily.Model.Major;
 import com.nenguou.dayuandaily.Model.YearCollege;
+import com.nenguou.dayuandaily.UI.ActivityChooseSchedule;
 import com.nenguou.dayuandaily.Utils.RxDayuan;
 
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button test_YearCollege,test_Major,test_classname,test_Class,test_loadYearColleg,test_loadMajor,test_loadClassName,test_loadClass;
+    private Button test_YearCollege,test_Major,test_classname,test_Class,test_loadYearColleg,test_loadMajor,test_loadClassName,test_loadClass,
+            go_to_choose_class_aty;
     private RxDayuan rxDayuan;
     private final String mainTag = "MainActivityTag";
     DayuanDailyDatabase dayuanDailyDatabase;
@@ -89,13 +92,21 @@ public class MainActivity extends AppCompatActivity {
         test_loadClass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String s = dayuanDailyDatabase.loadSchedules(DayuanDailyDatabase.TYPE_GET_SUB_TIME,2465,5,1);
+                String s = dayuanDailyDatabase.loadSchedules(DayuanDailyDatabase.TYPE_GET_SUB_NAME,2465,1,2);
                 Log.d(mainTag, "class_name is : " + s);
+            }
+        });
+        go_to_choose_class_aty.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, ActivityChooseSchedule.class);
+                startActivity(intent);
             }
         });
     }
 
     private void initId() {
+        go_to_choose_class_aty = findViewById(R.id.go_to_choose_class_aty);
         test_loadClass = findViewById(R.id.test_loadClass);
         test_loadYearColleg = findViewById(R.id.test_loadYearColleg);
         rxDayuan = new RxDayuan(this);

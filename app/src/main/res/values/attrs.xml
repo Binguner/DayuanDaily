@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MyScheduleButton">
+        <attr name="weekNum" format="integer"/>
+        <attr name="classNum" format="integer"/>
+    </declare-styleable>
+</resources>

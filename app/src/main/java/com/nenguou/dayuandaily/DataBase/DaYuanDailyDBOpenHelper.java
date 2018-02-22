@@ -64,6 +64,11 @@ public class DaYuanDailyDBOpenHelper extends SQLiteOpenHelper{
             "course_detial_place text," +
             "teacher_name text," +
             "course_time text)";
+
+    public static final String CREATE_YEARLIST = "create table YearList(" +
+            "id integer primary key autoincrement," +
+            "year_id integer," +
+            "year integer)";
     public DaYuanDailyDBOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
@@ -75,6 +80,7 @@ public class DaYuanDailyDBOpenHelper extends SQLiteOpenHelper{
         sqLiteDatabase.execSQL(CREATE_MAJOR);
         sqLiteDatabase.execSQL(CREATE_CLASSNAME);
         sqLiteDatabase.execSQL(CREATE_SCHEDULE);
+        sqLiteDatabase.execSQL(CREATE_YEARLIST);
     }
 
     @Override

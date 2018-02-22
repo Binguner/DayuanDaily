@@ -1,0 +1,1415 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.nenguou.dayuandaily.UI.ActivityScheduler">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/schedule_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:minHeight="?attr/actionBarSize"
+        android:background="@color/colorToolbar">
+        <TextView
+            android:layout_gravity="center"
+            android:text="大猿日常"
+            android:textSize="30sp"
+            android:textColor="@color/colorDeepBlackText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </android.support.v7.widget.Toolbar>
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/week_text_constraintlayout"
+        app:layout_constraintTop_toBottomOf="@id/schedule_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/ct_begin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="      "
+            app:layout_constraintEnd_toStartOf="@id/ct_mon"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/ct_mon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="周一"
+            android:textColor="@color/colorClassTableText"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/ct_tues"
+            app:layout_constraintStart_toEndOf="@id/ct_begin" />
+
+        <TextView
+            android:id="@+id/ct_tues"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="周二"
+            android:textColor="@color/colorClassTableText"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/ct_wen"
+            app:layout_constraintStart_toEndOf="@id/ct_mon" />
+
+        <TextView
+            android:id="@+id/ct_wen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="周三"
+            android:textColor="@color/colorClassTableText"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/ct_thur"
+            app:layout_constraintStart_toEndOf="@id/ct_tues" />
+
+        <TextView
+            android:id="@+id/ct_thur"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="周四"
+            android:textColor="@color/colorClassTableText"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/ct_fri"
+            app:layout_constraintStart_toEndOf="@id/ct_wen" />
+
+        <TextView
+            android:id="@+id/ct_fri"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="周五"
+            android:textColor="@color/colorClassTableText"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/ct_sat"
+            app:layout_constraintStart_toEndOf="@id/ct_thur" />
+
+        <TextView
+            android:id="@+id/ct_sat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="周六"
+            android:textColor="@color/colorClassTableText"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/ct_sun"
+            app:layout_constraintStart_toEndOf="@id/ct_fri" />
+
+        <TextView
+            android:id="@+id/ct_sun"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="周日"
+            android:textColor="@color/colorClassTableText"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ct_sat" />
+
+        <ImageView
+            android:id="@+id/line_below_week"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorToolbar"
+            android:textColor="@color/colorClassTableText"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/ct_fri" />
+
+    </android.support.constraint.ConstraintLayout>
+
+
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorBackground"
+        app:layout_constraintTop_toBottomOf="@+id/week_text_constraintlayout"
+        >
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/ct_linear_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/ct_1"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg0"
+                    android:text="1"
+                    android:textColor="@color/colorClassTableText"
+                    app:layout_constraintEnd_toStartOf="@id/ct_1_mon"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_1_mon"
+                    app:weekNum="1"
+                    app:classNum="1"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="58dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginBottom="1dp"
+                    android:background="@drawable/classtable_bg1"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_1_tues"
+                    app:layout_constraintStart_toEndOf="@id/ct_1" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_1_tues"
+                    app:weekNum="2"
+                    app:classNum="1"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg6"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_1_wen"
+                    app:layout_constraintStart_toEndOf="@id/ct_1_mon" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_1_wen"
+                    app:weekNum="3"
+                    app:classNum="1"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg9"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_1_thur"
+                    app:layout_constraintStart_toEndOf="@id/ct_1_tues" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_1_thur"
+                    app:weekNum="4"
+                    app:classNum="1"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg7"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_1_fri"
+                    app:layout_constraintStart_toEndOf="@id/ct_1_wen" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_1_fri"
+                    app:weekNum="5"
+                    app:classNum="1"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg2"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_1_sat"
+                    app:layout_constraintStart_toEndOf="@id/ct_1_thur" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_1_sat"
+                    app:weekNum="6"
+                    app:classNum="1"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg5"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_1_sun"
+                    app:layout_constraintStart_toEndOf="@id/ct_1_fri" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_1_sun"
+                    app:weekNum="7"
+                    app:classNum="1"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg2"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/ct_1_sat" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.Guideline
+                android:id="@+id/ct_gd1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="60dp" />
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/ct_linear_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/ct_gd1">
+
+                <Button
+                    android:id="@+id/ct_2"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg0"
+                    android:text="2"
+                    android:textColor="@color/colorClassTableText"
+                    app:layout_constraintEnd_toStartOf="@id/ct_2_mon"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_2_mon"
+                    app:weekNum="1"
+                    app:classNum="2"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="58dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginBottom="1dp"
+                    android:background="@drawable/classtable_bg1"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_2_tues"
+                    app:layout_constraintStart_toEndOf="@id/ct_2" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_2_tues"
+                    app:weekNum="2"
+                    app:classNum="2"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg6"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_2_wen"
+                    app:layout_constraintStart_toEndOf="@id/ct_2_mon" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_2_wen"
+                    app:weekNum="3"
+                    app:classNum="2"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg9"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_2_thur"
+                    app:layout_constraintStart_toEndOf="@id/ct_2_tues" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_2_thur"
+                    app:weekNum="4"
+                    app:classNum="2"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg7"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_2_fri"
+                    app:layout_constraintStart_toEndOf="@id/ct_2_wen" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_2_fri"
+                    app:weekNum="5"
+                    app:classNum="2"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg2"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_2_sat"
+                    app:layout_constraintStart_toEndOf="@id/ct_2_thur" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_2_sat"
+                    app:weekNum="6"
+                    app:classNum="2"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg5"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_2_sun"
+                    app:layout_constraintStart_toEndOf="@id/ct_2_fri" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_2_sun"
+                    app:weekNum="7"
+                    app:classNum="2"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg2"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/ct_2_sat" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.Guideline
+                android:id="@+id/ct_gd2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="120dp" />
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/ct_linear_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/ct_gd2">
+
+                <Button
+                    android:id="@+id/ct_3"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg0"
+                    android:text="3"
+                    android:textColor="@color/colorClassTableText"
+                    app:layout_constraintEnd_toStartOf="@id/ct_3_mon"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_3_mon"
+                    app:weekNum="1"
+                    app:classNum="3"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg2"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_3_tues"
+                    app:layout_constraintStart_toEndOf="@id/ct_3" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_3_tues"
+                    app:weekNum="2"
+                    app:classNum="3"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg7"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_3_wen"
+                    app:layout_constraintStart_toEndOf="@id/ct_3_mon" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_3_wen"
+                    app:weekNum="3"
+                    app:classNum="3"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg10"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_3_thur"
+                    app:layout_constraintStart_toEndOf="@id/ct_3_tues" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_3_thur"
+                    app:weekNum="4"
+                    app:classNum="3"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg1"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_3_fri"
+                    app:layout_constraintStart_toEndOf="@id/ct_3_wen" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_3_fri"
+                    app:weekNum="5"
+                    app:classNum="3"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg4"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_3_sat"
+                    app:layout_constraintStart_toEndOf="@id/ct_3_thur" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_3_sat"
+                    app:weekNum="6"
+                    app:classNum="3"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg6"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_3_sun"
+                    app:layout_constraintStart_toEndOf="@id/ct_3_fri" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_3_sun"
+                    app:weekNum="7"
+                    app:classNum="3"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg7"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/ct_3_sat" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.Guideline
+                android:id="@+id/ct_gd3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="180dp" />
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/ct_linear_4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/ct_gd3">
+
+                <Button
+                    android:id="@+id/ct_4"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg0"
+                    android:text="4"
+                    android:textColor="@color/colorClassTableText"
+                    app:layout_constraintEnd_toStartOf="@id/ct_4_mon"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_4_mon"
+                    app:weekNum="1"
+                    app:classNum="4"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg2"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_4_tues"
+                    app:layout_constraintStart_toEndOf="@id/ct_4" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_4_tues"
+                    app:weekNum="2"
+                    app:classNum="4"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg7"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_4_wen"
+                    app:layout_constraintStart_toEndOf="@id/ct_4_mon" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_4_wen"
+                    app:weekNum="3"
+                    app:classNum="4"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg10"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_4_thur"
+                    app:layout_constraintStart_toEndOf="@id/ct_4_tues" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_4_thur"
+                    app:weekNum="4"
+                    app:classNum="4"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg1"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_4_fri"
+                    app:layout_constraintStart_toEndOf="@id/ct_4_wen" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_4_fri"
+                    app:weekNum="5"
+                    app:classNum="4"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg4"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_4_sat"
+                    app:layout_constraintStart_toEndOf="@id/ct_4_thur" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_4_sat"
+                    app:weekNum="6"
+                    app:classNum="4"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg6"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_4_sun"
+                    app:layout_constraintStart_toEndOf="@id/ct_4_fri" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_4_sun"
+                    app:weekNum="7"
+                    app:classNum="4"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg7"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/ct_4_sat" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.Guideline
+                android:id="@+id/ct_gd4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="240dp" />
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/ct_linear_5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/ct_gd4">
+
+                <Button
+                    android:id="@+id/ct_5"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg0"
+                    android:text="5"
+                    android:textColor="@color/colorClassTableText"
+                    app:layout_constraintEnd_toStartOf="@id/ct_5_mon"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_5_mon"
+                    app:weekNum="1"
+                    app:classNum="5"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg3"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_5_tues"
+                    app:layout_constraintStart_toEndOf="@id/ct_5" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_5_tues"
+                    app:weekNum="2"
+                    app:classNum="5"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg8"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_5_wen"
+                    app:layout_constraintStart_toEndOf="@id/ct_5_mon" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_5_wen"
+                    app:weekNum="3"
+                    app:classNum="5"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg5"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_5_thur"
+                    app:layout_constraintStart_toEndOf="@id/ct_5_tues" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_5_thur"
+                    app:weekNum="4"
+                    app:classNum="5"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg3"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_5_fri"
+                    app:layout_constraintStart_toEndOf="@id/ct_5_wen" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_5_fri"
+                    app:weekNum="5"
+                    app:classNum="5"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg9"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_5_sat"
+                    app:layout_constraintStart_toEndOf="@id/ct_5_thur" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_5_sat"
+                    app:weekNum="6"
+                    app:classNum="5"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg3"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_5_sun"
+                    app:layout_constraintStart_toEndOf="@id/ct_5_fri" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_5_sun"
+                    app:weekNum="7"
+                    app:classNum="5"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg10"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/ct_5_sat" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.Guideline
+                android:id="@+id/ct_gd5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="300dp" />
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/ct_linear_6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/ct_gd5">
+
+                <Button
+                    android:id="@+id/ct_6"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg0"
+                    android:text="6"
+                    android:textColor="@color/colorClassTableText"
+                    app:layout_constraintEnd_toStartOf="@id/ct_6_mon"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_6_mon"
+                    app:weekNum="1"
+                    app:classNum="6"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg3"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_6_tues"
+                    app:layout_constraintStart_toEndOf="@id/ct_6" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_6_tues"
+                    app:weekNum="2"
+                    app:classNum="6"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg8"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_6_wen"
+                    app:layout_constraintStart_toEndOf="@id/ct_6_mon" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_6_wen"
+                    app:weekNum="3"
+                    app:classNum="6"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg5"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_6_thur"
+                    app:layout_constraintStart_toEndOf="@id/ct_6_tues" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_6_thur"
+                    app:weekNum="4"
+                    app:classNum="6"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg3"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_6_fri"
+                    app:layout_constraintStart_toEndOf="@id/ct_6_wen" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_6_fri"
+                    app:weekNum="5"
+                    app:classNum="6"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg9"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_6_sat"
+                    app:layout_constraintStart_toEndOf="@id/ct_6_thur" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_6_sat"
+                    app:weekNum="6"
+                    app:classNum="6"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg3"
+                    android:clickable="false"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_6_sun"
+                    app:layout_constraintStart_toEndOf="@id/ct_6_fri" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_6_sun"
+                    app:weekNum="7"
+                    app:classNum="6"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg10"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/ct_6_sat" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.Guideline
+                android:id="@+id/ct_gd6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="360dp" />
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/ct_linear_7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/ct_gd6">
+
+                <Button
+                    android:id="@+id/ct_7"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg0"
+                    android:text="7"
+                    android:textColor="@color/colorClassTableText"
+                    app:layout_constraintEnd_toStartOf="@id/ct_7_mon"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_7_mon"
+                    app:weekNum="1"
+                    app:classNum="7"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg4"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_7_tues"
+                    app:layout_constraintStart_toEndOf="@id/ct_7" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_7_tues"
+                    app:weekNum="2"
+                    app:classNum="7"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg9"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_7_wen"
+                    app:layout_constraintStart_toEndOf="@id/ct_7_mon" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_7_wen"
+                    app:weekNum="3"
+                    app:classNum="7"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg6"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_7_thur"
+                    app:layout_constraintStart_toEndOf="@id/ct_7_tues" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_7_thur"
+                    app:weekNum="4"
+                    app:classNum="7"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg5"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_7_fri"
+                    app:layout_constraintStart_toEndOf="@id/ct_7_wen" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_7_fri"
+                    app:weekNum="5"
+                    app:classNum="7"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg2"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_7_sat"
+                    app:layout_constraintStart_toEndOf="@id/ct_7_thur" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_7_sat"
+                    app:weekNum="6"
+                    app:classNum="7"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg1"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_7_sun"
+                    app:layout_constraintStart_toEndOf="@id/ct_7_fri" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_7_sun"
+                    app:weekNum="7"
+                    app:classNum="7"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg4"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/ct_7_sat" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.Guideline
+                android:id="@+id/ct_gd7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="420dp" />
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/ct_linear_8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/ct_gd7">
+
+                <Button
+                    android:id="@+id/ct_8"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg0"
+                    android:text="8"
+                    android:textColor="@color/colorClassTableText"
+                    app:layout_constraintEnd_toStartOf="@id/ct_8_mon"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_8_mon"
+                    app:weekNum="1"
+                    app:classNum="8"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg4"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_8_tues"
+                    app:layout_constraintStart_toEndOf="@id/ct_8" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_8_tues"
+                    app:weekNum="2"
+                    app:classNum="8"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg9"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_8_wen"
+                    app:layout_constraintStart_toEndOf="@id/ct_8_mon" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_8_wen"
+                    app:weekNum="3"
+                    app:classNum="8"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg6"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_8_thur"
+                    app:layout_constraintStart_toEndOf="@id/ct_8_tues" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_8_thur"
+                    app:weekNum="4"
+                    app:classNum="8"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg5"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_8_fri"
+                    app:layout_constraintStart_toEndOf="@id/ct_8_wen" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_8_fri"
+                    app:weekNum="5"
+                    app:classNum="8"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg2"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_8_sat"
+                    app:layout_constraintStart_toEndOf="@id/ct_8_thur" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_8_sat"
+                    app:weekNum="6"
+                    app:classNum="8"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg1"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_8_sun"
+                    app:layout_constraintStart_toEndOf="@id/ct_8_fri" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_8_sun"
+                    app:weekNum="7"
+                    app:classNum="8"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg4"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/ct_8_sat" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.Guideline
+                android:id="@+id/ct_gd8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="480dp" />
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/ct_linear_9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/ct_gd8">
+
+                <Button
+                    android:id="@+id/ct_9"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg0"
+                    android:text="9"
+                    android:textColor="@color/colorClassTableText"
+                    app:layout_constraintEnd_toStartOf="@id/ct_9_mon"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_9_mon"
+                    app:weekNum="1"
+                    app:classNum="9"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg5"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_9_tues"
+                    app:layout_constraintStart_toEndOf="@id/ct_9" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_9_tues"
+                    app:weekNum="2"
+                    app:classNum="9"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg1"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_9_wen"
+                    app:layout_constraintStart_toEndOf="@id/ct_9_mon" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_9_wen"
+                    app:weekNum="3"
+                    app:classNum="9"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg3"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_9_thur"
+                    app:layout_constraintStart_toEndOf="@id/ct_9_tues" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_9_thur"
+                    app:weekNum="4"
+                    app:classNum="9"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg7"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_9_fri"
+                    app:layout_constraintStart_toEndOf="@id/ct_9_wen" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_9_fri"
+                    app:weekNum="5"
+                    app:classNum="9"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg10"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_9_sat"
+                    app:layout_constraintStart_toEndOf="@id/ct_9_thur" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_9_sat"
+                    app:weekNum="6"
+                    app:classNum="9"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg8"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_9_sun"
+                    app:layout_constraintStart_toEndOf="@id/ct_9_fri" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_9_sun"
+                    app:weekNum="7"
+                    app:classNum="9"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg3"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/ct_9_sat" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.Guideline
+                android:id="@+id/ct_gd9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="540dp" />
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/ct_linear_10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/ct_gd9">
+
+                <Button
+                    android:id="@+id/ct_10"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg0"
+                    android:text="10"
+                    android:textColor="@color/colorClassTableText"
+                    app:layout_constraintEnd_toStartOf="@id/ct_10_mon"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_10_mon"
+                    app:weekNum="1"
+                    app:classNum="10"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg5"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_10_tues"
+                    app:layout_constraintStart_toEndOf="@id/ct_10" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_10_tues"
+                    app:weekNum="2"
+                    app:classNum="10"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg1"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_10_wen"
+                    app:layout_constraintStart_toEndOf="@id/ct_10_mon" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_10_wen"
+                    app:weekNum="3"
+                    app:classNum="10"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg3"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_10_thur"
+                    app:layout_constraintStart_toEndOf="@id/ct_10_tues" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_10_thur"
+                    app:weekNum="4"
+                    app:classNum="10"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg7"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_10_fri"
+                    app:layout_constraintStart_toEndOf="@id/ct_10_wen" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_10_fri"
+                    app:weekNum="5"
+                    app:classNum="10"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg10"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_10_sat"
+                    app:layout_constraintStart_toEndOf="@id/ct_10_thur" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_10_sat"
+                    app:weekNum="6"
+                    app:classNum="10"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg8"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_10_sun"
+                    app:layout_constraintStart_toEndOf="@id/ct_10_fri" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_10_sun"
+                    app:weekNum="7"
+                    app:classNum="10"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg3"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/ct_10_sat" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.Guideline
+                android:id="@+id/ct_gd10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="600dp" />
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/ct_linear_11"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                app:layout_constraintTop_toBottomOf="@+id/ct_gd10">
+
+                <Button
+                    android:id="@+id/ct_11"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg0"
+                    android:text="11"
+                    android:textColor="@color/colorClassTableText"
+                    app:layout_constraintEnd_toStartOf="@id/ct_11_mon"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_11_mon"
+                    app:weekNum="1"
+                    app:classNum="11"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg1"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_11_tues"
+                    app:layout_constraintStart_toEndOf="@id/ct_11" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_11_tues"
+                    app:weekNum="2"
+                    app:classNum="11"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg2"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_11_wen"
+                    app:layout_constraintStart_toEndOf="@id/ct_11_mon"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_11_wen"
+                    app:weekNum="3"
+                    app:classNum="11"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg8"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_11_thur"
+                    app:layout_constraintStart_toEndOf="@id/ct_11_tues" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_11_thur"
+                    app:weekNum="4"
+                    app:classNum="11"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg6"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_11_fri"
+                    app:layout_constraintStart_toEndOf="@id/ct_11_wen" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_11_fri"
+                    app:weekNum="5"
+                    app:classNum="11"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg8"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_11_sat"
+                    app:layout_constraintStart_toEndOf="@id/ct_11_thur" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_11_sat"
+                    app:weekNum="6"
+                    app:classNum="11"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg7"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toStartOf="@id/ct_11_sun"
+                    app:layout_constraintStart_toEndOf="@id/ct_11_fri" />
+
+                <com.nenguou.dayuandaily.UI.MyScheduleButton
+                    android:id="@+id/ct_11_sun"
+                    app:weekNum="7"
+                    app:classNum="11"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/classtable_bg1"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/ct_11_sat" />
+
+            </android.support.constraint.ConstraintLayout>
+
+        </android.support.constraint.ConstraintLayout>
+
+
+    </android.support.v4.widget.NestedScrollView>
+
+
+
+
+</LinearLayout>

@@ -58,6 +58,13 @@ public class DayuanDailyDatabase {
                 sqLiteDatabase.insert("YearCollege", null, contentValues);
                 contentValues.clear();
             }
+            List<YearCollege.DataBean.YearsBean> yearsBeans = yearCollege.getData().getYears();
+            for(YearCollege.DataBean.YearsBean yearsBean:yearsBeans){
+                contentValues.put("year_id",yearsBean.getId());
+                contentValues.put("year",yearsBean.getYear());
+                sqLiteDatabase.insert("YearList",null,contentValues);
+                contentValues.clear();
+            }
         }
     }
 
@@ -122,26 +129,29 @@ public class DayuanDailyDatabase {
             Matcher matcher1 = null;
             Pattern pattern2 = Pattern.compile(regex4Week);
             Matcher matcher2 = null;
-            while (matcher.find()){
-                //Log.d("WocaoNiMaTag",matcher.groupCount()+"");
-                for (int i = 1 ;i <= matcher.groupCount(); i++){
-                    Log.d("WocaoNiMaTag2",matcher.group(i));
-                    matcher1 = pattern1.matcher(matcher.group(i));
-                    matcher2 = pattern2.matcher(matcher.group(i));
-                    //Log.d("WocaoNiMaTag1","第"+i+"天");
-                    //Log.d("WocaoNiMaTag1", "groupCount1 = "+matcher.groupCount()+"个");
-                    Log.d("WocaoNiMaTag1", "groupCount2 = "+matcher1.groupCount()+"个");
-                    while (matcher2.find()) {
-                        Log.d("WocaoNiMaTag122", "周 " + matcher2.group(2) + "");
-                        int numberWeek = Integer.parseInt(matcher2.group(2))+1;
-                        while (matcher1.find()) {
-                            //Log.d("WocaoNiMaTag122",matcher2.groupCount()+" 个");
-                            int numberClass = Integer.parseInt(matcher1.group(2)) + 1;
-                            //Log.d("WocaoNiMaTag123","周 "+numberWeek+"  第 "+ numberClass +" 节课  "+"课程名字: "+matcher1.group(3)+"  教学楼:"+matcher1.group(4) +
-                            //"  教室：" + matcher1.group(5) + "  教师姓名：" + matcher1.group(6) + "教学时间: " + matcher1.group(7));
-                            try {
-                                if(!isExitThisSchedule(mClass.getData().getId())) {
+            try {
+                if (!isExitThisSchedule(mClass.getData().getId())) {
+                    while (matcher.find()) {
+                        //Log.d("WocaoNiMaTag",matcher.groupCount()+"");
+                        for (int i = 1; i <= matcher.groupCount(); i++) {
+                            Log.d("WocaoNiMaTag2", matcher.group(i));
+                            matcher1 = pattern1.matcher(matcher.group(i));
+                            matcher2 = pattern2.matcher(matcher.group(i));
+                            //Log.d("WocaoNiMaTag1","第"+i+"天");
+                            //Log.d("WocaoNiMaTag1", "groupCount1 = "+matcher.groupCount()+"个");
+                            Log.d("WocaoNiMaTag1", "groupCount2 = " + matcher1.groupCount() + "个");
+                            while (matcher2.find()) {
+                                Log.d("WocaoNiMaTag122", "周 " + matcher2.group(2) + "");
+                                int numberWeek = Integer.parseInt(matcher2.group(2)) + 1;
+                                while (matcher1.find()) {
+                                    //Log.d("WocaoNiMaTag122",matcher2.groupCount()+" 个");
+                                    int numberClass = Integer.parseInt(matcher1.group(2)) + 1;
+                                    Log.d("WocaoNiMaTag123", "周 " + numberWeek + "  第 " + numberClass + " 节课  " + "课程名字: " + matcher1.group(3) + "  教学楼:" + matcher1.group(4) +
+                                            "  教室：" + matcher1.group(5) + "  教师姓名：" + matcher1.group(6) + "教学时间: " + matcher1.group(7));
+//                            try {
+//                                if(!isExitThisSchedule(mClass.getData().getId())) {
                                     contentValues.put("schedule_id", mClass.getData().getId());
+                                    Log.d("WocaoNiMaTag123", "schedule_id: " + mClass.getData().getId() + "");
                                     contentValues.put("term", mClass.getData().getTerm());
                                     contentValues.put("year", mClass.getData().getYear());
                                     contentValues.put("class_name", mClass.getData().getName());//班级名称 eg 软件 1632
@@ -157,16 +167,31 @@ public class DayuanDailyDatabase {
                                     sqLiteDatabase.insert("Schedule", null, contentValues);
                                     contentValues.clear();
                                 }
-                            } catch (Exception e) {
-                                e.printStackTrace();
+//                            } catch (Exception e) {
+//                                e.printStackTrace();
+//                            }
                             }
                         }
+                        //Log.d("WocaoNiMaTag1","=========================");
                     }
-                    //Log.d("WocaoNiMaTag1","=========================");
                 }
+            }catch(Exception e){
+                e.printStackTrace();
             }
-
         }
+    }
+
+
+    public List<Integer> loadYearList(){
+        List<Integer> list = new ArrayList<>();
+        Cursor cursor = sqLiteDatabase.query("YearList",null,null,null,null,null,null);
+        if(cursor.moveToFirst()){
+            do{
+                list.add(cursor.getInt(cursor.getColumnIndex("year")));
+            }while (cursor.moveToNext());
+        }
+        cursor.close();
+        return list;
     }
 
     /**
