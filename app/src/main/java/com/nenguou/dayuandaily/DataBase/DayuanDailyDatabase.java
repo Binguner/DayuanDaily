@@ -47,23 +47,26 @@ public class DayuanDailyDatabase {
 
     public void saveYearCollege(YearCollege yearCollege) {
         if (yearCollege != null) {
-            ContentValues contentValues = new ContentValues();
-            List<YearCollege.DataBean.CollegesBean> collegesBeanList = new ArrayList<>();
-            collegesBeanList = yearCollege.getData().getColleges();
-            for (YearCollege.DataBean.CollegesBean collegesBean : collegesBeanList) {
-                //Log.d("DaYuanTag",collegesBean.getCollege());
-                contentValues.put("college_id", collegesBean.getId());
-                //Log.d("DaYuanTag",collegesBean.getId()+"");
-                contentValues.put("college_name", collegesBean.getCollege());
-                sqLiteDatabase.insert("YearCollege", null, contentValues);
-                contentValues.clear();
-            }
-            List<YearCollege.DataBean.YearsBean> yearsBeans = yearCollege.getData().getYears();
-            for(YearCollege.DataBean.YearsBean yearsBean:yearsBeans){
-                contentValues.put("year_id",yearsBean.getId());
-                contentValues.put("year",yearsBean.getYear());
-                sqLiteDatabase.insert("YearList",null,contentValues);
-                contentValues.clear();
+            int lastYear = yearCollege.getData().getYears().get(yearCollege.getData().getYears().size()-1).getYear();
+            if(!isExitThisCollege(lastYear)) {
+                ContentValues contentValues = new ContentValues();
+                List<YearCollege.DataBean.CollegesBean> collegesBeanList = new ArrayList<>();
+                collegesBeanList = yearCollege.getData().getColleges();
+                for (YearCollege.DataBean.CollegesBean collegesBean : collegesBeanList) {
+                    //Log.d("DaYuanTag",collegesBean.getCollege());
+                    contentValues.put("college_id", collegesBean.getId());
+                    //Log.d("DaYuanTag",collegesBean.getId()+"");
+                    contentValues.put("college_name", collegesBean.getCollege());
+                    sqLiteDatabase.insert("YearCollege", null, contentValues);
+                    contentValues.clear();
+                }
+                List<YearCollege.DataBean.YearsBean> yearsBeans = yearCollege.getData().getYears();
+                for (YearCollege.DataBean.YearsBean yearsBean : yearsBeans) {
+                    contentValues.put("year_id", yearsBean.getId());
+                    contentValues.put("year", yearsBean.getYear());
+                    sqLiteDatabase.insert("YearList", null, contentValues);
+                    contentValues.clear();
+                }
             }
         }
     }
@@ -182,6 +185,9 @@ public class DayuanDailyDatabase {
     }
 
 
+    /**
+     * @return 返回 年份列表
+     */
     public List<Integer> loadYearList(){
         List<Integer> list = new ArrayList<>();
         Cursor cursor = sqLiteDatabase.query("YearList",null,null,null,null,null,null);
@@ -213,10 +219,19 @@ public class DayuanDailyDatabase {
     }
 
     /**
+     * Year 和 college 是一起获取的，查找表中是否存在最后一年的年份
      * 判断表是否存在这个学院
      * @return
      */
-    public boolean isExitThisCollege(){
+    public boolean isExitThisCollege(int year){
+        Cursor cursor = sqLiteDatabase.query("YearList",null,"year = ?",new String[]{String.valueOf(year)},null,null,null);
+        if(cursor.moveToFirst()){
+            do{
+                if(year == cursor.getInt(cursor.getColumnIndex("year"))){
+                    return true;
+                }
+            }while (cursor.moveToNext());
+        }
         return false;
     }
 

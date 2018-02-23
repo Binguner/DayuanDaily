@@ -3,6 +3,7 @@ package com.nenguou.dayuandaily.UI;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.Button;
@@ -33,12 +34,17 @@ public class MyScheduleButton extends android.support.v7.widget.AppCompatButton 
 
     private void initBtnView() {
         this.setTextSize(12);
+        //int btnHeight = this.getHeight();
+        //Log.d(Tag,"btnHeight is : " + btnHeight);
+
         //this.setPadding();
     }
 
     private void showOrNot() {
         if("".equals(this.getText())){
-            this.setVisibility(INVISIBLE);
+            this.setBackgroundColor(Color.TRANSPARENT);
+            this.setClickable(false);
+            //this.setVisibility(INVISIBLE);
         }
     }
 

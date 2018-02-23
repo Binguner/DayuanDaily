@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -54,6 +55,11 @@ public class ActivityChooseSchedule extends AppCompatActivity {
     @BindView(R.id.chooseClassText) TextView chooseClassText;
     @BindView(R.id.chooseClassOver) Button chooseClassOver;
     @BindView(R.id.chooseClassAgain) Button chooseClassAgain;
+
+    @BindView(R.id.choose_year_cardview) CardView choose_year_cardview;
+    @BindView(R.id.choose_college_cardview) CardView choose_college_cardview;
+    @BindView(R.id.choose_major_cardview) CardView choose_major_cardview;
+    @BindView(R.id.choose_class_cardview) CardView choose_class_cardview;
     DayuanDailyDatabase dayuanDailyDatabase;
     RxDayuan rxDayuan;
     @Override
@@ -67,12 +73,12 @@ public class ActivityChooseSchedule extends AppCompatActivity {
 
     }
 
-    @OnClick(R.id.chooseYearText)
+    @OnClick(R.id.choose_year_cardview)
     public void chooseYearClick(View view){
         showChooseDialog(CHOOSE_YEAR);
     }
 
-    @OnClick(R.id.chooseCollegeText)
+    @OnClick(R.id.choose_college_cardview)
     public void chooseCollegeClick(View view){
         if(chooseYearText.getText().equals("请选择")){
             Toast.makeText(this,"请先选择年级",Toast.LENGTH_SHORT).show();
@@ -81,7 +87,7 @@ public class ActivityChooseSchedule extends AppCompatActivity {
         }
     }
 
-    @OnClick(R.id.chooseMajorText)
+    @OnClick(R.id.choose_major_cardview)
     public void chooseMajorClick(View view){
         if(chooseCollegeText.getText().equals("请选择")){
             Toast.makeText(this,"请先选择学院",Toast.LENGTH_SHORT).show();
@@ -90,7 +96,7 @@ public class ActivityChooseSchedule extends AppCompatActivity {
         }
     }
 
-    @OnClick(R.id.chooseClassText)
+    @OnClick(R.id.choose_class_cardview)
     public void chooseClassClick(View view){
         if(chooseMajorText.getText().equals("请选择")){
             Toast.makeText(this,"请先选择专业",Toast.LENGTH_SHORT).show();
@@ -209,7 +215,7 @@ public class ActivityChooseSchedule extends AppCompatActivity {
                             editor1.commit();
                             String className = dataArray[index].toString();
                             pleasechooseclass.setText("选择完毕，请点击确定");
-                            rxDayuan.getClass("软件1632",class_term);
+                            rxDayuan.getClass(className,class_term);
                         }
                     });
                 }
