@@ -1,21 +1,27 @@
 package com.nenguou.dayuandaily.Utils;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.stream.JsonReader;
 import com.nenguou.dayuandaily.BuildConfig;
 import com.nenguou.dayuandaily.DataBase.DayuanDailyDatabase;
+import com.nenguou.dayuandaily.Model.Captcha;
 import com.nenguou.dayuandaily.Model.Class;
 import com.nenguou.dayuandaily.Model.ClassName;
+import com.nenguou.dayuandaily.Model.Grades;
 import com.nenguou.dayuandaily.Model.Major;
 import com.nenguou.dayuandaily.Model.YearCollege;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
@@ -38,9 +44,15 @@ import rx.schedulers.Schedulers;
 
 public class RxDayuan {
 
+    //private android.support.v7.app.AlertDialog alertDialog;
+    //private android.support.v7.app.AlertDialog.Builder builder;
+
     private Context context;
     private String path;
-    private Gson gson = new GsonBuilder().create();
+    private Gson gson = new GsonBuilder()
+            .setLenient()
+            .create();
+
     private Retrofit retrofit = new Retrofit
             .Builder()
             .client(getNewClient(context))
@@ -50,9 +62,9 @@ public class RxDayuan {
             .build();
     private DayuanService service = retrofit.create(DayuanService.class);
     private DayuanDailyDatabase dayuanDailyDatabase;
+    private final String RxTag = "rxDayuanTag";
 
     private OkHttpClient getNewClient(Context mContext){
-
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         if(BuildConfig.DEBUG){
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -100,6 +112,106 @@ public class RxDayuan {
     public RxDayuan(Context context){
         this.context = context;
         dayuanDailyDatabase = DayuanDailyDatabase.getInstance(context);
+        //initBd();
+    }
+
+//    private void initBd() {
+//        builder = new android.support.v7.app.AlertDialog.Builder(context);
+//        builder.setTitle("正在拼命加载");
+//        builder.setMessage("请稍等");
+//        builder.setCancelable(false);
+//    }
+
+    public void getGrades(final RetrofitCallbackListener listener){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("User_grades",Context.MODE_PRIVATE);
+        String sessionId = sharedPreferences.getString("cookies","");
+        service.getGrades(sessionId)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Grades>() {
+                    @Override
+                    public void onCompleted() {
+                        listener.onFinish(0);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        listener.onFinish(1);
+                        listener.onError((Exception) e);
+                    }
+
+                    @Override
+                    public void onNext(Grades grades) {
+                        if(grades!=null){
+                            dayuanDailyDatabase.saveGrades(grades);
+                        }
+                    }
+                });
+    }
+
+    public void getCaptcha(final RetrofitCallbackListener listener){
+        service.getCaptcha()
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Captcha>() {
+                    @Override
+                    public void onCompleted() {
+                        listener.onFinish(0);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        listener.onFinish(1);
+                        listener.onError((Exception) e);
+                    }
+
+                    @Override
+                    public void onNext(Captcha captcha) {
+                        SharedPreferences.Editor editor = context.getSharedPreferences("User_grades",Context.MODE_PRIVATE).edit();
+                        editor.putString("captchaUrl",captcha.getData().getCaptchaUrl());
+                        editor.putString("cookies",captcha.getData().getCookies());
+                        editor.commit();
+                    }
+                });
+    }
+
+    public void getLoginSuccess(final RetrofitCallbackListener listener){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("User_grades",Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString("username","");
+        String password = sharedPreferences.getString("password","");
+        String captcha = sharedPreferences.getString("captcha","");
+        String sessionId = sharedPreferences.getString("cookies","");
+        Log.d(RxTag,"username : "+ username + "  password :" + password + "captcha :" + captcha +"  sessionId : " + sessionId);
+        try {
+            service.login(username,password,captcha,sessionId)
+                    .subscribeOn(Schedulers.io())
+                    .unsubscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<String>() {
+                        @Override
+                        public void onCompleted() {
+                            //Log.d(RxTag,"onCompleted  !");
+                            listener.onFinish(0);
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            //Log.d(RxTag,"onError  !"+e.toString());
+                            listener.onFinish(1);
+                            listener.onError((Exception) e);
+                        }
+
+                        @Override
+                        public void onNext(String  s) {
+                            s.trim();
+                            //Log.d(RxTag,s.toString()+" ghjhgfgh !");
+                        }
+                    });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public void getYearCollege(){
@@ -110,16 +222,26 @@ public class RxDayuan {
                 .subscribe(new Subscriber<YearCollege>() {
                     @Override
                     public void onCompleted() {
-
+                        //alertDialog.dismiss();
                     }
 
                     @Override
                     public void onError(Throwable e) {
+                        unsubscribe();
                     }
 
                     @Override
                     public void onNext(YearCollege collegesBean) {
                         if (collegesBean != null){
+//                            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialogInterface, int i) {
+//                                    onError(new Exception());
+//                                }
+//                            });
+//                            alertDialog = builder.create();
+//                            alertDialog.show();
+
                             dayuanDailyDatabase.saveYearCollege(collegesBean);
                             String term = collegesBean.getData().getTerms().get(0).getName();
                             SharedPreferences.Editor editor = context.getSharedPreferences("User_YearCollege",Context.MODE_PRIVATE).edit();
@@ -128,6 +250,7 @@ public class RxDayuan {
                         }
                     }
                 });
+
     }
 
     public void getMajor(int collegeId){
@@ -203,6 +326,7 @@ public class RxDayuan {
                     public void onNext(Class aClass) {
                         //Log.d("DaYuanTag1",aClass.getData().getData().toString());
                         if(aClass!=null) {
+
                             SharedPreferences.Editor editor = context.getSharedPreferences("User_YearCollege", Context.MODE_PRIVATE).edit();
                             editor.putInt("schedule_id", aClass.getData().getId());
                             editor.commit();

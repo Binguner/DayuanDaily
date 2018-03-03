@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.nenguou.dayuandaily.UI.ActivityGrades">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/grades_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:contentInsetLeft="0dp"
+        android:minHeight="?attr/actionBarSize"
+        android:background="@color/colorToolbar"
+        app:layout_constraintTop_toBottomOf="parent">
+        <TextView
+            android:layout_gravity="center"
+            android:text="大猿日常"
+            android:textSize="22dp"
+            android:textColor="@color/colorBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </android.support.v7.widget.Toolbar>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/grade_out_recyclerview"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:background="@color/colorBackground"
+        app:layout_constraintTop_toBottomOf="@id/grades_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+    </android.support.v7.widget.RecyclerView>
+
+    <ImageView
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_4"
+        android:background="@color/colorBackground"
+        app:layout_constraintTop_toBottomOf="@id/grade_out_recyclerview"/>
+
+
+
+</android.support.constraint.ConstraintLayout>

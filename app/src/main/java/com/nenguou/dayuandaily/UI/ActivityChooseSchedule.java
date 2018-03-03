@@ -141,6 +141,9 @@ public class ActivityChooseSchedule extends AppCompatActivity {
                             editor.putInt("year", yearList.get(index));
                             editor.commit();
                             pleasechooseclass.setText("请选择学院");
+                            chooseCollegeText.setText("请选择");
+                            chooseMajorText.setText("请选择");
+                            chooseClassText.setText("请选择");
                         }
                     });
                 }
@@ -162,6 +165,8 @@ public class ActivityChooseSchedule extends AppCompatActivity {
                             rxDayuan.getMajor(collegeslist.get(index).getId());
                             editor.commit();
                             pleasechooseclass.setText("请选择专业");
+                            chooseMajorText.setText("请选择");
+                            chooseClassText.setText("请选择");
                         }
                     });
                 }
@@ -185,9 +190,11 @@ public class ActivityChooseSchedule extends AppCompatActivity {
                             editor.putInt("majorId", majorList.get(index).getId());
                             editor.putString("majorName", majorList.get(index).getMajor());
                             Log.d(Tag, majorList.get(index).getMajor());
-                            rxDayuan.getClassName(year, majorList.get(index).getMajor());
+                            String majorName = majorList.get(index).getMajor();
+                            rxDayuan.getClassName(year, majorName);
                             editor.commit();
                             pleasechooseclass.setText("请选择班级");
+                            chooseClassText.setText("请选择");
 
                         }
                     });
@@ -225,7 +232,12 @@ public class ActivityChooseSchedule extends AppCompatActivity {
         picker.setLineSpaceMultiplier(3);
         picker.setSelectedIndex(2);
         picker.setTextSize(18);
-        picker.show();
+        try {
+            picker.show();
+        }catch (IllegalArgumentException e){
+            Toast.makeText(this,"查询不到数据，请重新选择",Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
 
     }
 

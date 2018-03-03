@@ -5,62 +5,87 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.nenguou.dayuandaily.MainActivity">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/test_YearCollege"
-        android:text="test_YearCollege"
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <Button
-        android:id="@+id/test_Major"
-        android:text="test_Major"
-        app:layout_constraintTop_toBottomOf="@id/test_YearCollege"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <Button
-        android:id="@+id/test_classname"
-        android:text="test_classname"
-        app:layout_constraintTop_toBottomOf="@+id/test_Major"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <Button
-        android:id="@+id/test_Class"
-        android:text="test_Class"
-        app:layout_constraintTop_toBottomOf="@id/test_classname"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/test_YearCollege"
+                android:text="test_YearCollege"
 
-    <Button
-        android:id="@+id/test_loadYearColleg"
-        android:text="test_loadYearCollege"
-        app:layout_constraintTop_toBottomOf="@id/test_Class"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <Button
-        android:id="@+id/test_loadMajor"
-        android:text="test_loadMajor"
-        app:layout_constraintTop_toBottomOf="@id/test_loadYearColleg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <Button
-        android:id="@+id/test_loadClassName"
-        android:text="test_loadClassName"
-        app:layout_constraintTop_toBottomOf="@id/test_loadMajor"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/test_Major"
+                android:text="test_Major"
+                app:layout_constraintTop_toBottomOf="@id/test_YearCollege"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/test_classname"
+                android:text="test_classname"
+                app:layout_constraintTop_toBottomOf="@+id/test_Major"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/test_Class"
+                android:text="test_Class"
+                app:layout_constraintTop_toBottomOf="@id/test_classname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-    <Button
-        android:id="@+id/test_loadClass"
-        android:text="test_loadClass"
-        app:layout_constraintTop_toBottomOf="@id/test_loadClassName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <Button
-        android:id="@+id/go_to_choose_class_aty"
-        app:layout_constraintTop_toBottomOf="@id/test_loadClass"
-        android:text="go_to_choose_class_aty"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/test_loadYearColleg"
+                android:text="test_loadYearCollege"
+                app:layout_constraintTop_toBottomOf="@id/test_Class"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/test_loadMajor"
+                android:text="test_loadMajor"
+                app:layout_constraintTop_toBottomOf="@id/test_loadYearColleg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/test_loadClassName"
+                android:text="test_loadClassName"
+                app:layout_constraintTop_toBottomOf="@id/test_loadMajor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/test_loadClass"
+                android:text="test_loadClass"
+                app:layout_constraintTop_toBottomOf="@id/test_loadClassName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/go_to_choose_class_aty"
+                app:layout_constraintTop_toBottomOf="@id/test_loadClass"
+                android:text="go_to_choose_class_aty"
+                android:layout_width="match_parent"
+                android:background="@color/colorToolbar"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/test_login"
+                android:text="test_login"
+                app:layout_constraintTop_toBottomOf="@id/go_to_choose_class_aty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/test_getCaptcha"
+                android:text="test_getCaptcha"
+                app:layout_constraintTop_toBottomOf="@id/test_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+
+
 
 </android.support.constraint.ConstraintLayout>

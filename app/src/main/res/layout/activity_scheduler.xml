@@ -11,15 +11,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
+        android:contentInsetLeft="0dp"
         android:minHeight="?attr/actionBarSize"
         android:background="@color/colorToolbar">
+
+        <!--<ImageView-->
+            <!--android:id="@+id/schedule_back"-->
+            <!--android:contentInsetLeft="0dp"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="?attr/actionBarSize"-->
+            <!--android:src="@mipmap/back_bg"/>-->
+
         <TextView
             android:layout_gravity="center"
             android:text="大猿日常"
-            android:textSize="30sp"
-            android:textColor="@color/colorDeepBlackText"
+            android:textSize="22dp"
+            android:textColor="@color/colorBackground"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/search_schedule"
+            android:layout_gravity="right"
+            android:paddingEnd="23dp"
+            android:layout_width="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            android:src="@mipmap/search_bg"/>
     </android.support.v7.widget.Toolbar>
     <android.support.constraint.ConstraintLayout
         android:id="@+id/week_text_constraintlayout"

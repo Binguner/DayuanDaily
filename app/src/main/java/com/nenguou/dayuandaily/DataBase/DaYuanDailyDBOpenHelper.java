@@ -69,6 +69,21 @@ public class DaYuanDailyDBOpenHelper extends SQLiteOpenHelper{
             "id integer primary key autoincrement," +
             "year_id integer," +
             "year integer)";
+
+    /**
+     * studentNumber 学号
+     */
+    public static final String CREATE_GRADES = "create table Grades(" +
+            "id integer primary key autoincrement," +
+            "studentNumber text," +
+            "name text," +
+            "classNumber text," +
+            "classOrder text," +
+            "className text," +
+            "englishName text," +
+            "credit text," +
+            "classInfo text," +
+            "grade text)";
     public DaYuanDailyDBOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
@@ -81,6 +96,7 @@ public class DaYuanDailyDBOpenHelper extends SQLiteOpenHelper{
         sqLiteDatabase.execSQL(CREATE_CLASSNAME);
         sqLiteDatabase.execSQL(CREATE_SCHEDULE);
         sqLiteDatabase.execSQL(CREATE_YEARLIST);
+        sqLiteDatabase.execSQL(CREATE_GRADES);
     }
 
     @Override

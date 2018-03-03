@@ -11,6 +11,7 @@ import com.nenguou.dayuandaily.DataBase.DayuanDailyDatabase;
 import com.nenguou.dayuandaily.Model.Major;
 import com.nenguou.dayuandaily.Model.YearCollege;
 import com.nenguou.dayuandaily.UI.ActivityChooseSchedule;
+import com.nenguou.dayuandaily.UI.ActivityLogin;
 import com.nenguou.dayuandaily.Utils.RxDayuan;
 
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private Button test_YearCollege,test_Major,test_classname,test_Class,test_loadYearColleg,test_loadMajor,test_loadClassName,test_loadClass,
-            go_to_choose_class_aty;
+            go_to_choose_class_aty,test_login,test_getCaptcha;
     private RxDayuan rxDayuan;
     private final String mainTag = "MainActivityTag";
     DayuanDailyDatabase dayuanDailyDatabase;
@@ -103,9 +104,24 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        test_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, ActivityLogin.class);
+                startActivity(intent);
+            }
+        });
+        test_getCaptcha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //rxDayuan.getCaptcha();
+            }
+        });
     }
 
     private void initId() {
+        test_getCaptcha = findViewById(R.id.test_getCaptcha);
+        test_login = findViewById(R.id.test_login);
         go_to_choose_class_aty = findViewById(R.id.go_to_choose_class_aty);
         test_loadClass = findViewById(R.id.test_loadClass);
         test_loadYearColleg = findViewById(R.id.test_loadYearColleg);

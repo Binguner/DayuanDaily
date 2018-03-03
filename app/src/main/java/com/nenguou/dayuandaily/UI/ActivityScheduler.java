@@ -1,9 +1,12 @@
 package com.nenguou.dayuandaily.UI;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.nenguou.dayuandaily.R;
 
@@ -12,6 +15,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class ActivityScheduler extends AppCompatActivity {
 
@@ -103,6 +107,9 @@ public class ActivityScheduler extends AppCompatActivity {
     @BindView(R.id.ct_11_sat) MyScheduleButton ct_11_sat;
     @BindView(R.id.ct_11_sun) MyScheduleButton ct_11_sun;
 
+    @BindView(R.id.search_schedule) ImageView search_schedule;
+    @BindView(R.id.schedule_toolbar) Toolbar schedule_toolbar;
+
     List<MyScheduleButton> list_mon;
     List<MyScheduleButton> list_tues;
     List<MyScheduleButton> list_wen;
@@ -121,6 +128,13 @@ public class ActivityScheduler extends AppCompatActivity {
         initViews();
     }
 
+    @OnClick(R.id.search_schedule)
+    public void goToSearchSchedule(View view){
+        Intent intent = new Intent(this,ActivityChooseSchedule.class);
+        startActivity(intent);
+        this.finish();
+    }
+
     private void initViews() {
         hideTheRepeatedClass(list_mon);
         hideTheRepeatedClass(list_tues);
@@ -129,6 +143,14 @@ public class ActivityScheduler extends AppCompatActivity {
         hideTheRepeatedClass(list_fri);
         hideTheRepeatedClass(list_sat);
         hideTheRepeatedClass(list_sun);
+        schedule_toolbar.setNavigationIcon(R.mipmap.back_bg);
+        schedule_toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+                ActivityScheduler.this.finish();
+            }
+        });
         //ct_1_mon.getLayoutParams().height = 464; 60 = 240
     }
 

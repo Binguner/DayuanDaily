@@ -2,12 +2,14 @@ package com.nenguou.dayuandaily.DataBase;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.nenguou.dayuandaily.Model.Class;
 import com.nenguou.dayuandaily.Model.ClassName;
+import com.nenguou.dayuandaily.Model.Grades;
 import com.nenguou.dayuandaily.Model.Major;
 import com.nenguou.dayuandaily.Model.YearCollege;
 
@@ -32,10 +34,12 @@ public class DayuanDailyDatabase {
 
     private static DayuanDailyDatabase dayuanDailyDatabase;
     private SQLiteDatabase sqLiteDatabase;
+    Context context;
 
     private DayuanDailyDatabase(Context context) {
         DaYuanDailyDBOpenHelper openHelper = new DaYuanDailyDBOpenHelper(context, DB_NAME, null, DB_VERSION);
         sqLiteDatabase = openHelper.getWritableDatabase();
+        this.context = context;
     }
 
     public synchronized static DayuanDailyDatabase getInstance(Context context) {
@@ -180,6 +184,33 @@ public class DayuanDailyDatabase {
                 }
             }catch(Exception e){
                 e.printStackTrace();
+            }
+        }
+    }
+
+    public void saveGrades(Grades grades){
+        if(grades != null){
+            sqLiteDatabase.execSQL("drop table if exists Grades");
+            sqLiteDatabase.execSQL(DaYuanDailyDBOpenHelper.CREATE_GRADES);
+            List<Grades.DataBean> dataBeanList = grades.getData();
+            SharedPreferences sharedPreferences = context.getSharedPreferences("User_grades",Context.MODE_PRIVATE);
+            String studentNumber = sharedPreferences.getString("username","");
+            ContentValues contentValues = new ContentValues();
+            for(Grades.DataBean dataBean:dataBeanList){
+                List<Grades.DataBean.GradesBean> gradesBeans = dataBean.getGrades();
+                for(Grades.DataBean.GradesBean gradesBean : gradesBeans){
+                    contentValues.put("studentNumber",studentNumber);
+                    contentValues.put("name",dataBean.getName());
+                    contentValues.put("classNumber",gradesBean.getClassName());
+                    contentValues.put("classOrder",gradesBean.getClassOrder());
+                    contentValues.put("className",gradesBean.getClassName());
+                    contentValues.put("englishName",gradesBean.getEnglishName());
+                    contentValues.put("credit",gradesBean.getCredit());
+                    contentValues.put("classInfo",gradesBean.getClassInfo());
+                    contentValues.put("grade",gradesBean.getGrade());
+                    sqLiteDatabase.insert("Grades",null,contentValues);
+                    contentValues.clear();
+                }
             }
         }
     }
@@ -342,6 +373,7 @@ public class DayuanDailyDatabase {
                 }
             }while (cursor.moveToNext());
         }
+        cursor.close();
         return s;
 
     }
@@ -364,5 +396,64 @@ public class DayuanDailyDatabase {
         }
         cursor.close();
         return false;
+    }
+
+    /**
+     * @param studentNumber 学生学号
+     * @return 返回所有学期名称的 List 数组
+     */
+    public List<String> getTermName(String studentNumber){
+        List<String> termsList = new ArrayList<>();
+        Cursor cursor = sqLiteDatabase.query("Grades",null,"studentNumber like ?",new String[]{studentNumber},null,null,null);
+        if(cursor.moveToLast()){
+            do{
+                String term = cursor.getString(cursor.getColumnIndex("name"));
+                if(!isExistThisTerm(termsList,term)) {
+                    termsList.add(term);
+                }
+            }while (cursor.moveToPrevious());
+        }
+        cursor.close();
+        return termsList;
+    }
+
+    /**
+     * 查找数组中是否已经存在该学期
+     * @param termsList 学期名称的数组
+     * @param term 一个学期的名称
+     * @return 存在 返回 true
+     */
+    private boolean isExistThisTerm(List<String> termsList,String term){
+        for(String s : termsList){
+            if (s.equals(term)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param studentNumber 学号
+     * @param term 学期名字
+     * @return Grade 的 List 数组
+     */
+    public List<Grades.DataBean.GradesBean> getTermDetial(String studentNumber, String term){
+        List<Grades.DataBean.GradesBean> gradesBeans = new ArrayList<>();
+        Cursor cursor = sqLiteDatabase.query("Grades",null,"studentNumber like ? and name like ?",new String[]{studentNumber,term},null,null,null);
+        if(cursor.moveToFirst()){
+            do{
+                Grades.DataBean.GradesBean gradesBean = new Grades.DataBean.GradesBean();
+                gradesBean.setClassNumber(cursor.getString(cursor.getColumnIndex("classNumber")));
+                gradesBean.setClassOrder(cursor.getString(cursor.getColumnIndex("classOrder")));
+                gradesBean.setClassName(cursor.getString(cursor.getColumnIndex("className")));
+                gradesBean.setEnglishName(cursor.getString(cursor.getColumnIndex("englishName")));
+                gradesBean.setCredit(cursor.getString(cursor.getColumnIndex("credit")));
+                gradesBean.setClassInfo(cursor.getString(cursor.getColumnIndex("classInfo")));
+                gradesBean.setGrade(cursor.getString(cursor.getColumnIndex("grade")));
+                gradesBeans.add(gradesBean);
+            }while (cursor.moveToNext());
+        }
+        cursor.close();
+        return gradesBeans;
     }
 }
