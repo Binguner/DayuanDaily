@@ -14,6 +14,7 @@ import com.nenguou.dayuandaily.BuildConfig;
 import com.nenguou.dayuandaily.DataBase.DayuanDailyDatabase;
 import com.nenguou.dayuandaily.Model.Captcha;
 import com.nenguou.dayuandaily.Model.Class;
+import com.nenguou.dayuandaily.Model.ClassDetial;
 import com.nenguou.dayuandaily.Model.ClassName;
 import com.nenguou.dayuandaily.Model.Grades;
 import com.nenguou.dayuandaily.Model.Major;
@@ -36,6 +37,7 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -284,6 +286,7 @@ public class RxDayuan {
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+
                 .subscribe(new Subscriber<ClassName>() {
                     @Override
                     public void onCompleted() {
@@ -307,30 +310,42 @@ public class RxDayuan {
     }
 
     public void getClass(String name, String term){
+        //String mName = "软件1632";
         service.getClass(name,term)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+//                .map(new Func1<Class, Object>() {
+//                })
                 .subscribe(new Subscriber<Class>() {
                     @Override
                     public void onCompleted() {
-
+                        Log.d(RxTag,"onCompleted!");
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
+                        Log.d(RxTag,"onError: "+ e.toString());
                     }
 
                     @Override
                     public void onNext(Class aClass) {
                         //Log.d("DaYuanTag1",aClass.getData().getData().toString());
                         if(aClass!=null) {
-
                             SharedPreferences.Editor editor = context.getSharedPreferences("User_YearCollege", Context.MODE_PRIVATE).edit();
                             editor.putInt("schedule_id", aClass.getData().getId());
                             editor.commit();
-                            dayuanDailyDatabase.saveClass(aClass);
+//                            dayuanDailyDatabase.saveClass(aClass);
+                            Log.d(RxTag,"Over!");
+                            //Log.d(RxTag,aClass.getData().getData().getSchedule().size()+"");
+                            Log.d(RxTag,aClass.getData().getData());
+                            Gson gson = new Gson();
+                            ClassDetial classDetial = gson.fromJson(aClass.getData().getData(),ClassDetial.class);
+                            Log.d(RxTag,classDetial.getSchedule().size()+"");
+                            Log.d(RxTag,classDetial.getSchedule().get(0).getName()+"");
+                            Log.d(RxTag,classDetial.getSchedule().get(0).getName_suffix()+"");
+                            Log.d(RxTag,classDetial.getSchedule().get(0).getWeeks().toString());
+                            dayuanDailyDatabase.saveClass(aClass,classDetial);
                         }
                     }
                 });

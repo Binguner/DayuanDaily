@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.nenguou.dayuandaily.Model.Class;
+import com.nenguou.dayuandaily.Model.ClassDetial;
 import com.nenguou.dayuandaily.Model.ClassName;
 import com.nenguou.dayuandaily.Model.Grades;
 import com.nenguou.dayuandaily.Model.Major;
@@ -27,11 +28,14 @@ public class DayuanDailyDatabase {
     public static final int TYPE_GET_SUB_NAME = 1;
     public static final int TYPE_GET_SUB_PLACE = 2;
     public static final int TYPE_GET_SUB_TEACHER = 3;
-    public static final int TYPE_GET_SUB_TIME = 4;
+    public static final int TYPE_GET_SUB_RAWWEEK = 4;
+    public static final int TYPE_GET_SUB_WEEKS = 5;
+    public static final int TYPE_GET_SUB_LENGTH = 6;
 
     public static final String DB_NAME = "Dayuan_database";
     public static final int DB_VERSION = 1;
 
+    private static final String DbTag = "DayuannTag";
     private static DayuanDailyDatabase dayuanDailyDatabase;
     private SQLiteDatabase sqLiteDatabase;
     Context context;
@@ -96,13 +100,13 @@ public class DayuanDailyDatabase {
 
     public void saveClassName(ClassName className, String major_name, int year) {
         if (className != null) {
-            List<String> data = className.getData();
+            List<ClassName.DataBean> data = className.getData();
             ContentValues contentValues = new ContentValues();
             try {
                 if(!isExitThisClassName(year,major_name)) {
-                    for (String s : data) {
+                    for (ClassName.DataBean s : data) {
                         //Log.d("DaYuanTag",s+"");
-                        contentValues.put("className", s);
+                        contentValues.put("className", s.getName());
                         contentValues.put("major_name", major_name);
                         contentValues.put("year", year);
                         sqLiteDatabase.insert("ClassName", null, contentValues);
@@ -114,6 +118,45 @@ public class DayuanDailyDatabase {
             }
         }
     }
+
+
+    public void saveClass(Class mClass, ClassDetial classDetial){
+        if(mClass != null && classDetial != null){
+            ContentValues contentValues = new ContentValues();
+            try {
+                if(!isExitThisSchedule(mClass.getData().getId())){
+                    for(ClassDetial.ScheduleBean scheduleBean: classDetial.getSchedule()){
+                        for(ClassDetial.ScheduleBean.DetailsBean detailsBean:scheduleBean.getDetails()){
+                            contentValues.put("schedule_id",mClass.getData().getId());
+                            contentValues.put("term",mClass.getData().getTerm());
+                            contentValues.put("year",mClass.getData().getYear());
+                            contentValues.put("class_name",mClass.getData().getName());
+                            contentValues.put("college_name",mClass.getData().getCollege());
+                            contentValues.put("major_name",mClass.getData().getMajor());
+                            //contentValues.put("link",mClass.getData().getLink().toString());
+                            contentValues.put("class_term",classDetial.getTerm());
+                            contentValues.put("week_num",detailsBean.getDay()+1);
+                            contentValues.put("course_start",detailsBean.getStart()+1);
+                            contentValues.put("course_length",detailsBean.getLength());
+                            contentValues.put("course_name",scheduleBean.getName());
+                            contentValues.put("course_name_suffix",scheduleBean.getName_suffix());
+                            contentValues.put("teacher_name",scheduleBean.getTeacher());
+                            contentValues.put("course_rawWeek",scheduleBean.getRawWeek());
+                            contentValues.put("course_weeks",scheduleBean.getWeeks().toString());
+                            contentValues.put("course_build",detailsBean.getBuild());
+                            contentValues.put("course_campus",detailsBean.getCampus());
+                            contentValues.put("course_room",detailsBean.getRoom());
+                            sqLiteDatabase.insert("Schedule",null,contentValues);
+                            contentValues.clear();
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     public void saveClass(Class mClass) {
 
@@ -191,7 +234,6 @@ public class DayuanDailyDatabase {
     public void saveGrades(Grades grades){
         if(grades != null){
             sqLiteDatabase.execSQL("drop table if exists Grades");
-            sqLiteDatabase.execSQL(DaYuanDailyDBOpenHelper.CREATE_GRADES);
             List<Grades.DataBean> dataBeanList = grades.getData();
             SharedPreferences sharedPreferences = context.getSharedPreferences("User_grades",Context.MODE_PRIVATE);
             String studentNumber = sharedPreferences.getString("username","");
@@ -347,28 +389,36 @@ public class DayuanDailyDatabase {
      * @param Type TYPE_GET_SUB_NAME = 1; TYPE_GET_SUB_PLACE = 2;TYPE_GET_SUB_TEACHER = 3;TYPE_GET_SUB_TIME = 4;
      * @param schedule_id 课表的唯一 id
      * @param week_num 课表的周几
-     * @param course_num 课表的周几的第几节
+     * @param course_start 课表的周几的第几节
      * @return 根据 Type 不同，分别返回课程名字，上课地点，上课老师，上课的周数
      */
-    public String loadSchedules(int Type,int schedule_id,int week_num,int course_num){
+    public String loadSchedules(int Type,int schedule_id,int week_num,int course_start){
         //List<String> list = new ArrayList<>();
         String s = null;
-        Cursor cursor = sqLiteDatabase.query("Schedule",null,"schedule_id = ? and week_num = ? and course_num = ?",
-                        new String[]{String.valueOf(schedule_id),String.valueOf(week_num),String.valueOf(course_num)},null,null,null);
+        Cursor cursor = sqLiteDatabase.query("Schedule",null,"schedule_id = ? and week_num = ? and course_start = ?",
+                        new String[]{String.valueOf(schedule_id),String.valueOf(week_num),String.valueOf(course_start)},null,null,null);
         if(cursor.moveToFirst()){
+            //Log.d(DbTag,"Type is : " + Type+"");
             do{
                 switch (Type){
                     case DayuanDailyDatabase.TYPE_GET_SUB_NAME:
-                        s = cursor.getString(cursor.getColumnIndex("course_name"));
+                        Log.d(DbTag,"Here : ");
+                        s = cursor.getString(cursor.getColumnIndex("course_name")) + cursor.getString(cursor.getColumnIndex("course_name_suffix"));
                         break;
                     case DayuanDailyDatabase.TYPE_GET_SUB_PLACE:
-                        s = cursor.getString(cursor.getColumnIndex("course_place"))+" "+cursor.getString(cursor.getColumnIndex("course_detial_place"));
+                        s = cursor.getString(cursor.getColumnIndex("course_campus"))+" "+cursor.getString(cursor.getColumnIndex("course_build")) + " " + cursor.getString(cursor.getColumnIndex("course_room")) ;
                         break;
                     case DayuanDailyDatabase.TYPE_GET_SUB_TEACHER:
                         s = cursor.getString(cursor.getColumnIndex("teacher_name"));
                         break;
-                    case DayuanDailyDatabase.TYPE_GET_SUB_TIME:
-                        s = cursor.getString(cursor.getColumnIndex("course_time"));
+                    case DayuanDailyDatabase.TYPE_GET_SUB_RAWWEEK:
+                        s = cursor.getString(cursor.getColumnIndex("course_rawWeek"));
+                        break;
+                    case DayuanDailyDatabase.TYPE_GET_SUB_WEEKS:
+                        s = cursor.getString(cursor.getColumnIndex("course_weeks"));
+                        break;
+                    case DayuanDailyDatabase.TYPE_GET_SUB_LENGTH:
+                        s = cursor.getString(cursor.getColumnIndex("course_length"));
                         break;
                 }
             }while (cursor.moveToNext());

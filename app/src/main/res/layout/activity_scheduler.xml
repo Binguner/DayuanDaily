@@ -1737,7 +1737,18 @@
 
             </android.support.constraint.ConstraintLayout>
 
+            <com.nenguou.dayuandaily.UI.MySideBar
+                android:id="@+id/choose_week_sideBar"
+                android:background="@color/colorShadow"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="18dp"
+                android:layout_height="match_parent" />
+
         </android.support.constraint.ConstraintLayout>
+
+
 
 
     </android.support.v4.widget.NestedScrollView>

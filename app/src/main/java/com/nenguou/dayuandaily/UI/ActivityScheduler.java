@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.nenguou.dayuandaily.R;
 
@@ -109,6 +110,7 @@ public class ActivityScheduler extends AppCompatActivity {
 
     @BindView(R.id.search_schedule) ImageView search_schedule;
     @BindView(R.id.schedule_toolbar) Toolbar schedule_toolbar;
+    @BindView(R.id.choose_week_sideBar) MySideBar choose_week_sideBar;
 
     List<MyScheduleButton> list_mon;
     List<MyScheduleButton> list_tues;
@@ -118,6 +120,7 @@ public class ActivityScheduler extends AppCompatActivity {
     List<MyScheduleButton> list_sat;
     List<MyScheduleButton> list_sun;
     private static final String sTag= "AtySchedulerTag";
+    private static int selectedTime;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,13 +139,52 @@ public class ActivityScheduler extends AppCompatActivity {
     }
 
     private void initViews() {
-        hideTheRepeatedClass(list_mon);
-        hideTheRepeatedClass(list_tues);
-        hideTheRepeatedClass(list_wen);
-        hideTheRepeatedClass(list_thur);
-        hideTheRepeatedClass(list_fri);
-        hideTheRepeatedClass(list_sat);
-        hideTheRepeatedClass(list_sun);
+//        hideTheRepeatedClass(list_mon);
+//        hideTheRepeatedClass(list_tues);
+//        hideTheRepeatedClass(list_wen);
+//        hideTheRepeatedClass(list_thur);
+//        hideTheRepeatedClass(list_fri);
+//        hideTheRepeatedClass(list_sat);
+//        hideTheRepeatedClass(list_sun);
+        choose_week_sideBar.setOnSeleceListener(new MySideBar.onSeleceListener() {
+            @Override
+            public void onSelect(String s) {
+                //Log.d(sTag,s+"");
+                //MyScheduleButton.setSelectedTime(s);
+                if(s.equals("A")){
+
+                }else if(s.equals("N")){
+
+                }else {
+                    selectedTime = Integer.parseInt(s);
+                }
+                try {
+                    refreshSchedule(list_mon);
+                    refreshSchedule(list_tues);
+                    refreshSchedule(list_wen);
+                    refreshSchedule(list_thur);
+                    refreshSchedule(list_fri);
+                    refreshSchedule(list_sat);
+                    refreshSchedule(list_sun);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onMoveUp(String s) {
+                //MyScheduleButton.setSelectedTime(s);
+                //Log.d(sTag,s+"");
+            }
+        });
+
+        repeatTheButton(list_mon);
+        repeatTheButton(list_tues);
+        repeatTheButton(list_wen);
+        repeatTheButton(list_thur);
+        repeatTheButton(list_fri);
+        repeatTheButton(list_sat);
+        repeatTheButton(list_sun);
         schedule_toolbar.setNavigationIcon(R.mipmap.back_bg);
         schedule_toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,6 +194,33 @@ public class ActivityScheduler extends AppCompatActivity {
             }
         });
         //ct_1_mon.getLayoutParams().height = 464; 60 = 240
+    }
+    private void refreshSchedule(List<MyScheduleButton> list) {
+        for(MyScheduleButton button : list){
+            button.setVisibility(View.INVISIBLE);
+            if(button.getText()!=null && !button.getText().equals("")){
+                int[] weekArray = button.getWeekList();
+                Log.d(sTag, "=============");
+                for(int i : weekArray) {
+                    Log.d(sTag, "i = " + i);
+                    if( i == selectedTime){
+                        button.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        }
+    }
+
+    public void getDetialClick(View v){
+
+    }
+
+    private void repeatTheButton(List<MyScheduleButton> list) {
+        for(int i = 0 ; i < list.size(); i++){
+            int length = list.get(i).getLength();
+            int oldHeight = list.get(i).getLayoutParams().height;
+            list.get(i).getLayoutParams().height = oldHeight * length;
+        }
     }
 
     private void hideTheRepeatedClass(List<MyScheduleButton> list){

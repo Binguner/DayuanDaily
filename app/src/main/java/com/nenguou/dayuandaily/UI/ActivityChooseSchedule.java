@@ -39,11 +39,11 @@ import cn.qqtheme.framework.widget.WheelView;
  * majorName:String 软件工程
  * className:String 软件1632
  * term:String 2017-2018-2-1
- * schedule_id:Int 2465
+ * schedule_id:Int 2465  in rxDayuan
  */
 public class ActivityChooseSchedule extends AppCompatActivity {
 
-    private final String Tag = "ActivityChoosheduleTag";
+    private final String AtyCSTag = "ActivityChoosheduleTag";
     private final int CHOOSE_YEAR = 0;
     private final int CHOOSE_COLLEGE = 1;
     private final int CHOOSE_MAJOR = 2;
@@ -189,7 +189,7 @@ public class ActivityChooseSchedule extends AppCompatActivity {
                             SharedPreferences.Editor editor = getSharedPreferences("User_YearCollege", MODE_PRIVATE).edit();
                             editor.putInt("majorId", majorList.get(index).getId());
                             editor.putString("majorName", majorList.get(index).getMajor());
-                            Log.d(Tag, majorList.get(index).getMajor());
+                            //Log.d(Tag, majorList.get(index).getMajor());
                             String majorName = majorList.get(index).getMajor();
                             rxDayuan.getClassName(year, majorName);
                             editor.commit();
@@ -209,6 +209,7 @@ public class ActivityChooseSchedule extends AppCompatActivity {
                 if(classNameList != null){
                     dataArray = new String[classNameList.size()];
                     for(int i = 0 ; i < classNameList.size(); i++){
+                        Log.d(AtyCSTag,classNameList.get(i).toString());
                         dataArray[i] = classNameList.get(i);
                     }
                     picker = new OptionPicker(this,dataArray);
@@ -218,7 +219,6 @@ public class ActivityChooseSchedule extends AppCompatActivity {
                             chooseClassText.setText(dataArray[index]);
                             SharedPreferences.Editor editor1 = getSharedPreferences("User_YearCollege",MODE_PRIVATE).edit();
                             editor1.putString("className",dataArray[index]);
-                            //editor1.putString("schedule_id",)
                             editor1.commit();
                             String className = dataArray[index].toString();
                             pleasechooseclass.setText("选择完毕，请点击确定");
@@ -226,7 +226,6 @@ public class ActivityChooseSchedule extends AppCompatActivity {
                         }
                     });
                 }
-
         }
         picker.setOffset(3);
         picker.setLineSpaceMultiplier(3);
@@ -238,8 +237,5 @@ public class ActivityChooseSchedule extends AppCompatActivity {
             Toast.makeText(this,"查询不到数据，请重新选择",Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
-
     }
-
-
 }

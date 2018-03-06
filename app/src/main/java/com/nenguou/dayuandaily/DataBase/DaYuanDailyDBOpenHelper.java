@@ -51,19 +51,27 @@ public class DaYuanDailyDBOpenHelper extends SQLiteOpenHelper{
      */
     public static final String CREATE_SCHEDULE = "create table Schedule(" +
             "id integer primary key autoincrement," +
-            "schedule_id integer," +
-            "term text," +
-            "year integer," +
-            "class_name text," +
-            "college_name text," +
-            "major_name text," +
-            "week_num integer," +
-            "course_num integer," +
-            "course_name text," +
-            "course_place text," +
-            "course_detial_place text," +
-            "teacher_name text," +
-            "course_time text)";
+            "schedule_id integer," +    // 9514
+            "term text," +  // 2017-2018-2-1
+            "year integer," +   // 2016
+            "class_name text," +   // 软件1632
+            "college_name text," +  // 软件学院
+            "major_name text," +    // 软件工程
+            "link text,"+   // null
+
+            "class_term text,"+  //2017-2018学年春(两学期)
+            "week_num integer," +   //  0
+            "course_start integer," + // 0
+            "course_length integer,"+   // 2
+            "course_name text," +   // 大学英语(四)
+            "course_name_suffix text,"+  // _08
+            "teacher_name text," +  // 王茹
+            "course_rawWeek text,"+     // 1-14周上
+            "course_weeks text,"+   // [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+            "course_build text," +     // 行勉楼
+            "course_campus text," +     // 明向校区
+            "course_room text)";  // A404
+            //"course_time text)";
 
     public static final String CREATE_YEARLIST = "create table YearList(" +
             "id integer primary key autoincrement," +
@@ -81,9 +89,9 @@ public class DaYuanDailyDBOpenHelper extends SQLiteOpenHelper{
             "classOrder text," +
             "className text," +
             "englishName text," +
-            "credit text," +
+            "credit integer," +
             "classInfo text," +
-            "grade text)";
+            "grade real)";
     public DaYuanDailyDBOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
