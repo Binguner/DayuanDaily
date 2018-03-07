@@ -1,6 +1,7 @@
 package com.nenguou.dayuandaily.UI;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -121,14 +122,50 @@ public class ActivityScheduler extends AppCompatActivity {
     List<MyScheduleButton> list_sun;
     private static final String sTag= "AtySchedulerTag";
     private static int selectedTime;
+    private boolean isScheduleSelected = false;
+    String theSelectedTime;
+    SharedPreferences.Editor editor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setTheme(R.style.myAppTheme);
+        super.onCreate(savedInstanceState);
+        isFitstLoad();
         setContentView(R.layout.activity_scheduler);
         ButterKnife.bind(this);
         initData();
         initViews();
+        checkTheLastTime();
+    }
+
+    private void checkTheLastTime() {
+        SharedPreferences sharedPreferences = getSharedPreferences("User_YearCollege",MODE_PRIVATE);
+        theSelectedTime = sharedPreferences.getString("theSelectedTime","");
+        if(theSelectedTime.equals("A")){
+
+        }else if(theSelectedTime.equals("N")){
+
+        }else if(theSelectedTime != ""){
+            MySideBar.setTheSelectedOne(theSelectedTime);
+            selectedTime = Integer.parseInt(theSelectedTime);
+            refreshSchedule(list_mon);
+            refreshSchedule(list_tues);
+            refreshSchedule(list_wen);
+            refreshSchedule(list_thur);
+            refreshSchedule(list_fri);
+            refreshSchedule(list_sat);
+            refreshSchedule(list_sun);
+        }
+
+    }
+
+    private void isFitstLoad() {
+        SharedPreferences sharedPreferences = getSharedPreferences("User_YearCollege",MODE_PRIVATE);
+        isScheduleSelected = sharedPreferences.getBoolean("isScheduleSelected",false);
+        if(!isScheduleSelected){
+            Intent intent = new Intent(this,ActivityChooseSchedule.class);
+            startActivity(intent);
+            this.finish();
+        }
     }
 
     @OnClick(R.id.search_schedule)
@@ -151,6 +188,10 @@ public class ActivityScheduler extends AppCompatActivity {
             public void onSelect(String s) {
                 //Log.d(sTag,s+"");
                 //MyScheduleButton.setSelectedTime(s);
+                Toast.makeText(ActivityScheduler.this,s,Toast.LENGTH_SHORT).show();
+                MySideBar.setTheSelectedOne(s);
+                editor.putString("theSelectedTime",s);
+                editor.commit();
                 if(s.equals("A")){
 
                 }else if(s.equals("N")){
@@ -200,9 +241,9 @@ public class ActivityScheduler extends AppCompatActivity {
             button.setVisibility(View.INVISIBLE);
             if(button.getText()!=null && !button.getText().equals("")){
                 int[] weekArray = button.getWeekList();
-                Log.d(sTag, "=============");
+               // Log.d(sTag, "=============");
                 for(int i : weekArray) {
-                    Log.d(sTag, "i = " + i);
+                 //   Log.d(sTag, "i = " + i);
                     if( i == selectedTime){
                         button.setVisibility(View.VISIBLE);
                     }
@@ -261,6 +302,7 @@ public class ActivityScheduler extends AppCompatActivity {
     //private void
 
     private void initData() {
+        editor = getSharedPreferences("User_YearCollege",MODE_PRIVATE).edit();
         list_mon = new ArrayList<>();
         list_mon.add(ct_1_mon);
         list_mon.add(ct_2_mon);

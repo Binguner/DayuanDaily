@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.nenguou.dayuandaily.R;
+
 /**
  * Created by binguner on 2018/3/6.
  */
@@ -29,6 +31,8 @@ public class MySideBar extends View {
     private float touchX;
     private float touchY;
 
+    private static String theSelectedOne;
+
     private onSeleceListener listener;
 
     public MySideBar(Context context, @Nullable AttributeSet attrs) {
@@ -42,6 +46,9 @@ public class MySideBar extends View {
         numberPaint.setColor(Color.BLACK);
     }
 
+    public static void setTheSelectedOne(String s){
+        theSelectedOne = s;
+    }
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
@@ -54,7 +61,6 @@ public class MySideBar extends View {
         }
     }
 
-    @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         drawNumbers(canvas);
@@ -63,8 +69,12 @@ public class MySideBar extends View {
     private void drawNumbers(Canvas canvas) {
         for(int i = 0 ; i < WeeksNum.length; i++){
             String s = WeeksNum[i];
+            if(theSelectedOne != null && !theSelectedOne.equals("") && theSelectedOne.equals(s)){
+                numberPaint.setColor(getResources().getColor(R.color.colorToolbar));
+            }
             numberPaint.getTextBounds(s,0,s.length(),nnumberRect);
             canvas.drawText(s,(width-nnumberRect.width())/2f,cellHeight * i + (cellHeight + nnumberRect.height())/2f,numberPaint);
+            numberPaint.setColor(Color.BLACK);
         }
     }
 
@@ -90,6 +100,7 @@ public class MySideBar extends View {
                 if (listener != null && touchX < 0) {
                     listener.onMoveUp(getHint());
                 }
+                invalidate();
                 return true;
             case MotionEvent.ACTION_UP:
                 touchY = event.getY();

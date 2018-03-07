@@ -18,6 +18,7 @@ import com.nenguou.dayuandaily.DataBase.DayuanDailyDatabase;
 import com.nenguou.dayuandaily.Model.Major;
 import com.nenguou.dayuandaily.Model.YearCollege;
 import com.nenguou.dayuandaily.R;
+import com.nenguou.dayuandaily.Utils.RetrofitCallbackListener;
 import com.nenguou.dayuandaily.Utils.RxDayuan;
 
 import java.util.ArrayList;
@@ -34,6 +35,9 @@ import cn.qqtheme.framework.widget.WheelView;
 /**
  * SharedPreferences : User_YearCollege
  * year:Int 2016
+ * theSelectedTime : 1 or 2 or 3 or 4
+ * isFirstLoadCollege : true / false
+ * isScheduleSelected: true / false
  * collegeId:Int 22 --软件学院
  * majorId:Int 22
  * majorName:String 软件工程
@@ -68,9 +72,39 @@ public class ActivityChooseSchedule extends AppCompatActivity {
         setTheme(R.style.myAppTheme);
         setContentView(R.layout.activity_choose_schedule);
         ButterKnife.bind(this);
-        dayuanDailyDatabase = DayuanDailyDatabase.getInstance(this);
         rxDayuan = new RxDayuan(this);
+        initDatas();
+        dayuanDailyDatabase = DayuanDailyDatabase.getInstance(this);
 
+    }
+
+    private void initDatas() {
+        SharedPreferences sharedPreferences = getSharedPreferences("User_YearCollege",MODE_PRIVATE);
+        boolean isFirstLoad = sharedPreferences.getBoolean("isFirstLoadCollege",true);
+        //boolean isScheduleSelected = sharedPreferences.getBoolean("isScheduleSelected",false);
+        if (isFirstLoad) {
+            Toast.makeText(this, "正在加载数据，请稍等", Toast.LENGTH_SHORT).show();
+            rxDayuan.getYearCollege(new RetrofitCallbackListener() {
+                @Override
+                public void onFinish(int status) {
+                    Toast.makeText(ActivityChooseSchedule.this, "数据加载成功", Toast.LENGTH_SHORT).show();
+                    SharedPreferences.Editor editor = getSharedPreferences("User_YearCollege", MODE_PRIVATE).edit();
+                    editor.putBoolean("isFirstLoadCollege", false);
+                    //editor.putBoolean("isScheduleSelected",true);
+                    editor.commit();
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    Toast.makeText(ActivityChooseSchedule.this, "数据加载失败，请重新打开 App", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+//        if(!isFirstLoad){
+//            Intent intent = new Intent(this,ActivityScheduler.class);
+//            startActivity(intent);
+//            this.finish();
+//        }
     }
 
     @OnClick(R.id.choose_year_cardview)
@@ -116,6 +150,9 @@ public class ActivityChooseSchedule extends AppCompatActivity {
 
     @OnClick(R.id.chooseClassOver)
     public void chooseClassOverClick(View v){
+        SharedPreferences.Editor editor = getSharedPreferences("User_YearCollege",MODE_PRIVATE).edit();
+        editor.putBoolean("isScheduleSelected",true);
+        editor.commit();
         Intent intent = new Intent(this,ActivityScheduler.class);
         startActivity(intent);
         this.finish();
@@ -126,6 +163,7 @@ public class ActivityChooseSchedule extends AppCompatActivity {
         OptionPicker picker = null;
         switch (type){
             case CHOOSE_YEAR:
+
                 final SharedPreferences.Editor editor = getSharedPreferences("User_YearCollege",MODE_PRIVATE).edit();
                 final List<Integer> yearList = dayuanDailyDatabase.loadYearList();
                 if(yearList!=null) {

@@ -12,6 +12,8 @@ import com.nenguou.dayuandaily.Model.Major;
 import com.nenguou.dayuandaily.Model.YearCollege;
 import com.nenguou.dayuandaily.UI.ActivityChooseSchedule;
 import com.nenguou.dayuandaily.UI.ActivityLogin;
+import com.nenguou.dayuandaily.UI.ActivityScheduler;
+import com.nenguou.dayuandaily.Utils.RetrofitCallbackListener;
 import com.nenguou.dayuandaily.Utils.RxDayuan;
 
 import java.util.List;
@@ -35,7 +37,17 @@ public class MainActivity extends AppCompatActivity {
         test_YearCollege.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                rxDayuan.getYearCollege();
+                rxDayuan.getYearCollege(new RetrofitCallbackListener() {
+                    @Override
+                    public void onFinish(int status) {
+
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+
+                    }
+                });
             }
         });
 
@@ -100,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
         go_to_choose_class_aty.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, ActivityChooseSchedule.class);
+                Intent intent = new Intent(MainActivity.this, ActivityScheduler.class);
                 startActivity(intent);
             }
         });

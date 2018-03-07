@@ -216,7 +216,7 @@ public class RxDayuan {
         }
     }
 
-    public void getYearCollege(){
+    public void getYearCollege(final RetrofitCallbackListener listener){
         service.getYearCollege()
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
@@ -225,11 +225,13 @@ public class RxDayuan {
                     @Override
                     public void onCompleted() {
                         //alertDialog.dismiss();
+                        listener.onFinish(0);
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         unsubscribe();
+                        listener.onFinish(1);
                     }
 
                     @Override
