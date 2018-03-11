@@ -41,10 +41,12 @@ public class MyScheduleButton extends android.support.v7.widget.AppCompatButton 
         this.context = context;
         initData(attrs);
         initBtnView();
+        // 只在第一次进入界面的时候调用
         showOrNot();
     }
 
     private void initBtnView() {
+        //showOrNot();
         this.setTextSize(12);
 
         this.setOnClickListener(new OnClickListener() {
@@ -53,6 +55,7 @@ public class MyScheduleButton extends android.support.v7.widget.AppCompatButton 
                 Toast.makeText(context,detial,Toast.LENGTH_SHORT).show();
             }
         });
+
         //int btnHeight = this.getHeight();
         //Log.d(Tag,"btnHeight is : " + btnHeight);
         //this.setPadding();
@@ -60,9 +63,13 @@ public class MyScheduleButton extends android.support.v7.widget.AppCompatButton 
 
     private void showOrNot() {
         if("".equals(this.getText())){
-            this.setBackgroundColor(Color.TRANSPARENT);
+            //this.setBackgroundColor(Color.TRANSPARENT);
+            this.setVisibility(INVISIBLE);
             this.setClickable(false);
             //this.setVisibility(INVISIBLE);
+        }else if("".equals(this.getText())){
+            this.setVisibility(VISIBLE);
+            this.setClickable(true);
         }
     }
 

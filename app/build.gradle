@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 26
-
     packagingOptions {
         packagingOptions {
             exclude 'META-INF/rxjava.properties'
@@ -13,7 +12,6 @@ android {
             url "https://www.jitpack.io"
         }
     }
-
     defaultConfig {
         applicationId "com.nenguou.dayuandaily"
         minSdkVersion 21
@@ -28,6 +26,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    buildToolsVersion '27.0.3'
 }
 
 

@@ -143,7 +143,7 @@ public class ActivityScheduler extends AppCompatActivity {
         if(theSelectedTime.equals("A")){
 
         }else if(theSelectedTime.equals("N")){
-
+            Toast.makeText(this,"I will show the nowTime Schedule",Toast.LENGTH_SHORT).show();
         }else if(theSelectedTime != ""){
             MySideBar.setTheSelectedOne(theSelectedTime);
             selectedTime = Integer.parseInt(theSelectedTime);
@@ -193,7 +193,7 @@ public class ActivityScheduler extends AppCompatActivity {
                 editor.putString("theSelectedTime",s);
                 editor.commit();
                 if(s.equals("A")){
-
+                    selectedTime = 0;
                 }else if(s.equals("N")){
 
                 }else {
@@ -236,6 +236,12 @@ public class ActivityScheduler extends AppCompatActivity {
         });
         //ct_1_mon.getLayoutParams().height = 464; 60 = 240
     }
+
+    /**
+     * 点击一次 滑动侧边脸 就根据滑动到位置，刷新页面，设置当前课表是否可见
+     * 如果当前的 课 有 text ，则现实
+     * @param list 该天的所有课程的 List
+     */
     private void refreshSchedule(List<MyScheduleButton> list) {
         for(MyScheduleButton button : list){
             button.setVisibility(View.INVISIBLE);
@@ -246,16 +252,18 @@ public class ActivityScheduler extends AppCompatActivity {
                  //   Log.d(sTag, "i = " + i);
                     if( i == selectedTime){
                         button.setVisibility(View.VISIBLE);
+                    }else if(selectedTime == 0){
+                        button.setVisibility(View.VISIBLE);
                     }
                 }
             }
         }
     }
 
-    public void getDetialClick(View v){
-
-    }
-
+    /**
+     * 根据每个按钮中课程的 上课几节 (length) 重复当前的课
+     * @param list 该天的所有课程的 List
+     */
     private void repeatTheButton(List<MyScheduleButton> list) {
         for(int i = 0 ; i < list.size(); i++){
             int length = list.get(i).getLength();
@@ -301,6 +309,9 @@ public class ActivityScheduler extends AppCompatActivity {
 
     //private void
 
+    /**
+     * 把每节课装在 当天的 List 里
+     */
     private void initData() {
         editor = getSharedPreferences("User_YearCollege",MODE_PRIVATE).edit();
         list_mon = new ArrayList<>();

@@ -133,6 +133,7 @@ public class DayuanDailyDatabase {
                             contentValues.put("class_name",mClass.getData().getName());
                             contentValues.put("college_name",mClass.getData().getCollege());
                             contentValues.put("major_name",mClass.getData().getMajor());
+                            contentValues.put("course_start_week",scheduleBean.getWeeks().toString().split(",")[0].toString().split("\\[")[1]);
                             //contentValues.put("link",mClass.getData().getLink().toString());
                             contentValues.put("class_term",classDetial.getTerm());
                             contentValues.put("week_num",detailsBean.getDay()+1);
@@ -332,7 +333,7 @@ public class DayuanDailyDatabase {
      * @param id 根据传入的 专业 ID 判断表中是否存在这节课
      * @return 存在返回 true，不存在返回 false；
      */
-    public boolean isExitThisMajor(int id) throws Exception {
+    private boolean isExitThisMajor(int id) throws Exception {
         Cursor cursor = sqLiteDatabase.query("Major",null,"major_id = ?",new String[]{String.valueOf(id)},null,null,null);
         if(cursor.moveToFirst()){
             int mID = cursor.getInt(cursor.getColumnIndex("major_id"));
@@ -369,7 +370,7 @@ public class DayuanDailyDatabase {
      * @return 如果表中存在这一年这一专业的数据，返回 true
      * @throws Exception 返回「不知道什么」异常
      */
-    public boolean isExitThisClassName(int year,String major_name) throws Exception{
+    private boolean isExitThisClassName(int year,String major_name) throws Exception{
         Cursor cursor = sqLiteDatabase.query("ClassName",null,"year = ? and major_name like ?",new String[]{String.valueOf(year),major_name},null,null,null);
         if(cursor.moveToFirst()){
             do{
@@ -402,7 +403,6 @@ public class DayuanDailyDatabase {
             do{
                 switch (Type){
                     case DayuanDailyDatabase.TYPE_GET_SUB_NAME:
-                        Log.d(DbTag,"Here : ");
                         s = cursor.getString(cursor.getColumnIndex("course_name")) + cursor.getString(cursor.getColumnIndex("course_name_suffix"));
                         break;
                     case DayuanDailyDatabase.TYPE_GET_SUB_PLACE:
@@ -433,7 +433,7 @@ public class DayuanDailyDatabase {
      * @return 如果数据库中存在这个课表，返回为 true
      * @throws Exception 「不知道什么」异常c
      */
-    public boolean isExitThisSchedule(int schedule_id) throws Exception{
+    private boolean isExitThisSchedule(int schedule_id) throws Exception{
         Cursor cursor = sqLiteDatabase.query("Schedule",null,"schedule_id = ?",new String[]{String.valueOf(schedule_id)},null,null,null);
         if(cursor.moveToFirst()){
             do {

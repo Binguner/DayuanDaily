@@ -63,6 +63,7 @@ public class DaYuanDailyDBOpenHelper extends SQLiteOpenHelper{
             "week_num integer," +   //  0
             "course_start integer," + // 0
             "course_length integer,"+   // 2
+            "course_start_week integer,"+
             "course_name text," +   // 大学英语(四)
             "course_name_suffix text,"+  // _08
             "teacher_name text," +  // 王茹
