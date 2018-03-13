@@ -393,9 +393,10 @@ public class DayuanDailyDatabase {
      * @param course_start 课表的周几的第几节
      * @return 根据 Type 不同，分别返回课程名字，上课地点，上课老师，上课的周数
      */
-    public String loadSchedules(int Type,int schedule_id,int week_num,int course_start){
+    public List<String> loadSchedules(int Type,int schedule_id,int week_num,int course_start){
         //List<String> list = new ArrayList<>();
-        String s = null;
+        //String s = null;
+        List<String> s = new ArrayList<>();
         Cursor cursor = sqLiteDatabase.query("Schedule",null,"schedule_id = ? and week_num = ? and course_start = ?",
                         new String[]{String.valueOf(schedule_id),String.valueOf(week_num),String.valueOf(course_start)},null,null,null);
         if(cursor.moveToFirst()){
@@ -403,22 +404,22 @@ public class DayuanDailyDatabase {
             do{
                 switch (Type){
                     case DayuanDailyDatabase.TYPE_GET_SUB_NAME:
-                        s = cursor.getString(cursor.getColumnIndex("course_name")) + cursor.getString(cursor.getColumnIndex("course_name_suffix"));
+                        s.add(cursor.getString(cursor.getColumnIndex("course_name")) + cursor.getString(cursor.getColumnIndex("course_name_suffix")));
                         break;
                     case DayuanDailyDatabase.TYPE_GET_SUB_PLACE:
-                        s = cursor.getString(cursor.getColumnIndex("course_campus"))+" "+cursor.getString(cursor.getColumnIndex("course_build")) + " " + cursor.getString(cursor.getColumnIndex("course_room")) ;
+                        s.add(cursor.getString(cursor.getColumnIndex("course_campus"))+" "+cursor.getString(cursor.getColumnIndex("course_build")) + " " + cursor.getString(cursor.getColumnIndex("course_room"))) ;
                         break;
                     case DayuanDailyDatabase.TYPE_GET_SUB_TEACHER:
-                        s = cursor.getString(cursor.getColumnIndex("teacher_name"));
+                        s.add(cursor.getString(cursor.getColumnIndex("teacher_name")));
                         break;
                     case DayuanDailyDatabase.TYPE_GET_SUB_RAWWEEK:
-                        s = cursor.getString(cursor.getColumnIndex("course_rawWeek"));
+                        s.add(cursor.getString(cursor.getColumnIndex("course_rawWeek")));
                         break;
                     case DayuanDailyDatabase.TYPE_GET_SUB_WEEKS:
-                        s = cursor.getString(cursor.getColumnIndex("course_weeks"));
+                        s.add(cursor.getString(cursor.getColumnIndex("course_weeks")));
                         break;
                     case DayuanDailyDatabase.TYPE_GET_SUB_LENGTH:
-                        s = cursor.getString(cursor.getColumnIndex("course_length"));
+                        s.add(cursor.getString(cursor.getColumnIndex("course_length")));
                         break;
                 }
             }while (cursor.moveToNext());

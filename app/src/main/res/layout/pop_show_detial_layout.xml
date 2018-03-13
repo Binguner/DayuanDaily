@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorTransparent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/pop_card_view"
+        app:cardCornerRadius="@dimen/dp_10"
+        android:padding="@dimen/dp_10"
+        app:cardBackgroundColor="@color/colorShadow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_margin="@dimen/dp_10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/pop_class_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="25sp"
+                android:text="体育(四)_09"/>
+            
+            <TextView
+                app:layout_constraintTop_toBottomOf="@id/pop_class_name"
+                android:layout_marginTop="@dimen/dp_10"
+                android:id="@+id/pop_classroom"
+                android:text="教室"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/pop_classroom_name"
+                android:textColor="@color/colorLittleDeepBlackText"
+                android:textStyle="bold"
+                android:text="明向校区 行勉楼 C214"
+                android:layout_marginStart="@dimen/dp_10"
+                android:layout_marginTop="@dimen/dp_10"
+                app:layout_constraintTop_toBottomOf="@id/pop_class_name"
+                app:layout_constraintStart_toEndOf="@id/pop_classroom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                app:layout_constraintTop_toBottomOf="@id/pop_classroom"
+                android:layout_marginTop="@dimen/dp_10"
+                android:id="@+id/pop_rawweeks"
+                android:text="周数"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/pop_rawweeks_text"
+                android:text="1-8周上"
+                android:textColor="@color/colorLittleDeepBlackText"
+                android:textStyle="bold"
+                android:layout_marginStart="@dimen/dp_10"
+                android:layout_marginTop="@dimen/dp_10"
+                app:layout_constraintTop_toBottomOf="@id/pop_classroom"
+                app:layout_constraintStart_toEndOf="@id/pop_classroom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                app:layout_constraintTop_toBottomOf="@id/pop_rawweeks_text"
+                android:layout_marginTop="@dimen/dp_10"
+                android:id="@+id/pop_class_number"
+                android:text="节数"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/pop_class_number_text"
+                android:text="7-8节"
+                android:textColor="@color/colorLittleDeepBlackText"
+                android:textStyle="bold"
+                android:layout_marginStart="@dimen/dp_10"
+                android:layout_marginTop="@dimen/dp_10"
+                app:layout_constraintTop_toBottomOf="@id/pop_rawweeks_text"
+                app:layout_constraintStart_toEndOf="@id/pop_classroom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                app:layout_constraintTop_toBottomOf="@id/pop_class_number"
+                android:layout_marginTop="@dimen/dp_10"
+                android:id="@+id/pop_class_teacher"
+                android:text="老师"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/pop_class_teacher_text"
+                android:text="王峥"
+                android:textColor="@color/colorLittleDeepBlackText"
+                android:textStyle="bold"
+                android:layout_marginStart="@dimen/dp_10"
+                android:layout_marginTop="@dimen/dp_10"
+                app:layout_constraintTop_toBottomOf="@id/pop_class_number"
+                app:layout_constraintStart_toEndOf="@id/pop_classroom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.v7.widget.CardView>
+
+
+</android.support.constraint.ConstraintLayout>

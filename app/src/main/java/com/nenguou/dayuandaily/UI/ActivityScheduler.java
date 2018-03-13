@@ -2,12 +2,21 @@ package com.nenguou.dayuandaily.UI;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.nenguou.dayuandaily.R;
@@ -120,6 +129,8 @@ public class ActivityScheduler extends AppCompatActivity {
     List<MyScheduleButton> list_fri;
     List<MyScheduleButton> list_sat;
     List<MyScheduleButton> list_sun;
+//    AlertDialog alertDialog = null;
+//    AlertDialog.Builder builder = null;
     private static final String sTag= "AtySchedulerTag";
     private static int selectedTime;
     private boolean isScheduleSelected = false;
@@ -135,6 +146,7 @@ public class ActivityScheduler extends AppCompatActivity {
         initData();
         initViews();
         checkTheLastTime();
+        //initAlerDialog();
     }
 
     private void checkTheLastTime() {
@@ -244,8 +256,20 @@ public class ActivityScheduler extends AppCompatActivity {
      */
     private void refreshSchedule(List<MyScheduleButton> list) {
         for(MyScheduleButton button : list){
+            //int oldBtnWidth = button.getLayoutParams().width;
+            //int oldBtnHeight = button.getLayoutParams().height;
             button.setVisibility(View.INVISIBLE);
+            button.setSelectedTime(selectedTime);
             if(button.getText()!=null && !button.getText().equals("")){
+
+//                button.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        //alertDialog.show();
+//                        //initAlerDialog();
+//                        Toast.makeText(ActivityScheduler.this,"Clicked",Toast.LENGTH_SHORT).show();
+//                    }
+//                });
                 int[] weekArray = button.getWeekList();
                // Log.d(sTag, "=============");
                 for(int i : weekArray) {
@@ -256,7 +280,34 @@ public class ActivityScheduler extends AppCompatActivity {
                         button.setVisibility(View.VISIBLE);
                     }
                 }
+
             }
+//            if(button.getTheClassNumber() >= 2){
+//                //int oldBtnWidth = button.getLayoutParams().width;
+//
+//                Log.d(sTag,"oldBtnWidth is : "+ oldBtnWidth);
+//                Log.d(sTag,"oldBtnHeight is : "+ oldBtnHeight);
+//                button.setVisibility(View.INVISIBLE);
+//                Log.d(sTag,"Parent is : " + button.getParent()+" id : " + button.getId() + " textSize is :" + button.getTheClassNumber());
+//                ConstraintLayout constraintLayout = (ConstraintLayout) button.getParent();
+//                LinearLayout linearLayout = new LinearLayout(this);
+//                linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+//                linearLayout.setLayoutParams(button.getLayoutParams());
+//                linearLayout.setBackgroundColor(Color.TRANSPARENT);
+//                for(int i = 0 ; i < button.getTheClassNumber(); i++){
+//                    MyScheduleButton myScheduleButton = new MyScheduleButton(this,button.getClassNum(),button.getWeekNum());
+//                    myScheduleButton.setHeight(oldBtnHeight);
+//                    myScheduleButton.setMinWidth(20);
+////                    myScheduleButton
+//                    myScheduleButton.setMinimumWidth(oldBtnWidth/button.getTheClassNumber());
+//                    myScheduleButton.setWidth(20);
+//                    //myScheduleButton.getLayoutParams().width = oldBtnWidth/button.getTheClassNumber();
+//                    linearLayout.addView(myScheduleButton);
+//                    Log.d(sTag,"Height is : "+linearLayout.getLayoutParams().height + " Width is : " + linearLayout.getLayoutParams().width);
+//                }
+//                constraintLayout.addView(linearLayout,button.getLayoutParams());
+//                //constraintLayout.addView(linearLayout,100,400);
+//            }
         }
     }
 
@@ -405,4 +456,15 @@ public class ActivityScheduler extends AppCompatActivity {
         list_sun.add(ct_10_sun);
         list_sun.add(ct_11_sun);
     }
+//    private void initAlerDialog(){
+//        AlertDialog alertDialog = null;
+//        AlertDialog.Builder builder = null;
+//        builder = new AlertDialog.Builder(this);
+//        alertDialog = builder.show();
+//        alertDialog.setContentView(R.layout.pop_show_detial_layout);
+//        Window window = alertDialog.getWindow();
+//        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+//        window.setGravity(Gravity.BOTTOM);
+//        window.setWindowAnimations(R.style.Theme_AppCompat_Dialog_Alert);
+//    }
 }

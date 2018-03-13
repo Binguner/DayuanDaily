@@ -105,8 +105,8 @@ public class MainActivity extends AppCompatActivity {
         test_loadClass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String s = dayuanDailyDatabase.loadSchedules(DayuanDailyDatabase.TYPE_GET_SUB_NAME,2465,1,2);
-                Log.d(mainTag, "class_name is : " + s);
+                //String s = dayuanDailyDatabase.loadSchedules(DayuanDailyDatabase.TYPE_GET_SUB_NAME,2465,1,2);
+                //Log.d(mainTag, "class_name is : " + s);
             }
         });
         go_to_choose_class_aty.setOnClickListener(new View.OnClickListener() {
