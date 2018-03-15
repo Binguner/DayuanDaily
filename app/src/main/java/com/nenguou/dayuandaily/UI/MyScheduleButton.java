@@ -13,6 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -95,7 +98,6 @@ public class MyScheduleButton extends android.support.v7.widget.AppCompatButton 
         return 0;
     }
 
-    private static void showTheSelectTimeSchedule() {}
 
     /**
      * @return 返回这节课的上课周数的数组，用于匹配
@@ -116,6 +118,7 @@ public class MyScheduleButton extends android.support.v7.widget.AppCompatButton 
             for(int j : list){
                 if (j == selectedTime){
                     theListOfTheClassWhichContainsTheSelectTime.add(i);
+                    Log.d(Tag, "i = " + i);
                 }
             }
         }
@@ -143,13 +146,13 @@ public class MyScheduleButton extends android.support.v7.widget.AppCompatButton 
             @Override
             public void onClick(View view) {
                 //Toast.makeText(context,places_list.get(0) + " " + teacher_list.get(0) + " " + rawWeeks_list.get(0),Toast.LENGTH_SHORT).show();
-                initAlerDialog();
-                Log.d(Tag,theListOfTheClassWhichContainsTheSelectTime.size()+"");
-//                Log.d(Tag,class_name_list+"");
-//                Log.d(Tag,teacher_list+"");
-//                for(List<Integer> list:all_class_week_list){
-//                    Log.d(Tag,list+"");
-//                }
+                //Log.d()
+                if(theListOfTheClassWhichContainsTheSelectTime.size() > 1){
+                    initAlertDialogToChoose();
+                }else {
+                    initAlerDialog(0);
+                }
+                //Log.d(Tag,theListOfTheClassWhichContainsTheSelectTime.size()+"");
             }
         });
 
@@ -158,6 +161,8 @@ public class MyScheduleButton extends android.support.v7.widget.AppCompatButton 
             for (int j = 0; j < theListOfTheClassWhichContainsTheSelectTime.size(); j++) {
                 if(theListOfTheClassWhichContainsTheSelectTime.size() > 1) {
                     //Log.d(Tag,"theListOfTheClassWhichContainsTheSelectTime has : " + theListOfTheClassWhichContainsTheSelectTime.toString() );
+                    Log.d(Tag,class_name_list.get(theListOfTheClassWhichContainsTheSelectTime.get(j)));
+                    Log.d(Tag," first theListOfTheClassWhichContainsTheSelectTime is :" + theListOfTheClassWhichContainsTheSelectTime);
                     if(!mString.contains(class_name_list.get(theListOfTheClassWhichContainsTheSelectTime.get(j)))){
                         mString = mString +" "+class_name_list.get(theListOfTheClassWhichContainsTheSelectTime.get(j));
                     }
@@ -170,22 +175,21 @@ public class MyScheduleButton extends android.support.v7.widget.AppCompatButton 
             //Log.d(Tag,mString);
         }
     }
-    private void initAlerDialog(){
+    private void initAlerDialog(int item_num){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         View view = LayoutInflater.from(context).inflate(R.layout.pop_show_detial_layout,null);
-
-
         TextView pop_class_name = view.findViewById(R.id.pop_class_name);
-        pop_class_name.setText(class_name_list.get(week_list_num));
+        pop_class_name.setText(class_name_list.get(item_num));
         TextView pop_classroom_name = view.findViewById(R.id.pop_classroom_name);
-        pop_classroom_name.setText(places_list.get(week_list_num));
-        Log.d(Tag,places_list.get(week_list_num)+"");
+        pop_classroom_name.setText(places_list.get(item_num));
+        //Log.d(Tag,places_list.get(item_num)+"");
         TextView pop_rawweeks_text = view.findViewById(R.id.pop_rawweeks_text);
-        pop_rawweeks_text.setText(rawWeeks_list.get(week_list_num));
+        pop_rawweeks_text.setText(rawWeeks_list.get(item_num));
         TextView pop_class_number_text = view.findViewById(R.id.pop_class_number_text);
-        pop_class_number_text.setText("");
+        int len = classNum + Integer.parseInt(length_list.get(item_num)) -1;
+        pop_class_number_text.setText(classNum+"-"+ len +" 节");
         TextView pop_class_teacher_text = view.findViewById(R.id.pop_class_teacher_text );
-        pop_class_teacher_text.setText(teacher_list.get(week_list_num));
+        pop_class_teacher_text.setText(teacher_list.get(item_num));
 
         builder.setView(view);
         final AlertDialog alertDialog = builder.show();
@@ -203,6 +207,38 @@ public class MyScheduleButton extends android.support.v7.widget.AppCompatButton 
         window.setGravity(Gravity.CENTER);
         window.setWindowAnimations(R.style.Theme_AppCompat_Dialog_Alert);
 
+    }
+
+    private void initAlertDialogToChoose(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        View view = LayoutInflater.from(context).inflate(R.layout.pop_choose_one_class_layout,null);
+        ListView class_item_listview = view.findViewById(R.id.class_item_listview);
+        String [] data = new String[theListOfTheClassWhichContainsTheSelectTime.size()];
+        String test = "";
+        Log.d(Tag,"theListOfTheClassWhichContainsTheSelectTime is : " + theListOfTheClassWhichContainsTheSelectTime);
+        for(int i = 0 ; i < theListOfTheClassWhichContainsTheSelectTime.size(); i++){
+            //if(!test.contains(class_name_list.get(theListOfTheClassWhichContainsTheSelectTime.get(i)))){
+                data[i] = class_name_list.get(theListOfTheClassWhichContainsTheSelectTime.get(i));
+                //test = test + class_name_list.get();
+            //}
+        }
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context,android.R.layout.simple_list_item_1,data);
+
+        class_item_listview.setAdapter(arrayAdapter);
+        builder.setView(view);
+        final AlertDialog alertDialog = builder.show();
+        class_item_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                initAlerDialog(theListOfTheClassWhichContainsTheSelectTime.get(i));
+                alertDialog.dismiss();
+            }
+        });
+        Window window = alertDialog.getWindow();
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        window.setGravity(Gravity.CENTER);
+        window.setWindowAnimations(R.style.Theme_AppCompat_Dialog_Alert);
     }
 
     public int getTheClassNumber(){
