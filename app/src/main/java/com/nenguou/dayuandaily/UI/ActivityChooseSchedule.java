@@ -38,6 +38,7 @@ import cn.qqtheme.framework.widget.WheelView;
  * theSelectedTime : 1 or 2 or 3 or 4
  * isFirstLoadCollege : true / false
  * isScheduleSelected: true / false
+ * start : 1520179204000 in rxDayuan (long)
  * collegeId:Int 22 --软件学院
  * majorId:Int 22
  * majorName:String 软件工程

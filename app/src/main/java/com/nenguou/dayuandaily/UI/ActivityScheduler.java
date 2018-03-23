@@ -134,8 +134,10 @@ public class ActivityScheduler extends AppCompatActivity {
     private static final String sTag= "AtySchedulerTag";
     private static int selectedTime;
     private boolean isScheduleSelected = false;
+    int nowTime = 0;
     String theSelectedTime;
     SharedPreferences.Editor editor;
+    SharedPreferences sharedPreferences = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.myAppTheme);
@@ -150,28 +152,32 @@ public class ActivityScheduler extends AppCompatActivity {
     }
 
     private void checkTheLastTime() {
-        SharedPreferences sharedPreferences = getSharedPreferences("User_YearCollege",MODE_PRIVATE);
+        ///*SharedPreferences*/ sharedPreferences = getSharedPreferences("User_YearCollege",MODE_PRIVATE);
         theSelectedTime = sharedPreferences.getString("theSelectedTime","");
+        Log.d("sadfas",theSelectedTime +" ");
         if(theSelectedTime.equals("A")){
 
         }else if(theSelectedTime.equals("N")){
-            Toast.makeText(this,"I will show the nowTime Schedule",Toast.LENGTH_SHORT).show();
+            MySideBar.setTheSelectedOne("N");
+            selectedTime = nowTime;
         }else if(theSelectedTime != ""){
             MySideBar.setTheSelectedOne(theSelectedTime);
             selectedTime = Integer.parseInt(theSelectedTime);
-            refreshSchedule(list_mon);
-            refreshSchedule(list_tues);
-            refreshSchedule(list_wen);
-            refreshSchedule(list_thur);
-            refreshSchedule(list_fri);
-            refreshSchedule(list_sat);
-            refreshSchedule(list_sun);
         }
+        refreshSchedule(list_mon);
+        refreshSchedule(list_tues);
+        refreshSchedule(list_wen);
+        refreshSchedule(list_thur);
+        refreshSchedule(list_fri);
+        refreshSchedule(list_sat);
+        refreshSchedule(list_sun);
 
     }
 
     private void isFitstLoad() {
-        SharedPreferences sharedPreferences = getSharedPreferences("User_YearCollege",MODE_PRIVATE);
+        editor = getSharedPreferences("User_YearCollege",MODE_PRIVATE).edit();
+        sharedPreferences = getSharedPreferences("User_YearCollege",MODE_PRIVATE);
+        nowTime = (int) (((System.currentTimeMillis() - sharedPreferences.getLong("start",1)) / 604800000)) + 1;
         isScheduleSelected = sharedPreferences.getBoolean("isScheduleSelected",false);
         if(!isScheduleSelected){
             Intent intent = new Intent(this,ActivityChooseSchedule.class);
@@ -200,14 +206,15 @@ public class ActivityScheduler extends AppCompatActivity {
             public void onSelect(String s) {
                 //Log.d(sTag,s+"");
                 //MyScheduleButton.setSelectedTime(s);
-                Toast.makeText(ActivityScheduler.this,s,Toast.LENGTH_SHORT).show();
+                //Toast.makeText(ActivityScheduler.this,s,Toast.LENGTH_SHORT).show();
                 MySideBar.setTheSelectedOne(s);
                 editor.putString("theSelectedTime",s);
                 editor.commit();
                 if(s.equals("A")){
                     selectedTime = 0;
                 }else if(s.equals("N")){
-
+                    Toast.makeText(ActivityScheduler.this,"现在是第 " + nowTime + " 周",Toast.LENGTH_SHORT).show();
+                    selectedTime = nowTime;
                 }else {
                     selectedTime = Integer.parseInt(s);
                 }
@@ -364,7 +371,6 @@ public class ActivityScheduler extends AppCompatActivity {
      * 把每节课装在 当天的 List 里
      */
     private void initData() {
-        editor = getSharedPreferences("User_YearCollege",MODE_PRIVATE).edit();
         list_mon = new ArrayList<>();
         list_mon.add(ct_1_mon);
         list_mon.add(ct_2_mon);

@@ -249,6 +249,7 @@ public class RxDayuan {
                             dayuanDailyDatabase.saveYearCollege(collegesBean);
                             String term = collegesBean.getData().getTerms().get(0).getName();
                             SharedPreferences.Editor editor = context.getSharedPreferences("User_YearCollege",Context.MODE_PRIVATE).edit();
+                            editor.putLong("start",collegesBean.getData().getTerms().get(0).getStart());
                             editor.putString("term",term);
                             editor.commit();
                         }
