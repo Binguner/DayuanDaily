@@ -272,7 +272,7 @@ public class ActivityChooseSchedule extends AppCompatActivity {
         try {
             picker.show();
         }catch (IllegalArgumentException e){
-            Toast.makeText(this,"查询不到数据，请重新选择",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"正在加载数据，请稍等 :)",Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
     }

@@ -50,8 +50,8 @@ public class MyScheduleButton extends android.support.v7.widget.AppCompatButton 
     int selectedTime;   // 选择的周数
     int week_list_num  = 0;  // 使用的数组的下表
 
-    List<List<Integer>> all_class_week_list = new ArrayList<>();
-    List<Integer> theListOfTheClassWhichContainsTheSelectTime = new ArrayList<>();
+    List<List<Integer>> all_class_week_list = new ArrayList<>();    // 保存 {{1,2,3,4,5},{1,2,3,4},{3,2,7,5,6}}
+    List<Integer> theListOfTheClassWhichContainsTheSelectTime = new ArrayList<>();  // 包含有当前周数的课程名字
 
     List<String> class_name_list; // 这一节课所有的 课程名字
     List<String> weeks_list; // 所有上课周数的 List，未进行 split
@@ -75,22 +75,30 @@ public class MyScheduleButton extends android.support.v7.widget.AppCompatButton 
         showOrNot();
     }
 
+    // 供外部调用：指定当前选定的周数，选定后 initBtnView()
     public void setSelectedTime(int time){
         this.selectedTime = time;
         initBtnView();
     }
 
+    /**
+     * 判断该按钮显不显示，若 按钮 内的字符为 空，则 INVISIBLE，且不可点击
+     * 若 按钮 内的字符部位空，则 VISIBLE，且可点击
+     */
     private void showOrNot() {
         if("".equals(this.getText())){
             //this.setBackgroundColor(Color.TRANSPARENT);
             this.setVisibility(INVISIBLE);
             this.setClickable(false);
-        }else if("".equals(this.getText())){
+        }else if(!"".equals(this.getText())){
             this.setVisibility(VISIBLE);
             this.setClickable(true);
         }
     }
 
+    /**
+     * @return 返回 这节课 上多久
+     */
     public int getLength(){
         if(this.length_list.size() > 0) {
             return Integer.parseInt(this.length_list.get(0));
@@ -113,12 +121,12 @@ public class MyScheduleButton extends android.support.v7.widget.AppCompatButton 
     private void initBtnView() {
 
         theListOfTheClassWhichContainsTheSelectTime.clear();
-        for(int i = 0 ; i < all_class_week_list.size(); i++ ){
-            List<Integer> list = all_class_week_list.get(i);
+        for(int i = 0 ; i < all_class_week_list.size(); i++ ){  // {{1,2},{1,2,3}}
+            List<Integer> list = all_class_week_list.get(i);    //{1,2}
             for(int j : list){
                 if (j == selectedTime){
-                    theListOfTheClassWhichContainsTheSelectTime.add(i);
-                    Log.d(Tag, "i = " + i);
+                    theListOfTheClassWhichContainsTheSelectTime.add(i);     //{1}
+                    //Log.d(Tag, "i = " + i);
                 }
             }
         }
@@ -150,7 +158,7 @@ public class MyScheduleButton extends android.support.v7.widget.AppCompatButton 
                 if(theListOfTheClassWhichContainsTheSelectTime.size() > 1){
                     initAlertDialogToChoose();
                 }else {
-                    initAlerDialog(0);
+                    initAlerDialog(theListOfTheClassWhichContainsTheSelectTime.get(0));
                 }
                 //Log.d(Tag,theListOfTheClassWhichContainsTheSelectTime.size()+"");
             }
@@ -161,8 +169,8 @@ public class MyScheduleButton extends android.support.v7.widget.AppCompatButton 
             for (int j = 0; j < theListOfTheClassWhichContainsTheSelectTime.size(); j++) {
                 if(theListOfTheClassWhichContainsTheSelectTime.size() > 1) {
                     //Log.d(Tag,"theListOfTheClassWhichContainsTheSelectTime has : " + theListOfTheClassWhichContainsTheSelectTime.toString() );
-                    Log.d(Tag,class_name_list.get(theListOfTheClassWhichContainsTheSelectTime.get(j)));
-                    Log.d(Tag," first theListOfTheClassWhichContainsTheSelectTime is :" + theListOfTheClassWhichContainsTheSelectTime);
+                    //Log.d(Tag,class_name_list.get(theListOfTheClassWhichContainsTheSelectTime.get(j)));
+                    //Log.d(Tag," first theListOfTheClassWhichContainsTheSelectTime is :" + theListOfTheClassWhichContainsTheSelectTime);
                     if(!mString.contains(class_name_list.get(theListOfTheClassWhichContainsTheSelectTime.get(j)))){
                         mString = mString +" "+class_name_list.get(theListOfTheClassWhichContainsTheSelectTime.get(j));
                     }
@@ -215,7 +223,7 @@ public class MyScheduleButton extends android.support.v7.widget.AppCompatButton 
         ListView class_item_listview = view.findViewById(R.id.class_item_listview);
         String [] data = new String[theListOfTheClassWhichContainsTheSelectTime.size()];
         String test = "";
-        Log.d(Tag,"theListOfTheClassWhichContainsTheSelectTime is : " + theListOfTheClassWhichContainsTheSelectTime);
+        //Log.d(Tag,"theListOfTheClassWhichContainsTheSelectTime is : " + theListOfTheClassWhichContainsTheSelectTime);
         for(int i = 0 ; i < theListOfTheClassWhichContainsTheSelectTime.size(); i++){
             //if(!test.contains(class_name_list.get(theListOfTheClassWhichContainsTheSelectTime.get(i)))){
                 data[i] = class_name_list.get(theListOfTheClassWhichContainsTheSelectTime.get(i));
