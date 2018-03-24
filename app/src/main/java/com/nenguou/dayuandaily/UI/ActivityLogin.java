@@ -107,7 +107,7 @@ public class ActivityLogin extends AppCompatActivity {
             @Override
             public void onFinish(int status) {
                 if(status == 0){
-                    String imageUrl = "http://www.liuyinxin.com:3005/univ/login" + sharedPreferences.getString("captchaUrl","");
+                    String imageUrl = "http://grade.liuyinxin.com:3005/univ/login" + sharedPreferences.getString("captchaUrl","");
                     Message message = new Message();
                     message.what = GET_CAPTCHA;
                     message.obj = imageUrl;
@@ -230,7 +230,8 @@ public class ActivityLogin extends AppCompatActivity {
             Log.d(loginTag,"captcha is : "+ code_textinputlayout.getEditText().getText().toString());
         }
         editor.commit();
-        Toast.makeText(this,"Clicked lgoin",Toast.LENGTH_SHORT).show();
+        loginbtn.setClickable(false);
+        Toast.makeText(this,"Clicked login",Toast.LENGTH_SHORT).show();
         rxDayuan.getLoginSuccess(new RetrofitCallbackListener() {
             @Override
             public void onFinish(int status) {
@@ -238,18 +239,20 @@ public class ActivityLogin extends AppCompatActivity {
                     @Override
                     public void onFinish(int status) {
                         if(status == 0){
+
                             Intent intent = new Intent(ActivityLogin.this,ActivityGrades.class);
                             startActivity(intent);
                             ActivityLogin.this.finish();
                         }
                         if (status == 1){
                             Toast.makeText(ActivityLogin.this,"网络异常，请重试",Toast.LENGTH_SHORT).show();
+                            loginbtn.setClickable(true);
                         }
                     }
 
                     @Override
                     public void onError(Exception e) {
-
+                        loginbtn.setClickable(true);
                     }
                 });
 
@@ -257,6 +260,7 @@ public class ActivityLogin extends AppCompatActivity {
 
             @Override
             public void onError(Exception e) {
+                loginbtn.setClickable(true);
                 Toast.makeText(ActivityLogin.this,"登陆失败，请重试",Toast.LENGTH_SHORT).show();
             }
         });

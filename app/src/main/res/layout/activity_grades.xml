@@ -22,6 +22,14 @@
             android:textColor="@color/colorBackground"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/grades_refresh"
+            android:layout_width="wrap_content"
+            android:layout_gravity="right"
+            android:paddingEnd="23dp"
+            android:layout_height="?attr/actionBarSize"
+            android:src="@mipmap/refresh_white_48"/>
     </android.support.v7.widget.Toolbar>
 
     <android.support.v7.widget.RecyclerView

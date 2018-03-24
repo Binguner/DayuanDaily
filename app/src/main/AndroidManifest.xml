@@ -13,17 +13,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
-
-        </activity>
-        <activity android:name=".UI.ActivityChooseSchedule" />
-        <activity android:name=".UI.ActivityScheduler"
-            android:screenOrientation="portrait"
-            android:theme="@style/appWelcome">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".UI.ActivityChooseSchedule" />
+        <activity android:name=".UI.ActivityScheduler"
+            android:screenOrientation="portrait"
+            android:theme="@style/appWelcome">
+
         </activity>
         <activity android:name=".UI.ActivityLogin" />
         <activity android:name=".UI.ActivityGrades">

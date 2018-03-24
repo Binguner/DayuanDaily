@@ -53,6 +53,12 @@ public class DayuanDailyDatabase {
         return dayuanDailyDatabase;
     }
 
+    public void dropAndCreateTableGrades(){
+        sqLiteDatabase.execSQL("drop table if exists Grades" );
+        sqLiteDatabase.execSQL(DaYuanDailyDBOpenHelper.CREATE_GRADES);
+
+    }
+
     public void saveYearCollege(YearCollege yearCollege) {
         if (yearCollege != null) {
             int lastYear = yearCollege.getData().getYears().get(yearCollege.getData().getYears().size()-1).getYear();
@@ -234,7 +240,7 @@ public class DayuanDailyDatabase {
 
     public void saveGrades(Grades grades){
         if(grades != null){
-            sqLiteDatabase.execSQL("drop table if exists Grades");
+            //sqLiteDatabase.execSQL("drop table if exists Grades");
             List<Grades.DataBean> dataBeanList = grades.getData();
             SharedPreferences sharedPreferences = context.getSharedPreferences("User_grades",Context.MODE_PRIVATE);
             String studentNumber = sharedPreferences.getString("username","");
@@ -453,7 +459,7 @@ public class DayuanDailyDatabase {
      * @param studentNumber 学生学号
      * @return 返回所有学期名称的 List 数组
      */
-    public List<String> getTermName(String studentNumber){
+    public List<String> getTermName(String studentNumber) throws Exception{
         List<String> termsList = new ArrayList<>();
         Cursor cursor = sqLiteDatabase.query("Grades",null,"studentNumber like ?",new String[]{studentNumber},null,null,null);
         if(cursor.moveToLast()){

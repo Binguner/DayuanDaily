@@ -146,6 +146,7 @@ public class RxDayuan {
                     @Override
                     public void onNext(Grades grades) {
                         if(grades!=null){
+                            dayuanDailyDatabase.dropAndCreateTableGrades();
                             dayuanDailyDatabase.saveGrades(grades);
                         }
                     }
@@ -200,8 +201,10 @@ public class RxDayuan {
 
                         @Override
                         public void onError(Throwable e) {
-                            //Log.d(RxTag,"onError  !"+e.toString());
+                            Log.d(RxTag,"onError  !"+e.toString());
                             listener.onFinish(1);
+                            ///captcha/7/c8b0a10f-5ef2-4f68-a154-e7f476ac0b6b.jpg
+                            //d279560346fe47c39c8e5b9dcbe9b85c
                             listener.onError((Exception) e);
                         }
 

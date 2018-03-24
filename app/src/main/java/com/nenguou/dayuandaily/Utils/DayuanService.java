@@ -36,14 +36,15 @@ public interface DayuanService {
     @POST("https://ssl.liuyinxin.com/univ/api/schedule/class")
     Observable<Class> getClass(@Field("name") String name, @Field("term") String term);
 
-    @GET("http://www.liuyinxin.com:3005/univ/captcha/get")
+    // 获取 captchaUrl，cookies
+    @GET("http://grade.liuyinxin.com:3005/univ/captcha/get")
     Observable<Captcha> getCaptcha();
 
     @FormUrlEncoded
-    @POST("http://www.liuyinxin.com:3005/univ/login")
+    @POST("http://grade.liuyinxin.com:3005/univ/login")
     Observable<String> login(@Field("username") String username, @Field("password") String password,@Field("captcha") String captcha,@Field("sessionId") String sessionId);
 
-    @GET("http://www.liuyinxin.com:3005/univ/grade/get")
+    @GET("http://grade.liuyinxin.com:3005/univ/grade/get")
     Observable<Grades> getGrades(@Query("sessionId") String sessionId);
 
 
