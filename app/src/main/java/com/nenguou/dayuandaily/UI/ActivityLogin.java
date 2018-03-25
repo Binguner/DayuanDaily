@@ -61,6 +61,7 @@ public class ActivityLogin extends AppCompatActivity {
     @BindView(R.id.canclebtn) Button canclebtn;
     @BindView(R.id.login_findMe) TextView login_findMe;
     @BindView(R.id.aty_login_captcha_pic) ImageView aty_login_captcha_pic;
+    String fromWhere;
     RxDayuan rxDayuan;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
@@ -76,10 +77,16 @@ public class ActivityLogin extends AppCompatActivity {
         rxDayuan = new RxDayuan(this);
         sharedPreferences = getSharedPreferences("User_grades",MODE_PRIVATE);
         checkIfLoadedGrades();
+        checkFromWhere();
         editor = getSharedPreferences("User_grades",MODE_PRIVATE).edit();
         transparentStatus();
         initViews();
         setListener();
+    }
+
+    private void checkFromWhere() {
+        Intent intent = getIntent();
+        fromWhere = intent.getStringExtra("fromWhere");
     }
 
     private void checkIfLoadedGrades() {
@@ -254,10 +261,14 @@ public class ActivityLogin extends AppCompatActivity {
                             if (status == 0) {
                                 editor.putBoolean("isLoadedData", true);
                                 editor.commit();
-                                Intent intent = new Intent(ActivityLogin.this, ActivityGrades.class);
-                                startActivity(intent);
-                                loginbtn.setClickable(true);
-                                ActivityLogin.this.finish();
+                                if(null!=fromWhere&&fromWhere.equals("MainActivity")){
+                                    ActivityLogin.this.finish();
+                                }else {
+                                    Intent intent = new Intent(ActivityLogin.this, ActivityGrades.class);
+                                    startActivity(intent);
+                                    loginbtn.setClickable(true);
+                                    ActivityLogin.this.finish();
+                                }
                             }
                             if (status == 1) {
                                 Toast.makeText(ActivityLogin.this, "网络异常，请重试", Toast.LENGTH_SHORT).show();

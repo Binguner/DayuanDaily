@@ -3,6 +3,7 @@ package com.nenguou.dayuandaily;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
@@ -20,6 +21,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.webkit.JsResult;
+import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -48,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private Button test_YearCollege,test_Major,test_classname,test_Class,test_loadYearColleg,test_loadMajor,test_loadClassName,test_loadClass,
             go_to_choose_class_aty,test_login,test_getCaptcha,openAliPay,check_grades,check_schedule,get_money,oneKeyTestTeatch;
     private RxDayuan rxDayuan;
+    WebView openAlbabaWebView;
     ImageView cap_pic;
     private final String mainTag = "MainActivityTag";
     SharedPreferences.Editor editor = null;
@@ -206,6 +214,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
+
+
         check_grades.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -238,16 +250,23 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+
         get_money.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 long oldTime = sharedPreferences.getLong("time",0);
                 long newTIme = System.currentTimeMillis();
-                if((newTIme - oldTime) > 86400000) {
+                Log.d("QEWR","get out");
+
+                //if((newTIme - oldTime) > 86400000) {
+                    Log.d("QEWR","get in");
+
+
                     editor.putLong("time", newTIme);
                     editor.commit();
                     openAlibaba();
-                }
+                //}
             }
         });
 
@@ -287,11 +306,26 @@ public class MainActivity extends AppCompatActivity {
                     TextView cap_refresh_cancle = view1.findViewById(R.id.cap_refresh_cancle);
                     TextView cap_refresh_ok = view1.findViewById(R.id.cap_refresh_ok);
                     CardView cap_refresh_cardview = view1.findViewById(R.id.cap_refresh_cardview);
+                    TextView cap_relogin = view1.findViewById(R.id.cap_relogin);
 
                     pop_refresh_grades_classNumber.setText(sharedPreferences.getString("username","请重新登陆"));
 
                     builder.setView(view1);
                     final AlertDialog dialog = builder.show();
+                    cap_relogin.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            editor = getSharedPreferences("User_grades",MODE_PRIVATE).edit();
+                            editor.putBoolean("isLoadedData",false);
+                            editor.commit();
+                            Intent intent = new Intent(MainActivity.this,ActivityLogin.class);
+                            intent.putExtra("fromWhere","MainActivity");
+                            dialog.dismiss();
+                            startActivity (intent);
+
+
+                        }
+                    });
                     cap_refresh_cancle.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -301,6 +335,7 @@ public class MainActivity extends AppCompatActivity {
                     cap_refresh_ok.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
+                            Toast.makeText(MainActivity.this,"正在评教，请稍等...",Toast.LENGTH_LONG).show();
                             editor = getSharedPreferences("User_grades",MODE_PRIVATE).edit();
                             editor.putString("captcha",input_cap.getText().toString());
                             editor.commit();
@@ -388,17 +423,38 @@ public class MainActivity extends AppCompatActivity {
         }
         if (null!=applicationInfo){
             ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-            clipboardManager.setPrimaryClip(new ClipData(ClipData.newPlainText("Label","快来领支付宝红包！人人可领，天天可领！复制此消息，打开最新版支付宝就能领取！2FnQKo55L9")));
+            editor = getSharedPreferences("test",MODE_PRIVATE).edit();
+            sharedPreferences = getSharedPreferences("test",MODE_PRIVATE);
+            String user = sharedPreferences.getString("user","z");
+            if(user.equals("l")) {
+                clipboardManager.setPrimaryClip(new ClipData(ClipData.newPlainText("Label","如果您觉得好用的话请复制一下 [RXaFYw62U8] 该条红包口令在支付宝中打开,可以领取红包哦！请支持我一下,谢谢！")));
+                editor.putString("user","z");
+                editor.commit();
+            }else {
+                clipboardManager.setPrimaryClip(new ClipData(ClipData.newPlainText("Label", "快来领支付宝红包！人人可领，天天可领！复制此消息，打开最新版支付宝就能领取！2FnQKo55L9")));
+                editor.putString("user","l");
+                editor.commit();
+            }
             PackageManager packageManager = MainActivity.this.getApplicationContext().getPackageManager();
-            Intent intent = packageManager.getLaunchIntentForPackage("com.eg.android.AlipayGphone");
-            //List<ApplicationInfo> list = packageManager.getInstalledApplications(0);
-            //for(ApplicationInfo info:list){
-            //Log.d("FGHJNBGH",info.packageName);
-            //}
-            startActivity(intent);
+            Intent intent = packageManager.getLaunchIntentForPackage("com.eg.android.AlipayGphone"/*"com.alipay.android.phone.wallet.sharetoken.ui.TokenDecodeActivity"*/);
+
+            try {
+                startActivity(intent);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+//            openAlbabaWebView.getSettings().setAppCacheEnabled(true);
+//            openAlbabaWebView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
+//            openAlbabaWebView.getSettings().setDomStorageEnabled(true);
+//            openAlbabaWebView.loadUrl("http://qr.alipay.com/c1x089016ue4yr5wykokc9f");
+
+
+
         }
     }
     private void initId() {
+        openAlbabaWebView = findViewById(R.id.openAlbabaWebView);
         oneKeyTestTeatch = findViewById(R.id.oneKeyTestTeatch);
         get_money = findViewById(R.id.get_money);
         check_schedule = findViewById(R.id.check_schedule);
