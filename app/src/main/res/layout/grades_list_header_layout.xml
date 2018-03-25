@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/list_class_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/dp_10"
+        android:text="课程名"/>
+
+    <TextView
+        android:id="@+id/list_class_sgrades"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/list_class_name"
+        app:layout_constraintEnd_toStartOf="@id/list_class_grades"
+        android:text="学分"/>
+
+
+    <TextView
+        android:id="@+id/list_class_grades"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="@dimen/dp_10"
+        android:text="成绩"/>
+    <ImageView
+        android:layout_marginTop="4dp"
+        app:layout_constraintTop_toBottomOf="@id/list_class_sgrades"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorShadow"/>
+
+
+</android.support.constraint.ConstraintLayout>

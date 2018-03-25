@@ -154,7 +154,11 @@ public class ActivityScheduler extends AppCompatActivity {
     private void checkTheLastTime() {
         ///*SharedPreferences*/ sharedPreferences = getSharedPreferences("User_YearCollege",MODE_PRIVATE);
         theSelectedTime = sharedPreferences.getString("theSelectedTime","");
-        Log.d("sadfas",theSelectedTime +" ");
+        //Log.d("sadfas",theSelectedTime +" ");
+        if(theSelectedTime.equals("")){
+            MySideBar.setTheSelectedOne("N");
+            selectedTime = nowTime;
+        }
         if(theSelectedTime.equals("A")){
 
         }else if(theSelectedTime.equals("N")){

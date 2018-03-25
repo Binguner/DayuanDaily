@@ -15,14 +15,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+    <android.support.constraint.Guideline
+        android:id="@+id/credit_guideline"
+        android:orientation="vertical"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintGuide_percent="0.5"
+        />
+
     <TextView
         android:id="@+id/grade_detial_credit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="6.6"
-        android:layout_marginEnd="140dp"
+        app:layout_constraintStart_toEndOf="@id/credit_guideline"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/grade_detial_grade"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView

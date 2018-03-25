@@ -19,13 +19,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UI.ActivityChooseSchedule" />
+        <activity android:name=".UI.ActivityChooseSchedule" android:screenOrientation="portrait"/>
         <activity android:name=".UI.ActivityScheduler"
             android:screenOrientation="portrait"
             android:theme="@style/appWelcome">
 
         </activity>
-        <activity android:name=".UI.ActivityLogin" />
+        <activity android:name=".UI.ActivityLogin" android:screenOrientation="portrait"/>
         <activity android:name=".UI.ActivityGrades">
 
         </activity>

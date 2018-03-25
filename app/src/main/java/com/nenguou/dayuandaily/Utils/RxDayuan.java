@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -16,6 +17,7 @@ import com.nenguou.dayuandaily.Model.Captcha;
 import com.nenguou.dayuandaily.Model.Class;
 import com.nenguou.dayuandaily.Model.ClassDetial;
 import com.nenguou.dayuandaily.Model.ClassName;
+import com.nenguou.dayuandaily.Model.Evaluate;
 import com.nenguou.dayuandaily.Model.Grades;
 import com.nenguou.dayuandaily.Model.Major;
 import com.nenguou.dayuandaily.Model.YearCollege;
@@ -23,6 +25,8 @@ import com.nenguou.dayuandaily.Model.YearCollege;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
@@ -146,6 +150,9 @@ public class RxDayuan {
                     @Override
                     public void onNext(Grades grades) {
                         if(grades!=null){
+                            if(grades.getMsg().equals("timout")){
+                                Toast.makeText(context,"timout, 请检查学号、密码、验证码是否正确，或点击验证码刷新...",Toast.LENGTH_SHORT).show();
+                            }
                             dayuanDailyDatabase.dropAndCreateTableGrades();
                             dayuanDailyDatabase.saveGrades(grades);
                         }
@@ -184,7 +191,7 @@ public class RxDayuan {
         SharedPreferences sharedPreferences = context.getSharedPreferences("User_grades",Context.MODE_PRIVATE);
         String username = sharedPreferences.getString("username","");
         String password = sharedPreferences.getString("password","");
-        String captcha = sharedPreferences.getString("captcha","");
+        final String captcha = sharedPreferences.getString("captcha","");
         String sessionId = sharedPreferences.getString("cookies","");
         Log.d(RxTag,"username : "+ username + "  password :" + password + "captcha :" + captcha +"  sessionId : " + sessionId);
         try {
@@ -203,6 +210,7 @@ public class RxDayuan {
                         public void onError(Throwable e) {
                             Log.d(RxTag,"onError  !"+e.toString());
                             listener.onFinish(1);
+                            Toast.makeText(context,"与教务处连接超时，请稍后重试",Toast.LENGTH_SHORT).show();
                             ///captcha/7/c8b0a10f-5ef2-4f68-a154-e7f476ac0b6b.jpg
                             //d279560346fe47c39c8e5b9dcbe9b85c
                             listener.onError((Exception) e);
@@ -352,6 +360,43 @@ public class RxDayuan {
                             Log.d(RxTag,classDetial.getSchedule().get(0).getName_suffix()+"");
                             Log.d(RxTag,classDetial.getSchedule().get(0).getWeeks().toString());
                             dayuanDailyDatabase.saveClass(aClass,classDetial);
+                        }
+                    }
+                });
+    }
+
+    public void getEvaResults(String sessionID, final RetrofitCallbackListener retrofitCallbackListener){
+        service.getEvaluateResults(sessionID)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Evaluate>() {
+                    @Override
+                    public void onCompleted() {
+                        retrofitCallbackListener.onFinish(0);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        retrofitCallbackListener.onFinish(1);
+                        retrofitCallbackListener.onError((Exception) e);
+                    }
+
+                    @Override
+                    public void onNext(Evaluate evaluate) {
+                        try {
+                            List<String> teacherArrayList = new ArrayList<>();
+                            String[] teacherList = evaluate.getTeachersName().split(";");
+                            for (String s : teacherList) {
+                                teacherArrayList.add(s);
+                            }
+                            if (evaluate.getTotal() == 0) {
+                                Toast.makeText(context, "请检查验证码是否输入正确！", Toast.LENGTH_SHORT).show();
+                            }
+                            dayuanDailyDatabase.setTeacherNameList(teacherArrayList);
+                        }catch (Exception e){
+                            e.printStackTrace();
+                            Toast.makeText(context,e.toString(),Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/menu_grades_refresh"
+        android:title="刷新"
+        android:icon="@mipmap/refresh_white_48"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/menu_grades_reLoging"
+        android:title="登陆"
+        app:showAsAction="never"
+        />
+</menu>

@@ -2,11 +2,13 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/colorWhite"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.v7.widget.CardView
         android:padding="10dp"
-        app:cardBackgroundColor="@color/colorShadow"
+        app:cardBackgroundColor="@color/colorWhite"
+        app:cardElevation="0dp"
         app:cardCornerRadius="@dimen/dp_10"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

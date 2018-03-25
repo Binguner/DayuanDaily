@@ -5,12 +5,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.nenguou.dayuandaily.MainActivity">
+
+    <Button
+        android:id="@+id/check_grades"
+        app:layout_constraintTop_toBottomOf="parent"
+        android:text="查成绩"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        app:layout_constraintTop_toBottomOf="@id/check_grades"
+        android:layout_marginTop="@dimen/dp_10"
+        android:id="@+id/check_schedule"
+        android:text="课程表"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/get_money"
+        android:layout_marginTop="@dimen/dp_10"
+        app:layout_constraintTop_toBottomOf="@id/check_schedule"
+        android:text="薅羊毛"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/oneKeyTestTeatch"
+        android:text="一键评教"
+        android:layout_marginTop="@dimen/dp_10"
+        app:layout_constraintTop_toBottomOf="@id/get_money"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
+
+
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
+            android:visibility="gone"
             android:layout_height="match_parent">
 
             <Button
@@ -72,6 +107,7 @@
                 android:layout_height="wrap_content" />
             <Button
                 android:id="@+id/test_login"
+                android:background="@color/colorToolbar"
                 android:text="test_login"
                 app:layout_constraintTop_toBottomOf="@id/go_to_choose_class_aty"
                 android:layout_width="match_parent"
@@ -80,6 +116,13 @@
                 android:id="@+id/test_getCaptcha"
                 android:text="test_getCaptcha"
                 app:layout_constraintTop_toBottomOf="@id/test_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/openAliPay"
+                android:text="test_openAlipay"
+                app:layout_constraintTop_toBottomOf="@id/test_getCaptcha"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 

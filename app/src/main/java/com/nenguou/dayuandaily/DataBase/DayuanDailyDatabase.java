@@ -35,10 +35,13 @@ public class DayuanDailyDatabase {
     public static final String DB_NAME = "Dayuan_database";
     public static final int DB_VERSION = 1;
 
+    private List<String> teacherNameList = new ArrayList<>(); // 用来保存评教结果
+
     private static final String DbTag = "DayuannTag";
     private static DayuanDailyDatabase dayuanDailyDatabase;
     private SQLiteDatabase sqLiteDatabase;
     Context context;
+
 
     private DayuanDailyDatabase(Context context) {
         DaYuanDailyDBOpenHelper openHelper = new DaYuanDailyDBOpenHelper(context, DB_NAME, null, DB_VERSION);
@@ -512,5 +515,13 @@ public class DayuanDailyDatabase {
         }
         cursor.close();
         return gradesBeans;
+    }
+
+    public void setTeacherNameList(List<String> teacherNameList){
+        this.teacherNameList = teacherNameList;
+    }
+
+    public List<String> getTeacherNameList(){
+        return teacherNameList;
     }
 }

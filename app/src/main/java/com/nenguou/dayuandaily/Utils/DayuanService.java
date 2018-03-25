@@ -3,6 +3,7 @@ package com.nenguou.dayuandaily.Utils;
 import com.nenguou.dayuandaily.Model.Captcha;
 import com.nenguou.dayuandaily.Model.Class;
 import com.nenguou.dayuandaily.Model.ClassName;
+import com.nenguou.dayuandaily.Model.Evaluate;
 import com.nenguou.dayuandaily.Model.Grades;
 import com.nenguou.dayuandaily.Model.Major;
 import com.nenguou.dayuandaily.Model.YearCollege;
@@ -37,15 +38,18 @@ public interface DayuanService {
     Observable<Class> getClass(@Field("name") String name, @Field("term") String term);
 
     // 获取 captchaUrl，cookies
-    @GET("http://grade.liuyinxin.com:3005/univ/captcha/get")
+    @GET("https://grade.liuyinxin.com/univ/captcha/get")
     Observable<Captcha> getCaptcha();
 
     @FormUrlEncoded
-    @POST("http://grade.liuyinxin.com:3005/univ/login")
+    @POST("https://grade.liuyinxin.com/univ/login")
     Observable<String> login(@Field("username") String username, @Field("password") String password,@Field("captcha") String captcha,@Field("sessionId") String sessionId);
 
-    @GET("http://grade.liuyinxin.com:3005/univ/grade/get")
+    @GET("https://grade.liuyinxin.com/univ/grade/get")
     Observable<Grades> getGrades(@Query("sessionId") String sessionId);
+
+    @GET("https://grade.liuyinxin.com/univs/evaluate/{sessionId}")
+    Observable<Evaluate> getEvaluateResults(@Path("sessionId") String sessionId);
 
 
 }

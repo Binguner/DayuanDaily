@@ -15,11 +15,15 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -85,11 +89,41 @@ public class ActivityGrades extends AppCompatActivity {
         }
     };
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_grades,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
     @OnClick(R.id.grades_refresh)
-    public void refreshGrades(){
-        sqLiteDatabase.dropAndCreateTableGrades();
-        showRefreshGradesAlerDialog();
+    public void refreshGrades(View view){
+        PopupMenu popupMenu = new PopupMenu(this,view);
+        MenuInflater menuInflater  = popupMenu.getMenuInflater();
+        menuInflater.inflate(R.menu.menu_grades,popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                switch (menuItem.getItemId()){
+                    case R.id.menu_grades_refresh:
+                        //Toast.makeText(ActivityGrades.this,"refresh",Toast.LENGTH_SHORT).show();
+                        sqLiteDatabase.dropAndCreateTableGrades();
+                        showRefreshGradesAlerDialog();
+                        break;
+                    case R.id.menu_grades_reLoging:
+                        //Toast.makeText(ActivityGrades.this,"Login",Toast.LENGTH_SHORT).show();
+                        editor.putBoolean("isLoadedData",false);
+                        editor.commit();
+                        Intent intent = new Intent(ActivityGrades.this,ActivityLogin.class);
+                        startActivity(intent);
+                        ActivityGrades.this.finish();
+                        break;
+                }
+                return false;
+            }
+        });
+        popupMenu.show();
+        //sqLiteDatabase.dropAndCreateTableGrades();
+        //showRefreshGradesAlerDialog();
     }
 
     private void showRefreshGradesAlerDialog() {
@@ -97,7 +131,7 @@ public class ActivityGrades extends AppCompatActivity {
             @Override
             public void onFinish(int status) {
                 if(status == 0){
-                    String imageUrl = "http://grade.liuyinxin.com:3005/univ/login" + sharedPreferences.getString("captchaUrl","");
+                    String imageUrl = "https://grade.liuyinxin.com/univ/login" + sharedPreferences.getString("captchaUrl","");
                     Message message = new Message();
                     message.what = GET_CAPTCHA;
                     message.obj = imageUrl;
@@ -116,10 +150,12 @@ public class ActivityGrades extends AppCompatActivity {
         View view = LayoutInflater.from(this).inflate(R.layout.pop_refresh_grades,null);
         final EditText input_cap = view.findViewById(R.id.input_cap);
         cap_pic = view.findViewById(R.id.cap_pic);
+        TextView pop_refresh_grades_classNumber = view.findViewById(R.id.pop_refresh_grades_classNumber);
         TextView cap_refresh_cancle = view.findViewById(R.id.cap_refresh_cancle);
         TextView cap_refresh_ok = view.findViewById(R.id.cap_refresh_ok);
         CardView cap_refresh_cardview = view.findViewById(R.id.cap_refresh_cardview);
 
+        pop_refresh_grades_classNumber.setText(sharedPreferences.getString("username","请重新登陆"));
 
         builder.setView(view);
         final AlertDialog dialog = builder.show();
@@ -135,7 +171,6 @@ public class ActivityGrades extends AppCompatActivity {
             public void onClick(View view) {
                 editor.putString("captcha",input_cap.getText().toString());
                 editor.commit();
-                Log.d("FGHJKMedsfd",input_cap.getText().toString());
                 rxDayuan.getLoginSuccess(new RetrofitCallbackListener() {
                     @Override
                     public void onFinish(int status) {
@@ -144,9 +179,14 @@ public class ActivityGrades extends AppCompatActivity {
                             public void onFinish(int status) {
                                 if (status == 0){
                                     dialog.dismiss();
-                                    Intent intent = new Intent(ActivityGrades.this,ActivityGrades.class);
-                                    startActivity(intent);
-                                    ActivityGrades.this.finish();
+                                    try {
+                                        Intent intent = new Intent(ActivityGrades.this,ActivityGrades.class);
+                                        startActivity(intent);
+                                        ActivityGrades.this.finish();
+                                    }catch (Exception e){
+                                        e.printStackTrace();
+                                        Toast.makeText(ActivityGrades.this,"更新失败，请重试",Toast.LENGTH_SHORT).show();
+                                    }
                                 }
                                 if (status == 1){
                                     Toast.makeText(ActivityGrades.this,"网络异常，请重试",Toast.LENGTH_SHORT).show();

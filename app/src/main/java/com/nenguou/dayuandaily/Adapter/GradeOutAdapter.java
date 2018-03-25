@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
@@ -59,10 +60,12 @@ public class GradeOutAdapter extends BaseQuickAdapter<String,GradeOutViewHolder>
 
         gradesBeans = dayuanDailyDatabase.getTermDetial(studentNumber,termNameArray.get(postion).toString());
         for(Grades.DataBean.GradesBean gradesBean:gradesBeans){
-            Log.d(AdapterTag,"ClassName: "+gradesBean.getClassName());
+            //Log.d(AdapterTag,"ClassName: "+gradesBean.getClassName());
         }
 
         adapter = new GradeInnerAdapter(R.layout.grade_detial_layout,gradesBeans);
+        View view = LayoutInflater.from(context).inflate(R.layout.grades_list_header_layout,null);
+        adapter.addFooterView(view);
         layoutManager = new LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false);
         layoutManager.setAutoMeasureEnabled(true);
 

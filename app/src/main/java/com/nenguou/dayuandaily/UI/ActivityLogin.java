@@ -44,6 +44,7 @@ public class ActivityLogin extends AppCompatActivity {
      * SharedPreferences: User_grades
      * captchaUrl : String /captcha/5/88e0ddc6-8edd-4467-be8d-78c999e50dd9.jpg
      * cookies : String 879c06766d4648d59b95a40f26ae91b9
+     * isLoadedData: true
      * username : String 2016001000
      * password : String 101010
      * captcha : String qwer
@@ -74,11 +75,21 @@ public class ActivityLogin extends AppCompatActivity {
         ButterKnife.bind(this);
         rxDayuan = new RxDayuan(this);
         sharedPreferences = getSharedPreferences("User_grades",MODE_PRIVATE);
+        checkIfLoadedGrades();
         editor = getSharedPreferences("User_grades",MODE_PRIVATE).edit();
         transparentStatus();
         initViews();
         setListener();
     }
+
+    private void checkIfLoadedGrades() {
+        if(sharedPreferences.getBoolean("isLoadedData",false)){
+            Intent intent = new Intent(this,ActivityGrades.class);
+            startActivity(intent);
+            ActivityLogin.this.finish();
+        }
+    }
+
     Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -107,7 +118,7 @@ public class ActivityLogin extends AppCompatActivity {
             @Override
             public void onFinish(int status) {
                 if(status == 0){
-                    String imageUrl = "http://grade.liuyinxin.com:3005/univ/login" + sharedPreferences.getString("captchaUrl","");
+                    String imageUrl = "http://grade.liuyinxin.com/univ/login" + sharedPreferences.getString("captchaUrl","");
                     Message message = new Message();
                     message.what = GET_CAPTCHA;
                     message.obj = imageUrl;
@@ -231,39 +242,46 @@ public class ActivityLogin extends AppCompatActivity {
         }
         editor.commit();
         loginbtn.setClickable(false);
-        Toast.makeText(this,"Clicked login",Toast.LENGTH_SHORT).show();
-        rxDayuan.getLoginSuccess(new RetrofitCallbackListener() {
-            @Override
-            public void onFinish(int status) {
-                rxDayuan.getGrades(new RetrofitCallbackListener() {
-                    @Override
-                    public void onFinish(int status) {
-                        if(status == 0){
-
-                            Intent intent = new Intent(ActivityLogin.this,ActivityGrades.class);
-                            startActivity(intent);
-                            ActivityLogin.this.finish();
+        Toast.makeText(this,"正在加载，请稍后!",Toast.LENGTH_SHORT).show();
+        if(!username_textinputlayout.getEditText().getText().toString().isEmpty() && !password_textinputlayout.getEditText().getText().toString().isEmpty()
+                && !code_textinputlayout.getEditText().getText().toString().isEmpty()) {
+            rxDayuan.getLoginSuccess(new RetrofitCallbackListener() {
+                @Override
+                public void onFinish(int status) {
+                    rxDayuan.getGrades(new RetrofitCallbackListener() {
+                        @Override
+                        public void onFinish(int status) {
+                            if (status == 0) {
+                                editor.putBoolean("isLoadedData", true);
+                                editor.commit();
+                                Intent intent = new Intent(ActivityLogin.this, ActivityGrades.class);
+                                startActivity(intent);
+                                loginbtn.setClickable(true);
+                                ActivityLogin.this.finish();
+                            }
+                            if (status == 1) {
+                                Toast.makeText(ActivityLogin.this, "网络异常，请重试", Toast.LENGTH_SHORT).show();
+                                loginbtn.setClickable(true);
+                            }
                         }
-                        if (status == 1){
-                            Toast.makeText(ActivityLogin.this,"网络异常，请重试",Toast.LENGTH_SHORT).show();
+
+                        @Override
+                        public void onError(Exception e) {
+                            Toast.makeText(ActivityLogin.this, e.toString() , Toast.LENGTH_SHORT).show();
                             loginbtn.setClickable(true);
                         }
-                    }
+                    });
 
-                    @Override
-                    public void onError(Exception e) {
-                        loginbtn.setClickable(true);
-                    }
-                });
+                }
 
-            }
-
-            @Override
-            public void onError(Exception e) {
-                loginbtn.setClickable(true);
-                Toast.makeText(ActivityLogin.this,"登陆失败，请重试",Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onError(Exception e) {
+                    loginbtn.setClickable(true);
+                    Toast.makeText(ActivityLogin.this, e.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ActivityLogin.this, "登陆失败，请重试", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     @OnClick(R.id.ed_code)
