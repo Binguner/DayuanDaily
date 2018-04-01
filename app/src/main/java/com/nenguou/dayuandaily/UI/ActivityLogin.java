@@ -139,6 +139,11 @@ public class ActivityLogin extends AppCompatActivity {
             public void onError(Exception e) {
 
             }
+
+            @Override
+            public void setText(String msg) {
+
+            }
         });
 
         //Log.d(loginTag,imageUrl+"");
@@ -281,6 +286,11 @@ public class ActivityLogin extends AppCompatActivity {
                             Toast.makeText(ActivityLogin.this, e.toString() , Toast.LENGTH_SHORT).show();
                             loginbtn.setClickable(true);
                         }
+
+                        @Override
+                        public void setText(String msg) {
+
+                        }
                     });
 
                 }
@@ -290,6 +300,11 @@ public class ActivityLogin extends AppCompatActivity {
                     loginbtn.setClickable(true);
                     Toast.makeText(ActivityLogin.this, e.toString(), Toast.LENGTH_SHORT).show();
                     Toast.makeText(ActivityLogin.this, "登陆失败，请重试", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void setText(String msg) {
+
                 }
             });
         }

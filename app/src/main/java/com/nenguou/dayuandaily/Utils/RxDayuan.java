@@ -20,6 +20,9 @@ import com.nenguou.dayuandaily.Model.ClassName;
 import com.nenguou.dayuandaily.Model.Evaluate;
 import com.nenguou.dayuandaily.Model.Grades;
 import com.nenguou.dayuandaily.Model.Major;
+import com.nenguou.dayuandaily.Model.RankLoginModel;
+import com.nenguou.dayuandaily.Model.RankModel;
+import com.nenguou.dayuandaily.Model.RankModelDetial;
 import com.nenguou.dayuandaily.Model.YearCollege;
 
 import java.io.File;
@@ -39,6 +42,8 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import rx.Observable;
+import rx.Scheduler;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
@@ -397,6 +402,77 @@ public class RxDayuan {
                         }catch (Exception e){
                             e.printStackTrace();
                             Toast.makeText(context,e.toString(),Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    public void rankLogin(final String username, final String password, final RetrofitCallbackListener listener){
+//        service.rankLogin(username,password)
+//                .subscribeOn(Schedulers.io())
+//                .unsubscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Subscriber<RankLoginModel>() {
+//                    @Override
+//                    public void onCompleted() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(RankLoginModel rankLoginModel) {
+//                        listener.setText(rankLoginModel.getMsg());
+//                        Log.d(RxTag,rankLoginModel.getMsg() + " " + rankLoginModel.getCode() + " " + rankLoginModel.getData() );
+//                    }
+//                });
+        service.rankLogin(username,password)
+                .subscribeOn(Schedulers.io())
+                .flatMap(new Func1<RankLoginModel, Observable<RankModel>>() {
+                    @Override
+                    public Observable<RankModel> call(RankLoginModel rankLoginModel) {
+                        String cookie = "";
+                        if(rankLoginModel.getCode() == 1){
+                            cookie = rankLoginModel.getData();
+                        }
+                        return service.getRankModel(username,password,cookie);
+                    }
+                })
+//                .flatMap(new Func1<RankModel, Observable<RankModelDetial>>() {
+//                    @Override
+//                    public Observable<RankModelDetial> call(RankModel rankModel) {
+//                        Log.d(RxTag,rankModel.getData());
+//                        Gson gson = new Gson();
+//                        RankModelDetial rankModelDetial = new RankModelDetial();
+//                        rankModelDetial = gson.fromJson(rankModel.getData(),RankModelDetial.class);
+//                        return Observable.just(rankModelDetial);
+//                    }
+//                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<RankModel>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d(RxTag,"error: " + e.toString());
+                    }
+
+                    @Override
+                    public void onNext(RankModel rankModel) {
+                        if (null != rankModel){
+                            Gson gson = new Gson();
+                            String data = rankModel.getData().replace("[","");
+                            data = data.replace("]","");
+                            RankModelDetial rankModelDetial = gson.fromJson(data,RankModelDetial.class);
+                            //Log.d(RxTag,"Ot:" + rankModelDetial.toString());
+                            dayuanDailyDatabase.saveRank(rankModelDetial);
                         }
                     }
                 });

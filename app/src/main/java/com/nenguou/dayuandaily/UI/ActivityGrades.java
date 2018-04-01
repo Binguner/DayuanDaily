@@ -145,6 +145,11 @@ public class ActivityGrades extends AppCompatActivity {
             public void onError(Exception e) {
 
             }
+
+            @Override
+            public void setText(String msg) {
+
+            }
         });
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View view = LayoutInflater.from(this).inflate(R.layout.pop_refresh_grades,null);
@@ -197,11 +202,21 @@ public class ActivityGrades extends AppCompatActivity {
                             public void onError(Exception e) {
 
                             }
+
+                            @Override
+                            public void setText(String msg) {
+
+                            }
                         });
                     }
 
                     @Override
                     public void onError(Exception e) {
+
+                    }
+
+                    @Override
+                    public void setText(String msg) {
 
                     }
                 });

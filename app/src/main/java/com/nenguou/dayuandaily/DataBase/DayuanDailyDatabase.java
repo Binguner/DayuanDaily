@@ -7,11 +7,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.nenguou.dayuandaily.Model.Class;
 import com.nenguou.dayuandaily.Model.ClassDetial;
 import com.nenguou.dayuandaily.Model.ClassName;
 import com.nenguou.dayuandaily.Model.Grades;
 import com.nenguou.dayuandaily.Model.Major;
+import com.nenguou.dayuandaily.Model.RankModel;
+import com.nenguou.dayuandaily.Model.RankModelDetial;
 import com.nenguou.dayuandaily.Model.YearCollege;
 
 import java.util.ArrayList;
@@ -264,6 +267,42 @@ public class DayuanDailyDatabase {
                     contentValues.clear();
                 }
             }
+        }
+    }
+
+    public void saveRank(RankModelDetial rankModelDetial){
+        if(null != rankModelDetial){
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("xh",rankModelDetial.getXh());
+            contentValues.put("xm",rankModelDetial.getXm());
+            contentValues.put("bjh",rankModelDetial.getBjh());
+            contentValues.put("bm",rankModelDetial.getBm());
+            contentValues.put("zyh",rankModelDetial.getZyh());
+            contentValues.put("zym",rankModelDetial.getZym());
+            contentValues.put("xsh",rankModelDetial.getXsh());
+            contentValues.put("xsm",rankModelDetial.getXsm());
+            contentValues.put("njdm",rankModelDetial.getNjdm());
+            contentValues.put("yqzxf",rankModelDetial.getYqzxf());
+            contentValues.put("yxzzsjxf",rankModelDetial.getYxzzsjxf());
+            contentValues.put("zxf",rankModelDetial.getZxf());
+            contentValues.put("yxzxf",rankModelDetial.getYxzxf());
+            contentValues.put("cbjgxf",rankModelDetial.getCbjgxf());
+            contentValues.put("sbjgxf",rankModelDetial.getSbjgxf());
+            contentValues.put("pjxfjd",rankModelDetial.getPjxfjd());
+            contentValues.put("gpabjpm",rankModelDetial.getGpabjpm());
+            contentValues.put("gpazypm",rankModelDetial.getGpazypm());
+            contentValues.put("pjcj",rankModelDetial.getPjcj());
+            contentValues.put("pjcjbjpm",rankModelDetial.getPjcjbjpm());
+            contentValues.put("pjcjzypm",rankModelDetial.getPjcjzypm());
+            contentValues.put("jqxfcj",rankModelDetial.getJqxfcj());
+            contentValues.put("jqbjpm",rankModelDetial.getJqbjpm());
+            contentValues.put("jqzypm",rankModelDetial.getJqzypm());
+            contentValues.put("tsjqxfcj",rankModelDetial.getTsjqxfcj());
+            contentValues.put("tjsj",rankModelDetial.getTjsj());
+            contentValues.put("bjrs",rankModelDetial.getBjrs());
+            contentValues.put("zyrs",rankModelDetial.getZyrs());
+
+            sqLiteDatabase.insert()
         }
     }
 

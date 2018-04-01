@@ -6,6 +6,8 @@ import com.nenguou.dayuandaily.Model.ClassName;
 import com.nenguou.dayuandaily.Model.Evaluate;
 import com.nenguou.dayuandaily.Model.Grades;
 import com.nenguou.dayuandaily.Model.Major;
+import com.nenguou.dayuandaily.Model.RankLoginModel;
+import com.nenguou.dayuandaily.Model.RankModel;
 import com.nenguou.dayuandaily.Model.YearCollege;
 
 import retrofit2.http.Field;
@@ -51,6 +53,13 @@ public interface DayuanService {
     @GET("https://grade.liuyinxin.com/univs/evaluate/{sessionId}")
     Observable<Evaluate> getEvaluateResults(@Path("sessionId") String sessionId);
 
+    @FormUrlEncoded
+    @POST("https://grade.liuyinxin.com/univ/tyut/login")
+    Observable<RankLoginModel> rankLogin(@Field("username") String username, @Field("password") String password);
+
+    @FormUrlEncoded
+    @POST("https://grade.liuyinxin.com/univ/tyut/rank")
+    Observable<RankModel> getRankModel(@Field("username") String username, @Field("password") String password,@Field("cookie") String cookie);
 
 }
 

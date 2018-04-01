@@ -93,6 +93,39 @@ public class DaYuanDailyDBOpenHelper extends SQLiteOpenHelper{
             "credit integer," +
             "classInfo text," +
             "grade real)";
+
+    public static final String create_ranks = "create table Ranks(" +
+            "id integer primary key autoincrement," +
+            "xh text," + // 学号
+            "xm text," +   // 姓名
+            "bjh text," + // 班级名称 软件1632
+            "bm text," + // 班级名称 软件1632
+            "zyh text," +   // 不知道是什么 1600101
+            "xsh text," +   // 不知道是什么 16
+            "njdm text," +   // 不知道是什么 2016
+            "zym text," + // 专业名称 软件工程
+            "xsm text," +   // 学院名称 软件学院
+            "yqzxf text," +  // 要求总学分 186.50
+            "yxzzsjxf text," +  // 已修自主实践学分
+            "zxf text," +   // 已修课程学分 74
+            "yxzxf text," + //  74
+            "cbjgxf text," +    // 6
+            "sbjgxf text," +    // 0
+            "pjxfjd text," +    // 3.11
+            "gpabjpm text," +   // 9
+            "gpazypm text," +   // 267
+            "pjcj text," +  //80.52
+            "pjcjbjpm text," +  //8
+            "pjcjzypm text," +  //  242
+            "jqxfcj text," +    // 79.18
+            "jqbjpm text," +    // 8
+            "jqzypm text," +    // 216
+            "tsjqxfcj text," +  // 79.18
+            "tjsj text," +  // 2018-04-01 01:00:10
+            "bjrs text," +  //33
+            "zyrs text," +  // 1006
+            "dlrs text," +
+            "gpadlpm text"; //3446
     public DaYuanDailyDBOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }

@@ -53,7 +53,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private Button test_YearCollege,test_Major,test_classname,test_Class,test_loadYearColleg,test_loadMajor,test_loadClassName,test_loadClass,
-            go_to_choose_class_aty,test_login,test_getCaptcha,openAliPay,check_grades,check_schedule,get_money,oneKeyTestTeatch;
+            go_to_choose_class_aty,test_login,test_getCaptcha,openAliPay,check_grades,check_schedule,get_money,oneKeyTestTeatch,get_rank_btn;
     private RxDayuan rxDayuan;
     WebView openAlbabaWebView;
     ImageView cap_pic;
@@ -107,6 +107,12 @@ public class MainActivity extends AppCompatActivity {
                     public void onError(Exception e) {
 
                     }
+
+                    @Override
+                    public void setText(String msg) {
+
+                    }
+
                 });
             }
         });
@@ -296,6 +302,11 @@ public class MainActivity extends AppCompatActivity {
                         public void onError(Exception e) {
 
                         }
+
+                        @Override
+                        public void setText(String msg) {
+
+                        }
                     });
 
                     final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -380,11 +391,21 @@ public class MainActivity extends AppCompatActivity {
                                         public void onError(Exception e) {
 
                                         }
+
+                                        @Override
+                                        public void setText(String msg) {
+
+                                        }
                                     });
                                 }
 
                                 @Override
                                 public void onError(Exception e) {
+
+                                }
+
+                                @Override
+                                public void setText(String msg) {
 
                                 }
                             });
@@ -409,6 +430,33 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        get_rank_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sharedPreferences = getSharedPreferences("User_grades",MODE_PRIVATE);
+                String username = sharedPreferences.getString("username","2016006328");
+                String password = sharedPreferences.getString("password","171425");
+                rxDayuan.rankLogin(username, password, new RetrofitCallbackListener() {
+                    @Override
+                    public void onFinish(int status) {
+
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+
+                    }
+
+                    @Override
+                    public void setText(String msg) {
+                        //Toast.makeText(MainActivity.this,msg,Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+        });
+
+
 
     }
 
@@ -454,7 +502,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     private void initId() {
-        openAlbabaWebView = findViewById(R.id.openAlbabaWebView);
+        get_rank_btn = findViewById(R.id.get_rank_btn);
+        //openAlbabaWebView = findViewById(R.id.openAlbabaWebView);
         oneKeyTestTeatch = findViewById(R.id.oneKeyTestTeatch);
         get_money = findViewById(R.id.get_money);
         check_schedule = findViewById(R.id.check_schedule);

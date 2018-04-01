@@ -12,4 +12,5 @@ public interface RetrofitCallbackListener {
      */
     void onFinish(int status);
     void onError(Exception e);
+    void setText(String msg);
 }

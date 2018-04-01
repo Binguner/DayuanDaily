@@ -99,6 +99,11 @@ public class ActivityChooseSchedule extends AppCompatActivity {
                 public void onError(Exception e) {
                     Toast.makeText(ActivityChooseSchedule.this, "数据加载失败，请重新打开 App", Toast.LENGTH_SHORT).show();
                 }
+
+                @Override
+                public void setText(String msg) {
+
+                }
             });
         }
 //        if(!isFirstLoad){
