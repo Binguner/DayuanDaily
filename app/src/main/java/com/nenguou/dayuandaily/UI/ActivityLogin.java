@@ -49,6 +49,7 @@ public class ActivityLogin extends AppCompatActivity {
      * password : String 101010
      * captcha : String qwer
      * sessionId : String = cookies
+     * firstGoToScheduler : true    // 系统设置
      */
 
     @BindView(R.id.username_textinputlayout) TextInputLayout username_textinputlayout;

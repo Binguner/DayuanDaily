@@ -10,6 +10,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -60,17 +61,29 @@ public class MainActivity extends AppCompatActivity {
     private final String mainTag = "MainActivityTag";
     SharedPreferences.Editor editor = null;
     SharedPreferences sharedPreferences = null;
+    SharedPreferences sharedPreferences1 = null;    // 系统设置
     DayuanDailyDatabase dayuanDailyDatabase;
     private static final int GET_CAPTCHA = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        chooseTheFirstViews();
         setContentView(R.layout.activity_main);
         initId();
         editor = getSharedPreferences("test",MODE_PRIVATE).edit();
         sharedPreferences = getSharedPreferences("test",MODE_PRIVATE);
         setListener();
     }
+
+    private void chooseTheFirstViews() {
+        sharedPreferences1 = PreferenceManager.getDefaultSharedPreferences(this);
+        if(sharedPreferences1.getBoolean("firstGoToScheduler",false)){
+            Intent intent = new Intent(this,ActivityScheduler.class);
+            startActivity(intent);
+        }
+
+    }
+
     Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -475,7 +488,7 @@ public class MainActivity extends AppCompatActivity {
             sharedPreferences = getSharedPreferences("test",MODE_PRIVATE);
             String user = sharedPreferences.getString("user","z");
             if(user.equals("l")) {
-                clipboardManager.setPrimaryClip(new ClipData(ClipData.newPlainText("Label","如果您觉得好用的话请复制一下 [RXaFYw62U8] 该条红包口令在支付宝中打开,可以领取红包哦！请支持我一下,谢谢！")));
+                clipboardManager.setPrimaryClip(new ClipData(ClipData.newPlainText("Label","快来领支付宝红包！人人可领，天天可领！复制此消息，打开最新版支付宝就能领取！RXaFYw62U8")));
                 editor.putString("user","z");
                 editor.commit();
             }else {

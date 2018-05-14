@@ -3,6 +3,7 @@ package com.nenguou.dayuandaily.UI;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.preference.PreferenceManager;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -15,8 +16,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.nenguou.dayuandaily.R;
@@ -122,6 +125,8 @@ public class ActivityScheduler extends AppCompatActivity {
     @BindView(R.id.schedule_toolbar) Toolbar schedule_toolbar;
     @BindView(R.id.choose_week_sideBar) MySideBar choose_week_sideBar;
 
+    @BindView(R.id.isFirstView) Switch isFirstView;
+
     List<MyScheduleButton> list_mon;
     List<MyScheduleButton> list_tues;
     List<MyScheduleButton> list_wen;
@@ -137,7 +142,9 @@ public class ActivityScheduler extends AppCompatActivity {
     int nowTime = 0;
     String theSelectedTime;
     SharedPreferences.Editor editor;
+    SharedPreferences.Editor editor1;   // 系统设置
     SharedPreferences sharedPreferences = null;
+    SharedPreferences sharedPreferences1 = null;    // 系统设置
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.myAppTheme);
@@ -179,6 +186,10 @@ public class ActivityScheduler extends AppCompatActivity {
     }
 
     private void isFitstLoad() {
+        editor1 = PreferenceManager.getDefaultSharedPreferences(ActivityScheduler.this).edit(); // 系统设置
+        sharedPreferences1 = PreferenceManager.getDefaultSharedPreferences(this);
+
+
         editor = getSharedPreferences("User_YearCollege",MODE_PRIVATE).edit();
         sharedPreferences = getSharedPreferences("User_YearCollege",MODE_PRIVATE);
         nowTime = (int) (((System.currentTimeMillis() - sharedPreferences.getLong("start",1)) / 604800000)) + 1;
@@ -258,6 +269,28 @@ public class ActivityScheduler extends AppCompatActivity {
             }
         });
         //ct_1_mon.getLayoutParams().height = 464; 60 = 240
+
+
+        isFirstView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                //Log.d("test",b +"");
+                //editor1 = PreferenceManager.getDefaultSharedPreferences(ActivityScheduler.this).edit();
+                editor1.putBoolean("firstGoToScheduler",b);
+                editor1.commit();
+                if(b){
+                    Toast.makeText(ActivityScheduler.this,"已将首启动页面设置为课程表",Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(ActivityScheduler.this,"已取消将首启动页面设置为课程表",Toast.LENGTH_SHORT).show();
+                }
+                //sharedPreferences1 = PreferenceManager.getDefaultSharedPreferences(ActivityScheduler.this);
+
+            }
+        });
+
+        if(sharedPreferences1.getBoolean("firstGoToScheduler",false)){
+            isFirstView.setChecked(true);
+        }
     }
 
     /**

@@ -302,7 +302,7 @@ public class DayuanDailyDatabase {
             contentValues.put("bjrs",rankModelDetial.getBjrs());
             contentValues.put("zyrs",rankModelDetial.getZyrs());
 
-            sqLiteDatabase.insert()
+            //sqLiteDatabase.insert();
         }
     }
 

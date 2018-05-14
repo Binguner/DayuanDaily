@@ -170,6 +170,7 @@ public class ActivityGrades extends AppCompatActivity {
             public void onClick(View view) {
                 dialog.dismiss();
             }
+
         });
         cap_refresh_ok.setOnClickListener(new View.OnClickListener() {
             @Override
