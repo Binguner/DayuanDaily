@@ -270,8 +270,66 @@ public class DayuanDailyDatabase {
         }
     }
 
+    /**
+     * @param studentNumber 学生学号
+     * @return 如果数据库中存在这个学生的 Rank，返回 true，不存在，返回 false；
+     */
+    public boolean isExitThisRank(int studentNumber){
+        Cursor cursor = sqLiteDatabase.query("Ranks",null," xh = ?",new String[]{String.valueOf(studentNumber)},null,null,null);
+        if(cursor.moveToFirst()){
+            do{
+                if(studentNumber == cursor.getInt(cursor.getColumnIndex("xh"))){
+                    return true;
+                }
+            }while (cursor.moveToNext());
+        }
+        return false;
+    }
+
+    /**
+     * @param oldValue 学生旧 gpa
+     * @param newValue 学生新 gpa
+     * @return 若新 gpa == 旧 gpa 返回 false
+     */
+    public boolean isThisRankChanged(int oldValue, int newValue){
+        if(oldValue != newValue){
+            return true;
+        }
+        return false;
+    }
+
+    public int getOldRanks(int studentNumber){
+        Cursor cursor = sqLiteDatabase.query("Ranks",null,null,new String[]{String.valueOf(studentNumber)},null,null,null);
+        if(cursor.moveToFirst()){
+            do{
+                int oldRanks = cursor.getColumnIndex("pjxfjd");
+                if(oldRanks != 0){
+                    return oldRanks;
+                }
+           }while (cursor.moveToNext());
+        }
+        return 0;
+    }
+
     public void saveRank(RankModelDetial rankModelDetial){
+
+        if(isExitThisRank(Integer.parseInt(rankModelDetial.getXh()))){  // 判断表中原先是否有该数据
+            Log.d("mlgb","原来有这个数据");
+            //Log.d("mlgb","原数据 == " + getOldRanks(Integer.parseInt(rankModelDetial.getXh())));
+            //Log.d("mlgb","新数据 == " + Integer.parseInt(rankModelDetial.getPjxfjd()));
+
+            //if(!isThisRankChanged(getOldRanks(Integer.parseInt(rankModelDetial.getXh())),Integer.parseInt(rankModelDetial.getPjxfjd()))){    // 判断原先的数据 与 新数据是否相同
+              //  Log.d("mlgb","原数据 == 新数据");
+                //Log.d("mlgb","原数据 == " + getOldRanks(Integer.parseInt(rankModelDetial.getXh())));
+                //Log.d("mlgb","新数据 == " + Integer.parseInt(rankModelDetial.getPjxfjd()));
+                //return;
+            //}
+            //Log.d("mlgb","删了这个数据");
+            // 此时表中有数据 且 两次数据不一样 , 删除原数据
+            sqLiteDatabase.delete("Ranks","xh = ?",new String[]{String.valueOf(Integer.parseInt(rankModelDetial.getXh()))});
+        }
         if(null != rankModelDetial){
+
             ContentValues contentValues = new ContentValues();
             contentValues.put("xh",rankModelDetial.getXh());
             contentValues.put("xm",rankModelDetial.getXm());
@@ -301,6 +359,8 @@ public class DayuanDailyDatabase {
             contentValues.put("tjsj",rankModelDetial.getTjsj());
             contentValues.put("bjrs",rankModelDetial.getBjrs());
             contentValues.put("zyrs",rankModelDetial.getZyrs());
+            sqLiteDatabase.insert("Ranks",null,contentValues);
+            contentValues.clear();
 
             //sqLiteDatabase.insert();
         }

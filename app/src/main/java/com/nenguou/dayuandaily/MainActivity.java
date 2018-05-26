@@ -67,7 +67,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        chooseTheFirstViews();
+        if(chooseTheFirstViews()){
+           return;
+        }
         setContentView(R.layout.activity_main);
         initId();
         editor = getSharedPreferences("test",MODE_PRIVATE).edit();
@@ -75,13 +77,15 @@ public class MainActivity extends AppCompatActivity {
         setListener();
     }
 
-    private void chooseTheFirstViews() {
+    private boolean chooseTheFirstViews() {
         sharedPreferences1 = PreferenceManager.getDefaultSharedPreferences(this);
         if(sharedPreferences1.getBoolean("firstGoToScheduler",false)){
             Intent intent = new Intent(this,ActivityScheduler.class);
             startActivity(intent);
+            this.finish();
+            return true;
         }
-
+        return false;
     }
 
     Handler handler = new Handler(){
@@ -276,10 +280,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 long oldTime = sharedPreferences.getLong("time",0);
                 long newTIme = System.currentTimeMillis();
-                Log.d("QEWR","get out");
+                //Log.d("QEWR","get out");
 
                 //if((newTIme - oldTime) > 86400000) {
-                    Log.d("QEWR","get in");
+                  //  Log.d("QEWR","get in");
 
 
                     editor.putLong("time", newTIme);
@@ -296,7 +300,6 @@ public class MainActivity extends AppCompatActivity {
                 boolean isLoadedData = sharedPreferences.getBoolean("isLoadedData",false);
                 if (isLoadedData){
                     // 如果已经保存学号和密码
-
                     rxDayuan.getCaptcha(new RetrofitCallbackListener() {
                         @Override
                         public void onFinish(int status) {
