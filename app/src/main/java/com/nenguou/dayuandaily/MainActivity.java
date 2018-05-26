@@ -44,6 +44,7 @@ import com.nenguou.dayuandaily.UI.ActivityChooseSchedule;
 import com.nenguou.dayuandaily.UI.ActivityGrades;
 import com.nenguou.dayuandaily.UI.ActivityLogin;
 import com.nenguou.dayuandaily.UI.ActivityScheduler;
+import com.nenguou.dayuandaily.UI.Activity_Ranks;
 import com.nenguou.dayuandaily.Utils.RetrofitCallbackListener;
 import com.nenguou.dayuandaily.Utils.RxDayuan;
 import com.squareup.picasso.Picasso;
@@ -450,13 +451,24 @@ public class MainActivity extends AppCompatActivity {
         get_rank_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 sharedPreferences = getSharedPreferences("User_grades",MODE_PRIVATE);
                 String username = sharedPreferences.getString("username","2016006328");
                 String password = sharedPreferences.getString("password","171425");
+
+                if(dayuanDailyDatabase.isExitThisRank(Integer.parseInt(username))) {
+
+                    Intent intent = new Intent(MainActivity.this, Activity_Ranks.class);
+                    startActivity(intent);
+                    return;
+                }
+
+                Toast.makeText(MainActivity.this,"正在加载数据，请耐心等待...",Toast.LENGTH_SHORT).show();
                 rxDayuan.rankLogin(username, password, new RetrofitCallbackListener() {
                     @Override
                     public void onFinish(int status) {
-
+                        Intent intent = new Intent(MainActivity.this, Activity_Ranks.class);
+                        startActivity(intent);
                     }
 
                     @Override
@@ -469,6 +481,7 @@ public class MainActivity extends AppCompatActivity {
                         //Toast.makeText(MainActivity.this,msg,Toast.LENGTH_LONG).show();
                     }
                 });
+
             }
         });
 

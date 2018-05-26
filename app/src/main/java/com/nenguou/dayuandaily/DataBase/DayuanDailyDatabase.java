@@ -298,11 +298,15 @@ public class DayuanDailyDatabase {
         return false;
     }
 
-    public int getOldRanks(int studentNumber){
+    /**
+     * @param studentNumber 传入 学生学号
+     * @return 返回该学生在数据库中的 old gpa
+     */
+    private int getOldRanks(int studentNumber){
         Cursor cursor = sqLiteDatabase.query("Ranks",null,null,new String[]{String.valueOf(studentNumber)},null,null,null);
         if(cursor.moveToFirst()){
             do{
-                int oldRanks = cursor.getColumnIndex("pjxfjd");
+                int oldRanks = cursor.getInt(cursor.getColumnIndex("pjxfjd"));
                 if(oldRanks != 0){
                     return oldRanks;
                 }
@@ -311,10 +315,15 @@ public class DayuanDailyDatabase {
         return 0;
     }
 
+    /**
+     * 保存查询到的 Ranks
+     * 如果数据库中先前保存过了，则删除原数据，增加新数据
+     * @param rankModelDetial
+     */
     public void saveRank(RankModelDetial rankModelDetial){
 
         if(isExitThisRank(Integer.parseInt(rankModelDetial.getXh()))){  // 判断表中原先是否有该数据
-            Log.d("mlgb","原来有这个数据");
+           // Log.d("mlgb","原来有这个数据");
             //Log.d("mlgb","原数据 == " + getOldRanks(Integer.parseInt(rankModelDetial.getXh())));
             //Log.d("mlgb","新数据 == " + Integer.parseInt(rankModelDetial.getPjxfjd()));
 
@@ -366,6 +375,50 @@ public class DayuanDailyDatabase {
         }
     }
 
+    public RankModelDetial getRank(int studentNumber){
+        RankModelDetial rankModelDetial = null;
+        if(isExitThisRank(studentNumber)){
+            rankModelDetial = new RankModelDetial();
+            Cursor cursor = sqLiteDatabase.query("Ranks",null," xh = ?",new String[]{String.valueOf(studentNumber)},null,null,null);
+
+            //Cursor cursor = sqLiteDatabase.query("Ranks",null,null,new String[]{String.valueOf(studentNumber)},null,null,null);
+            if(cursor.moveToFirst()){
+                do{
+                    rankModelDetial.setXh(cursor.getString(cursor.getColumnIndex("xh")));
+                    rankModelDetial.setXm(cursor.getString(cursor.getColumnIndex("xm")));
+                    rankModelDetial.setBjh(cursor.getString(cursor.getColumnIndex("bjh")));
+                    rankModelDetial.setBm(cursor.getString(cursor.getColumnIndex("bm")));
+                    rankModelDetial.setZyh(cursor.getString(cursor.getColumnIndex("zyh")));
+                    rankModelDetial.setZym(cursor.getString(cursor.getColumnIndex("zym")));
+                    rankModelDetial.setXsh(cursor.getString(cursor.getColumnIndex("xsh")));
+                    rankModelDetial.setXsm(cursor.getString(cursor.getColumnIndex("xsm")));
+                    rankModelDetial.setNjdm(cursor.getString(cursor.getColumnIndex("njdm")));
+                    rankModelDetial.setYqzxf(cursor.getString(cursor.getColumnIndex("yqzxf")));
+                    rankModelDetial.setYxzzsjxf(cursor.getString(cursor.getColumnIndex("yxzzsjxf")));
+                    rankModelDetial.setZxf(cursor.getString(cursor.getColumnIndex("zxf")));
+                    rankModelDetial.setYxzxf(cursor.getString(cursor.getColumnIndex("yxzxf")));
+                    rankModelDetial.setCbjgxf(cursor.getString(cursor.getColumnIndex("cbjgxf")));
+                    rankModelDetial.setSbjgxf(cursor.getString(cursor.getColumnIndex("sbjgxf")));
+                    rankModelDetial.setPjxfjd(cursor.getString(cursor.getColumnIndex("pjxfjd")));
+                    rankModelDetial.setGpabjpm(cursor.getString(cursor.getColumnIndex("gpabjpm")));
+                    rankModelDetial.setGpazypm(cursor.getString(cursor.getColumnIndex("gpazypm")));
+                    rankModelDetial.setPjcj(cursor.getString(cursor.getColumnIndex("pjcj")));
+                    rankModelDetial.setPjcjbjpm(cursor.getString(cursor.getColumnIndex("pjcjbjpm")));
+                    rankModelDetial.setPjcjzypm(cursor.getString(cursor.getColumnIndex("pjcjzypm")));
+                    rankModelDetial.setJqxfcj(cursor.getString(cursor.getColumnIndex("jqxfcj")));
+                    rankModelDetial.setJqbjpm(cursor.getString(cursor.getColumnIndex("jqbjpm")));
+                    rankModelDetial.setJqzypm(cursor.getString(cursor.getColumnIndex("jqzypm")));
+                    rankModelDetial.setTsjqxfcj(cursor.getString(cursor.getColumnIndex("tsjqxfcj")));
+                    rankModelDetial.setTjsj(cursor.getString(cursor.getColumnIndex("tjsj")));
+                    rankModelDetial.setBjrs(cursor.getString(cursor.getColumnIndex("bjrs")));
+                    rankModelDetial.setZyrs(cursor.getString(cursor.getColumnIndex("zyrs")));
+                    rankModelDetial.setDlrs(cursor.getString(cursor.getColumnIndex("dlrs")));
+                    rankModelDetial.setGpadlpm(cursor.getString(cursor.getColumnIndex("gpadlpm")));
+                }while (cursor.moveToNext());
+            }
+        }
+        return rankModelDetial;
+    }
 
     /**
      * @return 返回 年份列表

@@ -456,12 +456,15 @@ public class RxDayuan {
                 .subscribe(new Subscriber<RankModel>() {
                     @Override
                     public void onCompleted() {
+                        listener.onFinish(0);
+                        Toast.makeText(context,"数据加载成功！",Toast.LENGTH_LONG).show();
 
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         Log.d(RxTag,"error: " + e.toString());
+                        Toast.makeText(context,"数据加载失败，请重试...",Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -473,6 +476,7 @@ public class RxDayuan {
                             RankModelDetial rankModelDetial = gson.fromJson(data,RankModelDetial.class);
                             //Log.d(RxTag,"Ot:" + rankModelDetial.toString());
                             dayuanDailyDatabase.saveRank(rankModelDetial);
+                            //Toast.makeText(context,"正在加载数据，请耐心等待...",Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

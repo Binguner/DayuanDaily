@@ -11,6 +11,7 @@
     <color name="colorDeepBlackText">#2a2a2a</color>
     <color name="colorLittleDeepBlackText">#363636</color>
     <color name="colorMoreDeepBlaceText">#7A7A7A</color>
+    <color name="colorMoreDeepBlaceText2">#abaaaa</color>
     <color name="colorShadow">#dedede</color>
     <color name="colorButtonChooseClass">#4295A5</color>
     <color name="colorClassTableText">#294157</color>
