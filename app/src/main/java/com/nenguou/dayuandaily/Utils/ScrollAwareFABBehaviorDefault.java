@@ -10,7 +10,7 @@ public class ScrollAwareFABBehaviorDefault extends CoordinatorLayout.Behavior<Vi
         super();
     }
 
-    @Override
+   /* @Override
     public boolean onStartNestedScroll(final CoordinatorLayout coordinatorLayout, final FloatingActionButton child,
                                        final View directTargetChild, final View target, final int nestedScrollAxes) {
         // Ensure we react to vertical scrolling
@@ -30,5 +30,5 @@ public class ScrollAwareFABBehaviorDefault extends CoordinatorLayout.Behavior<Vi
             // User scrolled up and the FAB is currently not visible -> show the FAB
             child.show();
         }
-    }
+    }*/
 }

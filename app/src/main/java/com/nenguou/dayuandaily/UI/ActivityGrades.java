@@ -63,8 +63,13 @@ public class ActivityGrades extends AppCompatActivity {
         setTheme(R.style.myAppTheme);
         setContentView(R.layout.activity_grades);
         ButterKnife.bind(this);
+        showTips();
         initData();
         initViews();
+    }
+
+    private void showTips() {
+        Toast.makeText(this,"若要获取最新数据，请点击右上角的刷新。",Toast.LENGTH_SHORT).show();
     }
 
     Handler handler = new Handler(){
@@ -175,6 +180,7 @@ public class ActivityGrades extends AppCompatActivity {
         cap_refresh_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(ActivityGrades.this,"正在加载，请稍等...",Toast.LENGTH_SHORT).show();
                 editor.putString("captcha",input_cap.getText().toString());
                 editor.commit();
                 rxDayuan.getLoginSuccess(new RetrofitCallbackListener() {
@@ -186,6 +192,7 @@ public class ActivityGrades extends AppCompatActivity {
                                 if (status == 0){
                                     dialog.dismiss();
                                     try {
+                                        Toast.makeText(ActivityGrades.this,"加载成功！",Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(ActivityGrades.this,ActivityGrades.class);
                                         startActivity(intent);
                                         ActivityGrades.this.finish();

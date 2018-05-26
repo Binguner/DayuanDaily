@@ -86,13 +86,10 @@ public class Activity_Ranks extends AppCompatActivity {
             super.handleMessage(msg);
             switch (msg.what){
                 case 0:
-                    Log.d("teteet","r121212ffasdf");
-
                     try {
                         Picasso.with(Activity_Ranks.this)
                                 .load("https://api.lylares.com/bing/image/?400/240/0")
                                 .into(ranks_bg);
-                        Log.d("teteet","rffasdf");
                     }catch (Exception e){
                         e.printStackTrace();
                         Toast.makeText(Activity_Ranks.this,"背景图片加载失败",Toast.LENGTH_SHORT).show();
@@ -102,6 +99,7 @@ public class Activity_Ranks extends AppCompatActivity {
         }
     };
     private void initBg() {
+        Toast.makeText(this,"若要加载最新数据，请点击右上角的刷新按钮。",Toast.LENGTH_SHORT).show();
         Message message = new Message();
         message.what = 0;
         handler.sendMessage(message);

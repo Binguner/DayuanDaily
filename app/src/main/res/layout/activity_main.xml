@@ -5,11 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.nenguou.dayuandaily.MainActivity">
+    
+    <com.youth.banner.Banner
+        android:id="@+id/main_banner"
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+
+    </com.youth.banner.Banner>
 
 
     <Button
         android:id="@+id/check_grades"
-        app:layout_constraintTop_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/main_banner"
         android:text="查成绩"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -49,8 +56,6 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-
 
 
         <android.support.constraint.ConstraintLayout

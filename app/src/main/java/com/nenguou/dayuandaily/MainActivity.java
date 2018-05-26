@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.media.Image;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
@@ -38,6 +39,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nenguou.dayuandaily.DataBase.DayuanDailyDatabase;
+import com.nenguou.dayuandaily.ImageLoader.MyImageLoader;
 import com.nenguou.dayuandaily.Model.Major;
 import com.nenguou.dayuandaily.Model.YearCollege;
 import com.nenguou.dayuandaily.UI.ActivityChooseSchedule;
@@ -47,17 +49,25 @@ import com.nenguou.dayuandaily.UI.ActivityScheduler;
 import com.nenguou.dayuandaily.UI.Activity_Ranks;
 import com.nenguou.dayuandaily.Utils.RetrofitCallbackListener;
 import com.nenguou.dayuandaily.Utils.RxDayuan;
+import com.nenguou.dayuandaily.Utils.StatusBarUtil;
 import com.squareup.picasso.Picasso;
+import com.youth.banner.Banner;
+import com.youth.banner.BannerConfig;
+import com.youth.banner.Transformer;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
     private Button test_YearCollege,test_Major,test_classname,test_Class,test_loadYearColleg,test_loadMajor,test_loadClassName,test_loadClass,
             go_to_choose_class_aty,test_login,test_getCaptcha,openAliPay,check_grades,check_schedule,get_money,oneKeyTestTeatch,get_rank_btn;
-    private RxDayuan rxDayuan;
-    WebView openAlbabaWebView;
+    List<ImageView> imageUrls;
+    RxDayuan rxDayuan;
+    @BindView(R.id.main_banner) Banner main_banner;
     ImageView cap_pic;
     private final String mainTag = "MainActivityTag";
     SharedPreferences.Editor editor = null;
@@ -71,11 +81,43 @@ public class MainActivity extends AppCompatActivity {
         if(chooseTheFirstViews()){
            return;
         }
+        setTheme(R.style.myAppTheme);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+        StatusBarUtil.transparentStatusbar(this);
         initId();
         editor = getSharedPreferences("test",MODE_PRIVATE).edit();
         sharedPreferences = getSharedPreferences("test",MODE_PRIVATE);
         setListener();
+        initBanner();
+    }
+
+    private void initBanner() {
+        imageUrls = new ArrayList<>();
+        ImageView imageView = new ImageView(this);
+        imageView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+        //imageUrls.add("https://api.lylares.com/bing/image/?400/240/0");
+        //imageUrls.add("https://api.lylares.com/bing/image/?400/240/1");
+        //imageUrls.add("https://api.lylares.com/bing/image/?400/240/2");
+        imageUrls.add(imageView);
+        // 设置 Banner 样式
+        main_banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE);
+        // 设置图片加载器
+        main_banner.setImageLoader(new MyImageLoader());
+        // 设置图片集合
+        main_banner.setImages(imageUrls);
+        //设置banner动画效果
+        main_banner.setBannerAnimation(Transformer.DepthPage);
+        //设置标题集合（当 banner 样式有显示title时）
+        //main_banner.setBannerTitles(titles);
+        //设置自动轮播，默认为true
+        main_banner.isAutoPlay(true);
+        //设置轮播时间
+        main_banner.setDelayTime(1500);
+        //设置指示器位置（当 banner 模式中有指示器时）
+        main_banner.setIndicatorGravity(BannerConfig.CENTER);
+        //main_banner设置方法全部调用完毕时最后调用
+        main_banner.start();
     }
 
     private boolean chooseTheFirstViews() {

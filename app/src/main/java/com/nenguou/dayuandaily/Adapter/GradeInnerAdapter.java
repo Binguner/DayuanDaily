@@ -31,8 +31,7 @@ public class GradeInnerAdapter extends BaseQuickAdapter<Grades.DataBean.GradesBe
         helper.grade_detial_credit.setText(gradesBeans.get(positon).getCredit());
         helper.grade_detial_grade.setText(gradesBeans.get(positon).getGrade());
         if(positon == 0){
-            Log.d(Tag,gradesBeans.size()+"个   " +"positon = "+positon);
-
+            //Log.d(Tag,gradesBeans.size()+"个   " +"positon = "+positon);
             helper.grade_detial_shadow.setVisibility(View.INVISIBLE);
         }
     }
