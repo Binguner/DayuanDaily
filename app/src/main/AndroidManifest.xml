@@ -26,13 +26,14 @@
         <activity
             android:name=".UI.ActivityScheduler"
             android:screenOrientation="portrait"
-            android:theme="@style/appWelcome"></activity>
+            android:theme="@style/appWelcome" />
         <activity
             android:name=".UI.ActivityLogin"
             android:screenOrientation="portrait" />
-        <activity android:name=".UI.ActivityGrades"></activity>
+        <activity android:name=".UI.ActivityGrades" />
         <activity android:name=".UI.ActivityGradesDetial" />
-        <activity android:name=".UI.Activity_Ranks"></activity>
+        <activity android:name=".UI.Activity_Ranks" />
+        <activity android:name=".UI.Activity_account"></activity>
     </application>
 
 </manifest>

@@ -10,7 +10,9 @@ import com.youth.banner.loader.ImageLoader;
 public class MyImageLoader extends ImageLoader {
     @Override
     public void displayImage(Context context, Object path, ImageView imageView) {
-        Picasso.with(context).load((Uri) path).into(imageView);
+        Picasso.with(context.getApplicationContext())
+                .load((Uri) path)
+                .into(imageView);
         //Uri uri = Uri.parse((String) path);
         //imageView.setImageURI(uri);
     }

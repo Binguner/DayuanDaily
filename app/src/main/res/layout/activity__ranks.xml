@@ -84,6 +84,7 @@
                 >
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
+                    android:foreground="?attr/selectableItemBackground"
                     android:layout_height="match_parent">
 
                     <TextView
@@ -294,6 +295,9 @@
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginEnd="5dp"
                 app:layout_constraintEnd_toStartOf="@id/ranks_card_zypm"
+
+                android:foreground="?attr/selectableItemBackground"
+
                 android:layout_width="120dp"
                 app:cardElevation="@dimen/dp_4"
                 android:layout_marginStart="@dimen/dp_10"

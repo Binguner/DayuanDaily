@@ -38,6 +38,17 @@
         android:textSize="28sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <Spinner
+        android:id="@+id/the_saved_schedule"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="@dimen/dp_10"
+        app:layout_constraintTop_toTopOf="@id/pleasechooseclass"
+        app:layout_constraintBottom_toBottomOf="@id/pleasechooseclass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    </Spinner>
     <ImageView
         android:id="@+id/choose_class_shadow1"
         app:layout_constraintTop_toBottomOf="@+id/pleasechooseclass"

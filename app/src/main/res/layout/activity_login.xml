@@ -56,6 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="45dp"
         app:counterEnabled="true"
+        app:counterTextAppearance="@style/hintAppearance"
         android:layout_marginStart="45dp"
         android:textColorHint="@color/colorWhite"
         app:hintTextAppearance="@style/hintAppearance"
@@ -147,6 +148,37 @@
         android:textColor="@color/colorWhite"
         app:layout_constraintRight_toLeftOf="@+id/loginbtn"
         app:layout_constraintTop_toBottomOf="@+id/code_textinputlayout" />
+
+    <android.support.v7.widget.AppCompatCheckBox
+        android:layout_marginTop="20dp"
+        android:id="@+id/doyouwant2savepassword"
+        android:theme="@style/myCheckboxStyle"
+        app:layout_constraintTop_toBottomOf="@id/loginbtn"
+        android:checked="true"
+        app:layout_constraintEnd_toEndOf="@id/loginbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@id/login_findMe"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="注意：默认为保存密码\n若取消保存密码，用户信息将在关闭此 App 后销毁！"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:textColor="@color/colorWhite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:text="保存密码"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintEnd_toStartOf="@id/doyouwant2savepassword"
+        app:layout_constraintTop_toTopOf="@id/doyouwant2savepassword"
+        app:layout_constraintBottom_toBottomOf="@id/doyouwant2savepassword"
+        android:layout_marginEnd="@dimen/dp_10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/login_findMe"

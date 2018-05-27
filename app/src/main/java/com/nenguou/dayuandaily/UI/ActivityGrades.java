@@ -119,6 +119,7 @@ public class ActivityGrades extends AppCompatActivity {
                         editor.putBoolean("isLoadedData",false);
                         editor.commit();
                         Intent intent = new Intent(ActivityGrades.this,ActivityLogin.class);
+                        intent.putExtra("fromWhere","ActivityGrades2Login");
                         startActivity(intent);
                         ActivityGrades.this.finish();
                         break;

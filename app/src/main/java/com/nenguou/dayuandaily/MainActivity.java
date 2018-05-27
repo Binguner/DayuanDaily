@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.media.Image;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
@@ -38,6 +39,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.nenguou.dayuandaily.DataBase.DayuanDailyDatabase;
 import com.nenguou.dayuandaily.ImageLoader.MyImageLoader;
 import com.nenguou.dayuandaily.Model.Major;
@@ -54,6 +57,7 @@ import com.squareup.picasso.Picasso;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
+import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,13 +65,15 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements  OnBannerListener {
 
     private Button test_YearCollege,test_Major,test_classname,test_Class,test_loadYearColleg,test_loadMajor,test_loadClassName,test_loadClass,
             go_to_choose_class_aty,test_login,test_getCaptcha,openAliPay,check_grades,check_schedule,get_money,oneKeyTestTeatch,get_rank_btn;
-    List<ImageView> imageUrls;
+    List<Uri> imageUrls;
+
     RxDayuan rxDayuan;
     @BindView(R.id.main_banner) Banner main_banner;
+    @BindView(R.id.main_fab_menu) FloatingActionMenu main_fab_menu;
     ImageView cap_pic;
     private final String mainTag = "MainActivityTag";
     SharedPreferences.Editor editor = null;
@@ -90,35 +96,76 @@ public class MainActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences("test",MODE_PRIVATE);
         setListener();
         initBanner();
+        initFloatingButton();
+    }
+
+    private void initFloatingButton() {
+        main_fab_menu.addMenuButton(new FloatingActionButton(this));
+        main_fab_menu.addMenuButton(new FloatingActionButton(this));
+        main_fab_menu.addMenuButton(new FloatingActionButton(this));
     }
 
     private void initBanner() {
         imageUrls = new ArrayList<>();
-        ImageView imageView = new ImageView(this);
-        imageView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-        //imageUrls.add("https://api.lylares.com/bing/image/?400/240/0");
-        //imageUrls.add("https://api.lylares.com/bing/image/?400/240/1");
-        //imageUrls.add("https://api.lylares.com/bing/image/?400/240/2");
-        imageUrls.add(imageView);
+
+        //imageView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+        imageUrls.add(Uri.parse("https://api.lylares.com/bing/image/?400/240/-1"));
+        imageUrls.add(Uri.parse("https://api.lylares.com/bing/image/?400/240/0"));
+        imageUrls.add(Uri.parse("https://api.lylares.com/bing/image/?400/240/1"));
+        imageUrls.add(Uri.parse("https://api.lylares.com/bing/image/?400/240/2"));
+
+        main_banner.setImages(imageUrls)
+                .setImageLoader(new MyImageLoader())
+                .setOnBannerListener(this)
+                .start();
+        //imageUrls.add(imageView);
         // 设置 Banner 样式
-        main_banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE);
-        // 设置图片加载器
-        main_banner.setImageLoader(new MyImageLoader());
+        //main_banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
+
         // 设置图片集合
-        main_banner.setImages(imageUrls);
+        //main_banner.setImages(imageUrls);
+
+        // 设置图片加载器
+        //main_banner.setImageLoader(new MyImageLoader());
+
         //设置banner动画效果
-        main_banner.setBannerAnimation(Transformer.DepthPage);
+        //main_banner.setBannerAnimation(Transformer.Default);
+
         //设置标题集合（当 banner 样式有显示title时）
         //main_banner.setBannerTitles(titles);
+
+        // 设置点击事件
+        //main_banner.setOnBannerListener(new OnBannerListener() {
+            //@Override
+            //public void OnBannerClick(int position) {
+               // Log.d(mainTag,"Clicked " + position);
+           // }
+       // });
+
+        // 设置是否允许手动滑动轮播图
+        //main_banner.setViewPagerIsScroll(true);
+
         //设置自动轮播，默认为true
-        main_banner.isAutoPlay(true);
+        //main_banner.isAutoPlay(true);
+
         //设置轮播时间
-        main_banner.setDelayTime(1500);
+        //main_banner.setDelayTime(3000);
+
+       /* Log.d(mainTag,"before");
+
+        Log.d(mainTag,"after");*/
+
         //设置指示器位置（当 banner 模式中有指示器时）
-        main_banner.setIndicatorGravity(BannerConfig.CENTER);
-        //main_banner设置方法全部调用完毕时最后调用
-        main_banner.start();
+        //main_banner.setIndicatorGravity(BannerConfig.RIGHT);
+        //main_banner 设置方法全部调用完毕时最后调用
+        //main_banner.start();
     }
+
+    @Override
+    public void OnBannerClick(int position) {
+        Toast.makeText(getApplicationContext(),"You clicked " + position,Toast.LENGTH_SHORT).show();
+    }
+
 
     private boolean chooseTheFirstViews() {
         sharedPreferences1 = PreferenceManager.getDefaultSharedPreferences(this);
@@ -153,8 +200,24 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        main_banner.startAutoPlay();
+        Log.d(mainTag,"onStart");
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        main_banner.stopAutoPlay();
+        Log.d(mainTag,"onStop");
+
+    }
+
     private void setListener() {
-        test_YearCollege.setOnClickListener(new View.OnClickListener() {
+/*        test_YearCollege.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 rxDayuan.getYearCollege(new RetrofitCallbackListener() {
@@ -213,7 +276,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 List<Major.DataBean> list = dayuanDailyDatabase.loadMajor(12);
                 for(Major.DataBean dataBean : list){
-                    Log.d(mainTag, "Id: "+dataBean.getId() + "  College_id : " + dataBean.getCollegeId()+"  Major: "+dataBean.getMajor());
+                    //Log.d(mainTag, "Id: "+dataBean.getId() + "  College_id : " + dataBean.getCollegeId()+"  Major: "+dataBean.getMajor());
 
                 }
             }
@@ -254,9 +317,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //rxDayuan.getCaptcha();
             }
-        });
+        });*/
 
-        openAliPay.setOnClickListener(new View.OnClickListener() {
+        /*openAliPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ApplicationInfo applicationInfo = null;
@@ -277,8 +340,8 @@ public class MainActivity extends AppCompatActivity {
                     //}
                     startActivity(intent);
                 }
-            }
-        });
+            }*/
+        //});
 
 
 
@@ -295,6 +358,7 @@ public class MainActivity extends AppCompatActivity {
 //                    openAlibaba();
 //                }else {
                     Intent intent = new Intent(MainActivity.this, ActivityLogin.class);
+                    intent.putExtra("fromWhere","MainActivity2Grades");
                     startActivity(intent);
 //                }
 
@@ -310,10 +374,9 @@ public class MainActivity extends AppCompatActivity {
 //                    editor.commit();
 //                    openAlibaba();
 //                }else {
-                    Intent intent = new Intent(MainActivity.this, ActivityScheduler.class);
-                    startActivity(intent);
+                Intent intent = new Intent(MainActivity.this, ActivityScheduler.class);
+                startActivity(intent);
 //                }
-
             }
         });
 
@@ -485,7 +548,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }else {
                     // 没有保存学号和密码
-
+                    Toast.makeText(MainActivity.this,"请先登陆",Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -495,9 +558,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 sharedPreferences = getSharedPreferences("User_grades",MODE_PRIVATE);
-                String username = sharedPreferences.getString("username","2016006328");
-                String password = sharedPreferences.getString("password","171425");
-
+                Boolean isLoadedData = sharedPreferences.getBoolean("isLoadedData",false);
+                String username = sharedPreferences.getString("username","0000");
+                String password = sharedPreferences.getString("password","0000");
+                if(!isLoadedData){
+                    Intent intent = new Intent(MainActivity.this,ActivityLogin.class);
+                    startActivity(intent);
+                    return;
+                }
                 if(dayuanDailyDatabase.isExitThisRank(Integer.parseInt(username))) {
 
                     Intent intent = new Intent(MainActivity.this, Activity_Ranks.class);
@@ -529,6 +597,26 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        ///onDestroy();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        sharedPreferences = getSharedPreferences("User_grades",MODE_PRIVATE);
+        boolean want2SavePassword = sharedPreferences.getBoolean("want2SavePassword",true);
+        if(!want2SavePassword){
+            editor = getSharedPreferences("User_grades",MODE_PRIVATE).edit();
+            editor.putString("username","0000");
+            editor.putString("password","0000");
+            editor.putBoolean("isLoadedData",false);
+            editor.commit();
+        }
     }
 
     public void openAlibaba(){
@@ -579,19 +667,21 @@ public class MainActivity extends AppCompatActivity {
         get_money = findViewById(R.id.get_money);
         check_schedule = findViewById(R.id.check_schedule);
         check_grades = findViewById(R.id.check_grades);
-        openAliPay = findViewById(R.id.openAliPay);
-        test_getCaptcha = findViewById(R.id.test_getCaptcha);
-        test_login = findViewById(R.id.test_login);
-        go_to_choose_class_aty = findViewById(R.id.go_to_choose_class_aty);
-        test_loadClass = findViewById(R.id.test_loadClass);
-        test_loadYearColleg = findViewById(R.id.test_loadYearColleg);
+        //openAliPay = findViewById(R.id.openAliPay);
+       //test_getCaptcha = findViewById(R.id.test_getCaptcha);
+       // test_login = findViewById(R.id.test_login);
+       // go_to_choose_class_aty = findViewById(R.id.go_to_choose_class_aty);
+       /* test_loadClass = findViewById(R.id.test_loadClass);
+        test_loadYearColleg = findViewById(R.id.test_loadYearColleg);*/
         rxDayuan = new RxDayuan(this);
-        test_YearCollege = findViewById(R.id.test_YearCollege);
+       /* test_YearCollege = findViewById(R.id.test_YearCollege);
         test_Major = findViewById(R.id.test_Major);
         test_classname = findViewById(R.id.test_classname);
         test_Class = findViewById(R.id.test_Class);
         test_loadMajor = findViewById(R.id.test_loadMajor);
-        test_loadClassName = findViewById(R.id.test_loadClassName);
+        test_loadClassName = findViewById(R.id.test_loadClassName);*/
         dayuanDailyDatabase = DayuanDailyDatabase.getInstance(this);
     }
+
+
 }

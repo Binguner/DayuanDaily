@@ -590,6 +590,20 @@ public class DayuanDailyDatabase {
 
     }
 
+    public int getScheduleId(String className){
+        Cursor cursor = sqLiteDatabase.query("Schedule",null,"class_name = ?",new String[]{String.valueOf(className)},null,null,null);
+        int scheduleId = 0;
+        if(cursor.moveToFirst()){
+            do{
+                if(className.equals(cursor.getString(cursor.getColumnIndex("class_name")))){
+                    scheduleId = cursor.getInt(cursor.getColumnIndex("schedule_id"));
+                    return scheduleId;
+                }
+            }while (cursor.moveToNext());
+        }
+        return scheduleId;
+    }
+
     /**
      * @param schedule_id 传入课表的唯一 id
      * @return 如果数据库中存在这个课表，返回为 true
@@ -607,6 +621,49 @@ public class DayuanDailyDatabase {
             }while (cursor.moveToNext());
         }
         cursor.close();
+        return false;
+    }
+
+    /**
+     * 清空课表缓存
+     */
+    public void clearTheSchedule(){
+        List<String> classNameList = getSavedClassName();
+        for(String mString : classNameList) {
+            sqLiteDatabase.delete("Schedule", "class_name like ?", new String[]{ mString });
+        }
+    }
+
+    /**
+     * @return 返回保存过的班级名称
+     */
+    public List<String> getSavedClassName(){
+        Cursor cursor = sqLiteDatabase.query("Schedule",null,null,null,null,null,null,null);
+        List<String> classNameList = new ArrayList<>();
+        classNameList.add("已存课表");
+        classNameList.add("清空课表");
+        if(cursor.moveToFirst()){
+            do{
+                if(!isExistThisClassInScheduler(cursor.getString(cursor.getColumnIndex("class_name")),classNameList)){
+                    classNameList.add(cursor.getString(cursor.getColumnIndex("class_name")));
+                }
+            }while (cursor.moveToNext());
+        }
+        return classNameList;
+    }
+
+    /**
+     * 判断 list 中是否存在这个 String
+     * @param className 班级名称
+     * @param list 保存班级名称的 list
+     * @return 如果存在则返回 true
+     */
+    private boolean isExistThisClassInScheduler(String className, List<String> list){
+        for(String s : list){
+            if( s.equals(className)){
+                return true;
+            }
+        }
         return false;
     }
 
@@ -668,6 +725,8 @@ public class DayuanDailyDatabase {
         cursor.close();
         return gradesBeans;
     }
+
+    
 
     public void setTeacherNameList(List<String> teacherNameList){
         this.teacherNameList = teacherNameList;

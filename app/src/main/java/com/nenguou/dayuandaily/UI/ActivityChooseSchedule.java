@@ -1,6 +1,7 @@
 package com.nenguou.dayuandaily.UI;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -8,9 +9,13 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,7 +51,7 @@ import cn.qqtheme.framework.widget.WheelView;
  * term:String 2017-2018-2-1
  * schedule_id:Int 2465  in rxDayuan
  */
-public class ActivityChooseSchedule extends AppCompatActivity {
+public class ActivityChooseSchedule extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     private final String AtyCSTag = "ActivityChoosheduleTag";
     private final int CHOOSE_YEAR = 0;
@@ -65,21 +70,51 @@ public class ActivityChooseSchedule extends AppCompatActivity {
     @BindView(R.id.choose_college_cardview) CardView choose_college_cardview;
     @BindView(R.id.choose_major_cardview) CardView choose_major_cardview;
     @BindView(R.id.choose_class_cardview) CardView choose_class_cardview;
+
+    @BindView(R.id.choose_schedule_toolbar) Toolbar choose_schedule_toolbar;
+    @BindView(R.id.the_saved_schedule) Spinner the_saved_schedule;
+
+    List<String> class_name_list;
     DayuanDailyDatabase dayuanDailyDatabase;
     RxDayuan rxDayuan;
+    String[] classNameArray;
+    SharedPreferences.Editor editor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(R.style.myAppTheme);
         setContentView(R.layout.activity_choose_schedule);
         ButterKnife.bind(this);
+        editor = this.getSharedPreferences("User_YearCollege", Context.MODE_PRIVATE).edit();
         rxDayuan = new RxDayuan(this);
-        initDatas();
         dayuanDailyDatabase = DayuanDailyDatabase.getInstance(this);
+        setListener();
+        initDatas();
 
     }
 
+    private void setListener() {
+        choose_schedule_toolbar.setNavigationIcon(R.mipmap.back_bg);
+        choose_schedule_toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ActivityChooseSchedule.this.finish();
+            }
+        });
+    }
+
     private void initDatas() {
+        class_name_list = new ArrayList<>();
+        class_name_list = dayuanDailyDatabase.getSavedClassName();
+        classNameArray = class_name_list.toArray(new String[0]);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,android.R.id.text1,classNameArray);
+        //the_saved_schedule.setAdapter(arrayAdapter);
+        //SharedPreferences.Editor editor = this.getSharedPreferences("User_YearCollege", Context.MODE_PRIVATE).edit();
+        the_saved_schedule.setOnItemSelectedListener(this);
+        the_saved_schedule.setAdapter(arrayAdapter);
+
+
         SharedPreferences sharedPreferences = getSharedPreferences("User_YearCollege",MODE_PRIVATE);
         boolean isFirstLoad = sharedPreferences.getBoolean("isFirstLoadCollege",true);
         //boolean isScheduleSelected = sharedPreferences.getBoolean("isScheduleSelected",false);
@@ -111,6 +146,34 @@ public class ActivityChooseSchedule extends AppCompatActivity {
 //            startActivity(intent);
 //            this.finish();
 //        }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        if( i == 1){
+            dayuanDailyDatabase.clearTheSchedule();
+            class_name_list.clear();
+            class_name_list.add("已存课表");
+            class_name_list.add("清空课表");
+            editor.putBoolean("isScheduleSelected",false);
+            editor.commit();
+            String[] newArray = class_name_list.toArray(new String[0]);
+            ArrayAdapter<String> Adapter = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,android.R.id.text1,newArray);
+
+            the_saved_schedule.setAdapter(Adapter);
+        }
+        if(i != 0 && i != 1){
+            editor.putInt("schedule_id", dayuanDailyDatabase.getScheduleId(classNameArray[i]));
+            editor.commit();
+            Intent intent = new Intent(ActivityChooseSchedule.this,ActivityScheduler.class);
+            startActivity(intent);
+            ActivityChooseSchedule.this.finish();
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 
     @OnClick(R.id.choose_year_cardview)
@@ -156,6 +219,12 @@ public class ActivityChooseSchedule extends AppCompatActivity {
 
     @OnClick(R.id.chooseClassOver)
     public void chooseClassOverClick(View v){
+
+        if(chooseClassText.getText().toString().equals("请选择")){
+            Toast.makeText(ActivityChooseSchedule.this,"请先选择！",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         SharedPreferences.Editor editor = getSharedPreferences("User_YearCollege",MODE_PRIVATE).edit();
         editor.putBoolean("isScheduleSelected",true);
         editor.commit();
@@ -253,7 +322,7 @@ public class ActivityChooseSchedule extends AppCompatActivity {
                 if(classNameList != null){
                     dataArray = new String[classNameList.size()];
                     for(int i = 0 ; i < classNameList.size(); i++){
-                        Log.d(AtyCSTag,classNameList.get(i).toString());
+                        //Log.d(AtyCSTag,classNameList.get(i).toString());
                         dataArray[i] = classNameList.get(i);
                     }
                     picker = new OptionPicker(this,dataArray);
@@ -282,4 +351,6 @@ public class ActivityChooseSchedule extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+
 }

@@ -16,6 +16,7 @@ import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -23,6 +24,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -50,6 +52,7 @@ public class ActivityLogin extends AppCompatActivity {
      * captcha : String qwer
      * sessionId : String = cookies
      * firstGoToScheduler : true    // 系统设置
+     * want2SavePassword: true
      */
 
     @BindView(R.id.username_textinputlayout) TextInputLayout username_textinputlayout;
@@ -62,6 +65,7 @@ public class ActivityLogin extends AppCompatActivity {
     @BindView(R.id.canclebtn) Button canclebtn;
     @BindView(R.id.login_findMe) TextView login_findMe;
     @BindView(R.id.aty_login_captcha_pic) ImageView aty_login_captcha_pic;
+    @BindView(R.id.doyouwant2savepassword) AppCompatCheckBox doyouwant2savepassword;
     String fromWhere;
     RxDayuan rxDayuan;
     SharedPreferences sharedPreferences;
@@ -77,8 +81,8 @@ public class ActivityLogin extends AppCompatActivity {
         ButterKnife.bind(this);
         rxDayuan = new RxDayuan(this);
         sharedPreferences = getSharedPreferences("User_grades",MODE_PRIVATE);
-        checkIfLoadedGrades();
         checkFromWhere();
+        checkIfLoadedGrades();
         editor = getSharedPreferences("User_grades",MODE_PRIVATE).edit();
         transparentStatus();
         initViews();
@@ -91,7 +95,7 @@ public class ActivityLogin extends AppCompatActivity {
     }
 
     private void checkIfLoadedGrades() {
-        if(sharedPreferences.getBoolean("isLoadedData",false)){
+        if(sharedPreferences.getBoolean("isLoadedData",false) && null!=fromWhere&&fromWhere.equals("MainActivity2Grades") ){
             Intent intent = new Intent(this,ActivityGrades.class);
             startActivity(intent);
             ActivityLogin.this.finish();
@@ -147,10 +151,23 @@ public class ActivityLogin extends AppCompatActivity {
             }
         });
 
-        //Log.d(loginTag,imageUrl+"");
     }
 
     private void setListener() {
+
+        doyouwant2savepassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(!b) {
+                    editor.putBoolean("want2SavePassword", false);
+                    editor.commit();
+                }else{
+                    editor.putBoolean("want2SavePassword", true);
+                    editor.commit();
+                }
+            }
+        });
+
         ed_username.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -208,6 +225,9 @@ public class ActivityLogin extends AppCompatActivity {
     }
 
     private void initViews() {
+        doyouwant2savepassword.setChecked(true);
+        editor.putBoolean("want2SavePassword", true);
+        editor.commit();
         aty_login_captcha_pic = findViewById(R.id.aty_login_captcha_pic);
         username_textinputlayout.setHint("Username");
         ed_username.setTextColor(getResources().getColor(R.color.colorWhite));
@@ -265,19 +285,29 @@ public class ActivityLogin extends AppCompatActivity {
                         @Override
                         public void onFinish(int status) {
                             if (status == 0) {
+                                Toast.makeText(ActivityLogin.this,"登陆成功！",Toast.LENGTH_SHORT).show();
                                 editor.putBoolean("isLoadedData", true);
                                 editor.commit();
-                                if(null!=fromWhere&&fromWhere.equals("MainActivity")){
+                                //Log.d("ddsfs",fromWhere+"");
+                                if(null != fromWhere && (fromWhere.equals("MainActivity2Grades") || fromWhere.equals("ActivityGrades2Login"))){
+                                    Intent intent = new Intent(ActivityLogin.this, ActivityGrades.class);
+                                    startActivity(intent);
+                                    loginbtn.setClickable(true);
+                                    ActivityLogin.this.finish();
+                                }else {
+                                    ActivityLogin.this.finish();
+                                }
+                                /*if(null!=fromWhere&&fromWhere.equals("MainActivity")){
                                     ActivityLogin.this.finish();
                                 }else {
                                     Intent intent = new Intent(ActivityLogin.this, ActivityGrades.class);
                                     startActivity(intent);
                                     loginbtn.setClickable(true);
                                     ActivityLogin.this.finish();
-                                }
+                                }*/
                             }
                             if (status == 1) {
-                                Toast.makeText(ActivityLogin.this, "网络异常，请重试", Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(ActivityLogin.this, "网络异常，请重试", Toast.LENGTH_SHORT).show();
                                 loginbtn.setClickable(true);
                             }
                         }
@@ -332,7 +362,7 @@ public class ActivityLogin extends AppCompatActivity {
 
     @OnClick(R.id.login_findMe)
     void findMe(View v){
-        openQQ(v,"819985138");
+        openQQ(v,"478718805");
     }
 
     private void openQQ(View view,@Nullable String qqNum){

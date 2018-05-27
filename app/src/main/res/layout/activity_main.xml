@@ -13,9 +13,20 @@
 
     </com.youth.banner.Banner>
 
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/main_fab_menu"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
+    </com.github.clans.fab.FloatingActionMenu>
     <Button
         android:id="@+id/check_grades"
+        android:clickable="true"
+        android:layout_marginTop="@dimen/dp_4"
         app:layout_constraintTop_toBottomOf="@id/main_banner"
         android:text="查成绩"
         android:layout_width="match_parent"
@@ -53,7 +64,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <ScrollView
+
+
+    <!--<ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -142,7 +155,7 @@
                 android:layout_height="wrap_content" />
 
         </android.support.constraint.ConstraintLayout>
-    </ScrollView>
+    </ScrollView>-->
 
 
 
