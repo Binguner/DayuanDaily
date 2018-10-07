@@ -1,33 +1,33 @@
 package com.nenguou.dayuandaily.Utils;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.stream.JsonReader;
 import com.nenguou.dayuandaily.BuildConfig;
 import com.nenguou.dayuandaily.DataBase.DayuanDailyDatabase;
+import com.nenguou.dayuandaily.Listener.CallbackListener;
+import com.nenguou.dayuandaily.Listener.RetrofitCallbackListener;
 import com.nenguou.dayuandaily.Model.Captcha;
 import com.nenguou.dayuandaily.Model.Class;
 import com.nenguou.dayuandaily.Model.ClassDetial;
 import com.nenguou.dayuandaily.Model.ClassName;
 import com.nenguou.dayuandaily.Model.Evaluate;
 import com.nenguou.dayuandaily.Model.Grades;
+import com.nenguou.dayuandaily.Model.LoginBean;
 import com.nenguou.dayuandaily.Model.Major;
 import com.nenguou.dayuandaily.Model.RankLoginModel;
 import com.nenguou.dayuandaily.Model.RankModel;
 import com.nenguou.dayuandaily.Model.RankModelDetial;
 import com.nenguou.dayuandaily.Model.YearCollege;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -43,7 +43,6 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
-import rx.Scheduler;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
@@ -135,8 +134,8 @@ public class RxDayuan {
 
     public void getGrades(final RetrofitCallbackListener listener){
         SharedPreferences sharedPreferences = context.getSharedPreferences("User_grades",Context.MODE_PRIVATE);
-        String sessionId = sharedPreferences.getString("cookies","");
-        service.getGrades(sessionId)
+        //String sessionId = sharedPreferences.getString("cookies","");
+        service.getGrades()
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -160,6 +159,36 @@ public class RxDayuan {
                             }
                             dayuanDailyDatabase.dropAndCreateTableGrades();
                             dayuanDailyDatabase.saveGrades(grades);
+                        }
+                    }
+                });
+    }
+
+    public void getGrades2(final CallbackListener callbackListener){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("User_grades",Context.MODE_PRIVATE);
+        service.getGrades()
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Grades>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(Grades grades) {
+                        if (null != grades ){
+                            callbackListener.callBack(grades.getCode(),grades.getMsg());
+                            if (grades.getMsg().equals("success")){
+                                dayuanDailyDatabase.dropAndCreateTableGrades();
+                                dayuanDailyDatabase.saveGrades(grades);
+                            }
                         }
                     }
                 });
@@ -192,19 +221,81 @@ public class RxDayuan {
                 });
     }
 
+    public void getLoginSuccess2(final CallbackListener listener){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("User_grades",Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString("username","");
+        String password = sharedPreferences.getString("password","");
+        String remember_me = sharedPreferences.getString("want2SavePassword","false");
+
+        service.login(username,password,remember_me)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<LoginBean>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(LoginBean loginBean) {
+                        listener.callBack(loginBean.getCode(),loginBean.getMsg());
+
+                        /*if(loginBean.getCode() == 1){
+
+                            getGrades2(new CallbackListener() {
+                                @Override
+                                public void callBack(int status, @NotNull String msg) {
+
+                                }
+                            });
+                        }*/
+
+                    }
+                });
+    }
+
     public void getLoginSuccess(final RetrofitCallbackListener listener){
         SharedPreferences sharedPreferences = context.getSharedPreferences("User_grades",Context.MODE_PRIVATE);
         String username = sharedPreferences.getString("username","");
         String password = sharedPreferences.getString("password","");
-        final String captcha = sharedPreferences.getString("captcha","");
-        String sessionId = sharedPreferences.getString("cookies","");
-        Log.d(RxTag,"username : "+ username + "  password :" + password + "captcha :" + captcha +"  sessionId : " + sessionId);
+        //final String captcha = sharedPreferences.getString("captcha","");
+        String remember_me = sharedPreferences.getString("want2SavePassword","false");
+        //Log.d(RxTag,"username : "+ username + "  password :" + password + "captcha :" + captcha +"  sessionId : " + sessionId);
         try {
-            service.login(username,password,captcha,sessionId)
+            service.login(username,password,remember_me)
                     .subscribeOn(Schedulers.io())
                     .unsubscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Subscriber<String>() {
+                    .subscribe(new Subscriber<LoginBean>() {
+                        @Override
+                        public void onCompleted() {
+                            listener.onFinish(0);
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onNext(LoginBean loginBean) {
+                            if(null != loginBean){
+                                if (loginBean.getCode() == 1){
+                                    listener.onFinish(0);
+                                    listener.setText("登陆成功！");
+                                }else if(loginBean.getCode() == -1){
+                                    listener.onFinish(1);
+                                    listener.setText("用户名或密码输入错误，登录失败!");
+                                }
+                            }
+                        }
+                    });
+                    /*.subscribe(new Subscriber<String>() {
                         @Override
                         public void onCompleted() {
                             //Log.d(RxTag,"onCompleted  !");
@@ -226,7 +317,7 @@ public class RxDayuan {
                             s.trim();
                             //Log.d(RxTag,s.toString()+" ghjhgfgh !");
                         }
-                    });
+                    });*/
         }catch (Exception e){
             e.printStackTrace();
         }

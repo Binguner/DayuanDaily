@@ -44,7 +44,14 @@ public class Grades {
 
     public static class DataBean {
         /**
-         * grades : [{"classNumber":"00000131","classOrder":"08","className":"军事理论","englishName":"Military Theory","credit":"2","classInfo":"综合必修","grade":"65.0"},{"classNumber":"00003171","classOrder":"08","className":"程序设计技术B","englishName":"Programming Techniques B","credit":"3.5","classInfo":"综合必修","grade":"65.0"}]
+         * grades : [{"classNumber":"00000131",
+         *              "classOrder":"08",
+         *              "className":"军事理论",
+         *              "englishName":"Military Theory",
+         *              "credit":"2",
+         *              "classInfo":"综合必修",
+         *              "grade":"65.0"},
+         *              {"classNumber":"00003171","classOrder":"08","className":"程序设计技术B","englishName":"Programming Techniques B","credit":"3.5","classInfo":"综合必修","grade":"65.0"}]
          * name : 2016-2017学年秋(两学期)
          */
 

@@ -1,16 +1,12 @@
 package com.nenguou.dayuandaily.UI;
 
-import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,19 +19,16 @@ import com.nenguou.dayuandaily.DataBase.DayuanDailyDatabase;
 import com.nenguou.dayuandaily.Model.Major;
 import com.nenguou.dayuandaily.Model.YearCollege;
 import com.nenguou.dayuandaily.R;
-import com.nenguou.dayuandaily.Utils.RetrofitCallbackListener;
+import com.nenguou.dayuandaily.Listener.RetrofitCallbackListener;
 import com.nenguou.dayuandaily.Utils.RxDayuan;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.InflaterInputStream;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.qqtheme.framework.picker.OptionPicker;
-import cn.qqtheme.framework.picker.WheelPicker;
-import cn.qqtheme.framework.widget.WheelView;
 
 /**
  * SharedPreferences : User_YearCollege

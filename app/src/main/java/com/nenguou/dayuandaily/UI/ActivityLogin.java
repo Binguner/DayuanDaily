@@ -12,7 +12,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,12 +28,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
+import com.nenguou.dayuandaily.Listener.CallbackListener;
 import com.nenguou.dayuandaily.R;
-import com.nenguou.dayuandaily.Utils.RetrofitCallbackListener;
+import com.nenguou.dayuandaily.Listener.RetrofitCallbackListener;
 import com.nenguou.dayuandaily.Utils.RxDayuan;
 import com.squareup.picasso.Picasso;
+
+import org.jetbrains.annotations.NotNull;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,6 +54,7 @@ public class ActivityLogin extends AppCompatActivity {
      * sessionId : String = cookies
      * firstGoToScheduler : true    // 系统设置
      * want2SavePassword: true
+     * loadedGrade : false
      */
 
     @BindView(R.id.username_textinputlayout) TextInputLayout username_textinputlayout;
@@ -95,6 +97,7 @@ public class ActivityLogin extends AppCompatActivity {
     }
 
     private void checkIfLoadedGrades() {
+        //Log.d("qweqwe",sharedPreferences.getBoolean("isLoadedData",false) +"");
         if(sharedPreferences.getBoolean("isLoadedData",false) && null!=fromWhere&&fromWhere.equals("MainActivity2Grades") ){
             Intent intent = new Intent(this,ActivityGrades.class);
             startActivity(intent);
@@ -125,7 +128,7 @@ public class ActivityLogin extends AppCompatActivity {
         }
     };
 
-    private void loadCaptcha(){
+    /*private void loadCaptcha(){
         rxDayuan.getCaptcha(new RetrofitCallbackListener() {
             @Override
             public void onFinish(int status) {
@@ -149,9 +152,9 @@ public class ActivityLogin extends AppCompatActivity {
             public void setText(String msg) {
 
             }
-        });
+        });*/
 
-    }
+    //}
 
     private void setListener() {
 
@@ -159,10 +162,10 @@ public class ActivityLogin extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(!b) {
-                    editor.putBoolean("want2SavePassword", false);
+                    editor.putString("want2SavePassword", "false");
                     editor.commit();
                 }else{
-                    editor.putBoolean("want2SavePassword", true);
+                    editor.putString("want2SavePassword", "true");
                     editor.commit();
                 }
             }
@@ -226,13 +229,13 @@ public class ActivityLogin extends AppCompatActivity {
 
     private void initViews() {
         doyouwant2savepassword.setChecked(true);
-        editor.putBoolean("want2SavePassword", true);
+        editor.putString("want2SavePassword", "true");
         editor.commit();
         aty_login_captcha_pic = findViewById(R.id.aty_login_captcha_pic);
         username_textinputlayout.setHint("Username");
         ed_username.setTextColor(getResources().getColor(R.color.colorWhite));
         password_textinputlayout.setHint("Password");
-        loadCaptcha();
+        //loadCaptcha();
         //ed_code.draw
     }
 
@@ -244,10 +247,9 @@ public class ActivityLogin extends AppCompatActivity {
     }
 
 
-
     @OnClick(R.id.aty_login_captcha_pic)
     public void get_CaptchaAgain(View view){
-        loadCaptcha();
+        //loadCaptcha();
     }
 
     @OnClick(R.id.loginbtn)
@@ -257,28 +259,60 @@ public class ActivityLogin extends AppCompatActivity {
         }else {
             username_textinputlayout.setErrorEnabled(false);
             editor.putString("username",username_textinputlayout.getEditText().getText().toString());
-            Log.d(loginTag,"UserName is : "+ username_textinputlayout.getEditText().getText().toString());
+            //Log.d(loginTag,"UserName is : "+ username_textinputlayout.getEditText().getText().toString());
         }
+
         if(password_textinputlayout.getEditText().getText().toString().isEmpty()){
             password_textinputlayout.setError("请输入密码");
         }else {
             password_textinputlayout.setErrorEnabled(false);
             editor.putString("password",password_textinputlayout.getEditText().getText().toString());
-            Log.d(loginTag,"password is : "+ password_textinputlayout.getEditText().getText().toString());
+            //Log.d(loginTag,"password is : "+ password_textinputlayout.getEditText().getText().toString());
         }
+
         if(code_textinputlayout.getEditText().getText().toString().isEmpty()){
-            code_textinputlayout.setError("请输入验证码");
+            //code_textinputlayout.setError("请输入验证码");
         }else {
             code_textinputlayout.setErrorEnabled(false);
             editor.putString("captcha",code_textinputlayout.getEditText().getText().toString());
-            Log.d(loginTag,"captcha is : "+ code_textinputlayout.getEditText().getText().toString());
+            //Log.d(loginTag,"captcha is : "+ code_textinputlayout.getEditText().getText().toString());
         }
         editor.commit();
         loginbtn.setClickable(false);
         Toast.makeText(this,"正在加载，请稍后!",Toast.LENGTH_SHORT).show();
-        if(!username_textinputlayout.getEditText().getText().toString().isEmpty() && !password_textinputlayout.getEditText().getText().toString().isEmpty()
-                && !code_textinputlayout.getEditText().getText().toString().isEmpty()) {
-            rxDayuan.getLoginSuccess(new RetrofitCallbackListener() {
+
+        if(!username_textinputlayout.getEditText().getText().toString().isEmpty()
+                && !password_textinputlayout.getEditText().getText().toString().isEmpty()
+                //&& !code_textinputlayout.getEditText().getText().toString().isEmpty()
+                ) {
+
+            rxDayuan.getLoginSuccess2(new CallbackListener() {
+                @Override
+                public void callBack(int status, @NotNull String msg) {
+
+                    if( null != msg && !msg.equals("") && !msg.isEmpty()){
+                        Toast.makeText(ActivityLogin.this,msg,Toast.LENGTH_SHORT).show();
+                    }
+
+                    if (status == 1){
+                        editor.putBoolean("isLoadedData", true);
+                        editor.commit();
+
+                        if(null != fromWhere && (fromWhere.equals("MainActivity2Grades") || fromWhere.equals("ActivityGrades2Login"))){
+                            Intent intent = new Intent(ActivityLogin.this, ActivityGrades.class);
+                            startActivity(intent);
+                            loginbtn.setClickable(true);
+                            ActivityLogin.this.finish();
+                        }
+
+                    }else {
+                        loginbtn.setClickable(true);
+
+                    }
+
+                }
+            });
+            /*rxDayuan.getLoginSuccess(new RetrofitCallbackListener() {
                 @Override
                 public void onFinish(int status) {
                     rxDayuan.getGrades(new RetrofitCallbackListener() {
@@ -292,22 +326,15 @@ public class ActivityLogin extends AppCompatActivity {
                                 if(null != fromWhere && (fromWhere.equals("MainActivity2Grades") || fromWhere.equals("ActivityGrades2Login"))){
                                     Intent intent = new Intent(ActivityLogin.this, ActivityGrades.class);
                                     startActivity(intent);
-                                    loginbtn.setClickable(true);
+                                    //loginbtn.setClickable(true);
                                     ActivityLogin.this.finish();
                                 }else {
                                     ActivityLogin.this.finish();
                                 }
-                                /*if(null!=fromWhere&&fromWhere.equals("MainActivity")){
-                                    ActivityLogin.this.finish();
-                                }else {
-                                    Intent intent = new Intent(ActivityLogin.this, ActivityGrades.class);
-                                    startActivity(intent);
-                                    loginbtn.setClickable(true);
-                                    ActivityLogin.this.finish();
-                                }*/
+                                loginbtn.setClickable(true);
                             }
                             if (status == 1) {
-                                //Toast.makeText(ActivityLogin.this, "网络异常，请重试", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ActivityLogin.this,"用户名或密码输入错误，登录失败!" , Toast.LENGTH_SHORT).show();
                                 loginbtn.setClickable(true);
                             }
                         }
@@ -320,7 +347,9 @@ public class ActivityLogin extends AppCompatActivity {
 
                         @Override
                         public void setText(String msg) {
-
+                            if(msg != null && !msg.equals("")){
+                                Toast.makeText(ActivityLogin.this,msg , Toast.LENGTH_SHORT).show();
+                            }
                         }
                     });
 
@@ -337,7 +366,7 @@ public class ActivityLogin extends AppCompatActivity {
                 public void setText(String msg) {
 
                 }
-            });
+            });*/
         }
     }
 

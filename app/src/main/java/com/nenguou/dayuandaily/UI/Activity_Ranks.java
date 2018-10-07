@@ -7,7 +7,6 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.View;
 import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
@@ -18,12 +17,10 @@ import com.nenguou.dayuandaily.DataBase.DayuanDailyDatabase;
 import com.nenguou.dayuandaily.Listeners.AppBarStateChangeListener;
 import com.nenguou.dayuandaily.Model.RankModelDetial;
 import com.nenguou.dayuandaily.R;
-import com.nenguou.dayuandaily.Utils.RetrofitCallbackListener;
+import com.nenguou.dayuandaily.Listener.RetrofitCallbackListener;
 import com.nenguou.dayuandaily.Utils.RxDayuan;
 import com.nenguou.dayuandaily.Utils.StatusBarUtil;
 import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;

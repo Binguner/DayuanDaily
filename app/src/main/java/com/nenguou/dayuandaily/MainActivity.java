@@ -2,18 +2,14 @@ package com.nenguou.dayuandaily;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
-import android.content.ComponentName;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,12 +20,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.webkit.JsResult;
-import android.webkit.WebChromeClient;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -43,20 +33,14 @@ import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.nenguou.dayuandaily.DataBase.DayuanDailyDatabase;
 import com.nenguou.dayuandaily.ImageLoader.MyImageLoader;
-import com.nenguou.dayuandaily.Model.Major;
-import com.nenguou.dayuandaily.Model.YearCollege;
-import com.nenguou.dayuandaily.UI.ActivityChooseSchedule;
-import com.nenguou.dayuandaily.UI.ActivityGrades;
 import com.nenguou.dayuandaily.UI.ActivityLogin;
 import com.nenguou.dayuandaily.UI.ActivityScheduler;
 import com.nenguou.dayuandaily.UI.Activity_Ranks;
-import com.nenguou.dayuandaily.Utils.RetrofitCallbackListener;
+import com.nenguou.dayuandaily.Listener.RetrofitCallbackListener;
 import com.nenguou.dayuandaily.Utils.RxDayuan;
 import com.nenguou.dayuandaily.Utils.StatusBarUtil;
 import com.squareup.picasso.Picasso;
 import com.youth.banner.Banner;
-import com.youth.banner.BannerConfig;
-import com.youth.banner.Transformer;
 import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
@@ -609,8 +593,12 @@ public class MainActivity extends AppCompatActivity implements  OnBannerListener
     protected void onDestroy() {
         super.onDestroy();
         sharedPreferences = getSharedPreferences("User_grades",MODE_PRIVATE);
-        boolean want2SavePassword = sharedPreferences.getBoolean("want2SavePassword",true);
-        if(!want2SavePassword){
+        String want2SavePassword = sharedPreferences.getString("want2SavePassword","true");
+        Boolean want2SavePassword2 = false;
+        if (want2SavePassword.equals("true")){
+            want2SavePassword2 = true;
+        }
+        if(!want2SavePassword2){
             editor = getSharedPreferences("User_grades",MODE_PRIVATE).edit();
             editor.putString("username","0000");
             editor.putString("password","0000");

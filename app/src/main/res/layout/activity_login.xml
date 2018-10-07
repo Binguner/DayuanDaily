@@ -45,7 +45,7 @@
             android:id="@+id/ed_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"
+            android:inputType="text"
             android:imeOptions="actionNext"
             android:theme="@style/MyEditTextStyle" />
     </android.support.design.widget.TextInputLayout>

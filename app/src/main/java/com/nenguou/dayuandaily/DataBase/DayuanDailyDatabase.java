@@ -270,6 +270,18 @@ public class DayuanDailyDatabase {
         }
     }
 
+    public boolean isExitThieGrade(String studentNumber){
+        Cursor cursor = sqLiteDatabase.query("Grades",null,"studentNumber like ?",new String[]{String.valueOf(studentNumber)},null,null,null);
+        if(cursor.moveToFirst()){
+            do {
+                if(studentNumber.equals( cursor.getString(cursor.getColumnIndex("studentNumber")))){
+                    return true;
+                }
+            }while (cursor.moveToNext());
+        }
+        return false;
+    }
+
     /**
      * @param studentNumber 学生学号
      * @return 如果数据库中存在这个学生的 Rank，返回 true，不存在，返回 false；
@@ -726,7 +738,7 @@ public class DayuanDailyDatabase {
         return gradesBeans;
     }
 
-    
+
 
     public void setTeacherNameList(List<String> teacherNameList){
         this.teacherNameList = teacherNameList;

@@ -2,7 +2,6 @@ package com.nenguou.dayuandaily.UI;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
@@ -12,7 +11,6 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,11 +27,13 @@ import android.widget.Toast;
 
 import com.nenguou.dayuandaily.Adapter.GradeOutAdapter;
 import com.nenguou.dayuandaily.DataBase.DayuanDailyDatabase;
-import com.nenguou.dayuandaily.Model.Grades;
+import com.nenguou.dayuandaily.Listener.CallbackListener;
 import com.nenguou.dayuandaily.R;
-import com.nenguou.dayuandaily.Utils.RetrofitCallbackListener;
+import com.nenguou.dayuandaily.Listener.RetrofitCallbackListener;
 import com.nenguou.dayuandaily.Utils.RxDayuan;
 import com.squareup.picasso.Picasso;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -260,6 +260,7 @@ public class ActivityGrades extends AppCompatActivity {
 
 
     private void initData() {
+
         rxDayuan = new RxDayuan(this);
         sqLiteDatabase = DayuanDailyDatabase.getInstance(this);
         sharedPreferences = getSharedPreferences("User_grades",MODE_PRIVATE);
@@ -267,6 +268,16 @@ public class ActivityGrades extends AppCompatActivity {
         String studentNumber = sharedPreferences.getString("username","");
         dayuanDailyDatabase = DayuanDailyDatabase.getInstance(this);
         List<String> termNameArray = null;
+
+        if(!dayuanDailyDatabase.isExitThieGrade(studentNumber)){
+            rxDayuan.getGrades2(new CallbackListener() {
+                @Override
+                public void callBack(int status, @NotNull String msg) {
+                    Toast.makeText(ActivityGrades.this,msg,)
+                }
+            });
+        }
+
         try {
             termNameArray = dayuanDailyDatabase.getTermName(studentNumber);
         } catch (Exception e) {

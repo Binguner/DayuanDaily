@@ -5,6 +5,7 @@ import com.nenguou.dayuandaily.Model.Class;
 import com.nenguou.dayuandaily.Model.ClassName;
 import com.nenguou.dayuandaily.Model.Evaluate;
 import com.nenguou.dayuandaily.Model.Grades;
+import com.nenguou.dayuandaily.Model.LoginBean;
 import com.nenguou.dayuandaily.Model.Major;
 import com.nenguou.dayuandaily.Model.RankLoginModel;
 import com.nenguou.dayuandaily.Model.RankModel;
@@ -43,12 +44,14 @@ public interface DayuanService {
     @GET("https://grade.liuyinxin.com/univ/captcha/get")
     Observable<Captcha> getCaptcha();
 
+    // 登陆
     @FormUrlEncoded
-    @POST("https://grade.liuyinxin.com/univ/login")
-    Observable<String> login(@Field("username") String username, @Field("password") String password,@Field("captcha") String captcha,@Field("sessionId") String sessionId);
+    @POST("https://www.intyut.cn/api/intyut/login")
+    Observable<LoginBean> login(@Field("username") String username, @Field("password") String password, @Field("remember-me") String remember_me);
 
-    @GET("https://grade.liuyinxin.com/univ/grade/get")
-    Observable<Grades> getGrades(@Query("sessionId") String sessionId);
+    //@GET("https://grade.liuyinxin.com/univ/grade/get")
+    @GET("https://www.intyut.cn/api/intyut/grade/v1")
+    Observable<Grades> getGrades();
 
     @GET("https://grade.liuyinxin.com/univs/evaluate/{sessionId}")
     Observable<Evaluate> getEvaluateResults(@Path("sessionId") String sessionId);
