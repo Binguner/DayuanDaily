@@ -256,7 +256,7 @@ public class DayuanDailyDatabase {
                 for(Grades.DataBean.GradesBean gradesBean : gradesBeans){
                     contentValues.put("studentNumber",studentNumber);
                     contentValues.put("name",dataBean.getName());
-                    contentValues.put("classNumber",gradesBean.getClassName());
+                    contentValues.put("classNumber",gradesBean.getClassNumber());
                     contentValues.put("classOrder",gradesBean.getClassOrder());
                     contentValues.put("className",gradesBean.getClassName());
                     contentValues.put("englishName",gradesBean.getEnglishName());

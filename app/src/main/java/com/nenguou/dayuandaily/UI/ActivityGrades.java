@@ -273,7 +273,7 @@ public class ActivityGrades extends AppCompatActivity {
             rxDayuan.getGrades2(new CallbackListener() {
                 @Override
                 public void callBack(int status, @NotNull String msg) {
-                    Toast.makeText(ActivityGrades.this,msg,)
+                    Toast.makeText(ActivityGrades.this,msg,Toast.LENGTH_SHORT).show();
                 }
             });
         }

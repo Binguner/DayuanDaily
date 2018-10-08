@@ -5,6 +5,10 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.franmontiel.persistentcookiejar.ClearableCookieJar;
+import com.franmontiel.persistentcookiejar.PersistentCookieJar;
+import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
+import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.nenguou.dayuandaily.BuildConfig;
@@ -63,18 +67,35 @@ public class RxDayuan {
             .setLenient()
             .create();
 
-    private Retrofit retrofit = new Retrofit
+    private Retrofit retrofit; /*= new Retrofit
             .Builder()
             .client(getNewClient(context))
             .baseUrl("https://ssl.liuyinxin.com/univ/api/schedule/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-            .build();
-    private DayuanService service = retrofit.create(DayuanService.class);
+            .build();*/
+    private DayuanService service/* = retrofit.create(DayuanService.class)*/;
     private DayuanDailyDatabase dayuanDailyDatabase;
     private final String RxTag = "rxDayuanTag";
 
+    public RxDayuan(Context context){
+        this.context = context;
+        Log.d("werwer","inited");
+        dayuanDailyDatabase = DayuanDailyDatabase.getInstance(context);
+        //initBd();
+        retrofit = new Retrofit
+                .Builder()
+                .client(getNewClient(context))
+                .baseUrl("https://ssl.liuyinxin.com/univ/api/schedule/")
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();
+
+        service = retrofit.create(DayuanService.class);
+    }
+
     private OkHttpClient getNewClient(Context mContext){
+        Log.d("werwer","inited33");
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         if(BuildConfig.DEBUG){
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -106,6 +127,7 @@ public class RxDayuan {
                 return response;
             }
         };
+        ClearableCookieJar cookieJar = new PersistentCookieJar(new SetCookieCache(),new SharedPrefsCookiePersistor(mContext));
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
 
@@ -114,15 +136,10 @@ public class RxDayuan {
                 .connectTimeout(15, TimeUnit.SECONDS)
                 .readTimeout(15,TimeUnit.SECONDS)
                 .cache(cache)
+                .cookieJar(cookieJar)
                 .writeTimeout(15,TimeUnit.SECONDS)
                 .retryOnConnectionFailure(true);
         return builder.build();
-    }
-
-    public RxDayuan(Context context){
-        this.context = context;
-        dayuanDailyDatabase = DayuanDailyDatabase.getInstance(context);
-        //initBd();
     }
 
 //    private void initBd() {
@@ -178,13 +195,14 @@ public class RxDayuan {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        Log.d("tetete",e.toString());
                     }
 
                     @Override
                     public void onNext(Grades grades) {
                         if (null != grades ){
                             callbackListener.callBack(grades.getCode(),grades.getMsg());
+                            Log.d("tetete",grades.getMsg());
                             if (grades.getMsg().equals("success")){
                                 dayuanDailyDatabase.dropAndCreateTableGrades();
                                 dayuanDailyDatabase.saveGrades(grades);

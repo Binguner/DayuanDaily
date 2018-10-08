@@ -50,7 +50,7 @@ public interface DayuanService {
     Observable<LoginBean> login(@Field("username") String username, @Field("password") String password, @Field("remember-me") String remember_me);
 
     //@GET("https://grade.liuyinxin.com/univ/grade/get")
-    @GET("https://www.intyut.cn/api/intyut/grade/v1")
+    @POST("https://www.intyut.cn/api/intyut/grade/v1")
     Observable<Grades> getGrades();
 
     @GET("https://grade.liuyinxin.com/univs/evaluate/{sessionId}")
