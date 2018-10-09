@@ -25,7 +25,8 @@ import rx.Observable;
 
 public interface DayuanService {
 
-    @POST("https://ssl.liuyinxin.com/univ/api/schedule/year-college")
+    //@POST("https://ssl.liuyinxin.com/univ/api/schedule/year-college")
+    @POST("https://www.intyut.cn/api/intyut/class-schedule/choose/v1")
     Observable<YearCollege> getYearCollege();
 
     @FormUrlEncoded
@@ -49,6 +50,7 @@ public interface DayuanService {
     @POST("https://www.intyut.cn/api/intyut/login")
     Observable<LoginBean> login(@Field("username") String username, @Field("password") String password, @Field("remember-me") String remember_me);
 
+    // 成绩
     //@GET("https://grade.liuyinxin.com/univ/grade/get")
     @POST("https://www.intyut.cn/api/intyut/grade/v1")
     Observable<Grades> getGrades();
@@ -56,13 +58,14 @@ public interface DayuanService {
     @GET("https://grade.liuyinxin.com/univs/evaluate/{sessionId}")
     Observable<Evaluate> getEvaluateResults(@Path("sessionId") String sessionId);
 
+
     @FormUrlEncoded
     @POST("https://grade.liuyinxin.com/univ/tyut/login")
     Observable<RankLoginModel> rankLogin(@Field("username") String username, @Field("password") String password);
 
-    @FormUrlEncoded
-    @POST("https://grade.liuyinxin.com/univ/tyut/rank")
-    Observable<RankModel> getRankModel(@Field("username") String username, @Field("password") String password,@Field("cookie") String cookie);
+    // 排名
+    @POST("https://www.intyut.cn/api/intyut/rank/v1")
+    Observable<RankModel> getRankModel();
 
 }
 

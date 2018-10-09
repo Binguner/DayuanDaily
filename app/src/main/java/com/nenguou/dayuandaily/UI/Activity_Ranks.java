@@ -7,6 +7,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.View;
 import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nenguou.dayuandaily.DataBase.DayuanDailyDatabase;
+import com.nenguou.dayuandaily.Listener.CallbackListener;
 import com.nenguou.dayuandaily.Listeners.AppBarStateChangeListener;
 import com.nenguou.dayuandaily.Model.RankModelDetial;
 import com.nenguou.dayuandaily.R;
@@ -21,6 +23,8 @@ import com.nenguou.dayuandaily.Listener.RetrofitCallbackListener;
 import com.nenguou.dayuandaily.Utils.RxDayuan;
 import com.nenguou.dayuandaily.Utils.StatusBarUtil;
 import com.squareup.picasso.Picasso;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -161,7 +165,8 @@ public class Activity_Ranks extends AppCompatActivity {
         dayuanDailyDatabase = DayuanDailyDatabase.getInstance(this);
         sharedPreferences = getSharedPreferences("User_grades",MODE_PRIVATE);
         String username = sharedPreferences.getString("username","2016006328");
-        RankModelDetial rankModelDetial = dayuanDailyDatabase.getRank(Integer.parseInt(username));
+        RankModelDetial rankModelDetial = dayuanDailyDatabase.getRank(username);
+        Log.d("rewsdf",username);
         if (null != rankModelDetial){
             ranks_card_name_name.setText(rankModelDetial.getXm());
             ranks_card_name_majorname.setText(rankModelDetial.getZym());
@@ -199,11 +204,11 @@ public class Activity_Ranks extends AppCompatActivity {
                 setTextBecomeSquare();
                 sharedPreferences = getSharedPreferences("User_grades",MODE_PRIVATE);
                 String username = sharedPreferences.getString("username","2016006328");
-                String password = sharedPreferences.getString("password","171425");
+                String password = sharedPreferences.getString("password","");
                 //Toast.makeText(Activity_Ranks.this,"正在加载数据，请稍等...",Toast.LENGTH_SHORT).show();
                 Toast.makeText(Activity_Ranks.this,"正在加载数据，请耐心等待...",Toast.LENGTH_SHORT).show();
 
-                rxDayuan.rankLogin(username, password, new RetrofitCallbackListener() {
+                /*rxDayuan.rankLogin(username, password, new RetrofitCallbackListener() {
                     @Override
                     public void onFinish(int status) {
                       //  Log.d("tatata","1111");
@@ -226,8 +231,19 @@ public class Activity_Ranks extends AppCompatActivity {
 
                         //Toast.makeText(MainActivity.this,msg,Toast.LENGTH_LONG).show();
                     }
-                });
+                });*/
                 //wLog.d("tatata","4444");
+                rxDayuan.getRanks(new CallbackListener() {
+                    @Override
+                    public void callBack(int status, @NotNull String msg) {
+                        Toast.makeText(Activity_Ranks.this,msg,Toast.LENGTH_SHORT).show();
+                        if(status == 1){
+                            try {
+                                initDatas();
+                            }catch (Exception e){ }
+                        }
+                    }
+                });
             }
         });
         ranks_appbarlayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {

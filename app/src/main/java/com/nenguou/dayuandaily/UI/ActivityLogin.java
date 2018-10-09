@@ -48,13 +48,15 @@ public class ActivityLogin extends AppCompatActivity {
      * captchaUrl : String /captcha/5/88e0ddc6-8edd-4467-be8d-78c999e50dd9.jpg
      * cookies : String 879c06766d4648d59b95a40f26ae91b9
      * isLoadedData: true
-     * username : String 2016001000
+     * username : String 819985138@qq.com
+     * studentNumber : String 2016000000
      * password : String 101010
      * captcha : String qwer
      * sessionId : String = cookies
      * firstGoToScheduler : true    // 系统设置
      * want2SavePassword: true
      * loadedGrade : false
+     * loadedRanks : false
      */
 
     @BindView(R.id.username_textinputlayout) TextInputLayout username_textinputlayout;

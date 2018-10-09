@@ -96,6 +96,7 @@ public class DaYuanDailyDBOpenHelper extends SQLiteOpenHelper{
 
     public static final String CREATE_RANKS = "create table Ranks(" +
             "id integer primary key autoincrement," +
+            "username text," + // 819985138@qq.com
             "xh text," + // 学号
             "xm text," +   // 姓名
             "bjh text," + // 班级名称 软件1632

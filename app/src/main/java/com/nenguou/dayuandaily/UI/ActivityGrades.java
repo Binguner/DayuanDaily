@@ -102,6 +102,7 @@ public class ActivityGrades extends AppCompatActivity {
 
     @OnClick(R.id.grades_refresh)
     public void refreshGrades(View view){
+       /*
         PopupMenu popupMenu = new PopupMenu(this,view);
         MenuInflater menuInflater  = popupMenu.getMenuInflater();
         menuInflater.inflate(R.menu.menu_grades,popupMenu.getMenu());
@@ -127,7 +128,20 @@ public class ActivityGrades extends AppCompatActivity {
                 return false;
             }
         });
-        popupMenu.show();
+        popupMenu.show();*/
+
+        Toast.makeText(ActivityGrades.this,"正在努力刷新，请稍后...",Toast.LENGTH_SHORT).show();
+        rxDayuan.getGrades2(new CallbackListener() {
+            @Override
+            public void callBack(int status, @NotNull String msg) {
+                Toast.makeText(ActivityGrades.this,msg,Toast.LENGTH_SHORT).show();
+                if (status == 1){
+                    Intent intent = new Intent(ActivityGrades.this,ActivityGrades.class);
+                    startActivity(intent);
+                    ActivityGrades.this.finish();
+                }
+            }
+        });
         //sqLiteDatabase.dropAndCreateTableGrades();
         //showRefreshGradesAlerDialog();
     }

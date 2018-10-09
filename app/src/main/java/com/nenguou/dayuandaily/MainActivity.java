@@ -33,6 +33,7 @@ import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.nenguou.dayuandaily.DataBase.DayuanDailyDatabase;
 import com.nenguou.dayuandaily.ImageLoader.MyImageLoader;
+import com.nenguou.dayuandaily.Listener.CallbackListener;
 import com.nenguou.dayuandaily.UI.ActivityLogin;
 import com.nenguou.dayuandaily.UI.ActivityScheduler;
 import com.nenguou.dayuandaily.UI.Activity_Ranks;
@@ -42,6 +43,8 @@ import com.nenguou.dayuandaily.Utils.StatusBarUtil;
 import com.squareup.picasso.Picasso;
 import com.youth.banner.Banner;
 import com.youth.banner.listener.OnBannerListener;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -537,6 +540,7 @@ public class MainActivity extends AppCompatActivity implements  OnBannerListener
             }
         });
 
+
         get_rank_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -550,7 +554,7 @@ public class MainActivity extends AppCompatActivity implements  OnBannerListener
                     startActivity(intent);
                     return;
                 }
-                if(dayuanDailyDatabase.isExitThisRank(Integer.parseInt(username))) {
+                if(dayuanDailyDatabase.isExitThisRank(username)) {
 
                     Intent intent = new Intent(MainActivity.this, Activity_Ranks.class);
                     startActivity(intent);
@@ -558,7 +562,7 @@ public class MainActivity extends AppCompatActivity implements  OnBannerListener
                 }
 
                 Toast.makeText(MainActivity.this,"正在加载数据，请耐心等待...",Toast.LENGTH_SHORT).show();
-                rxDayuan.rankLogin(username, password, new RetrofitCallbackListener() {
+                /*rxDayuan.rankLogin(username, password, new RetrofitCallbackListener() {
                     @Override
                     public void onFinish(int status) {
                         Intent intent = new Intent(MainActivity.this, Activity_Ranks.class);
@@ -573,6 +577,17 @@ public class MainActivity extends AppCompatActivity implements  OnBannerListener
                     @Override
                     public void setText(String msg) {
                         //Toast.makeText(MainActivity.this,msg,Toast.LENGTH_LONG).show();
+                    }
+                });*/
+                rxDayuan.getRanks(new CallbackListener() {
+                    @Override
+                    public void callBack(int status, @NotNull String msg) {
+                        Toast.makeText(MainActivity.this,msg,Toast.LENGTH_LONG).show();
+                        if (status == 1){
+                            Intent intent = new Intent(MainActivity.this, Activity_Ranks.class);
+                            startActivity(intent);
+                        }else {
+                        }
                     }
                 });
 

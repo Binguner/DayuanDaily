@@ -262,7 +262,6 @@ public class RxDayuan {
                     @Override
                     public void onNext(LoginBean loginBean) {
                         listener.callBack(loginBean.getCode(),loginBean.getMsg());
-
                         /*if(loginBean.getCode() == 1){
 
                             getGrades2(new CallbackListener() {
@@ -277,8 +276,9 @@ public class RxDayuan {
                 });
     }
 
+    // 不用了
     public void getLoginSuccess(final RetrofitCallbackListener listener){
-        SharedPreferences sharedPreferences = context.getSharedPreferences("User_grades",Context.MODE_PRIVATE);
+        final SharedPreferences sharedPreferences = context.getSharedPreferences("User_grades",Context.MODE_PRIVATE);
         String username = sharedPreferences.getString("username","");
         String password = sharedPreferences.getString("password","");
         //final String captcha = sharedPreferences.getString("captcha","");
@@ -305,6 +305,7 @@ public class RxDayuan {
                             if(null != loginBean){
                                 if (loginBean.getCode() == 1){
                                     listener.onFinish(0);
+
                                     listener.setText("登陆成功！");
                                 }else if(loginBean.getCode() == -1){
                                     listener.onFinish(1);
@@ -464,15 +465,15 @@ public class RxDayuan {
                             editor.putInt("schedule_id", aClass.getData().getId());
                             editor.commit();
 //                            dayuanDailyDatabase.saveClass(aClass);
-                            Log.d(RxTag,"Over!");
+                            //Log.d(RxTag,"Over!");
                             //Log.d(RxTag,aClass.getData().getData().getSchedule().size()+"");
-                            Log.d(RxTag,aClass.getData().getData());
+                            //Log.d(RxTag,aClass.getData().getData());
                             Gson gson = new Gson();
                             ClassDetial classDetial = gson.fromJson(aClass.getData().getData(),ClassDetial.class);
-                            Log.d(RxTag,classDetial.getSchedule().size()+"");
-                            Log.d(RxTag,classDetial.getSchedule().get(0).getName()+"");
-                            Log.d(RxTag,classDetial.getSchedule().get(0).getName_suffix()+"");
-                            Log.d(RxTag,classDetial.getSchedule().get(0).getWeeks().toString());
+                            ///Log.d(RxTag,classDetial.getSchedule().size()+"");
+                            //Log.d(RxTag,classDetial.getSchedule().get(0).getName()+"");
+                            //Log.d(RxTag,classDetial.getSchedule().get(0).getName_suffix()+"");
+                            //Log.d(RxTag,classDetial.getSchedule().get(0).getWeeks().toString());
                             dayuanDailyDatabase.saveClass(aClass,classDetial);
                         }
                     }
@@ -547,7 +548,7 @@ public class RxDayuan {
                         if(rankLoginModel.getCode() == 1){
                             cookie = rankLoginModel.getData();
                         }
-                        return service.getRankModel(username,password,cookie);
+                        return service.getRankModel();
                     }
                 })
 //                .flatMap(new Func1<RankModel, Observable<RankModelDetial>>() {
@@ -587,6 +588,38 @@ public class RxDayuan {
                             dayuanDailyDatabase.saveRank(rankModelDetial);
                             //Toast.makeText(context,"正在加载数据，请耐心等待...",Toast.LENGTH_SHORT).show();
                         }
+                    }
+                });
+    }
+
+    public void getRanks(final CallbackListener callbackListener){
+        service.getRankModel()
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<RankModel>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(RankModel rankModel) {
+                        callbackListener.callBack(rankModel.getCode(),rankModel.getMsg());
+                        if(rankModel.getCode() == 1 && rankModel.getMsg().equals("success") && null != rankModel.getData()){
+                            Gson gson = new Gson();
+                            String data = rankModel.getData().replace("[","");
+                            data = data.replace("]","");
+                            RankModelDetial rankModelDetial = gson.fromJson(data,RankModelDetial.class);
+                            //Log.d(RxTag,"Ot:" + rankModelDetial.toString());
+                            dayuanDailyDatabase.saveRank(rankModelDetial);
+                        }
+
                     }
                 });
     }

@@ -286,11 +286,11 @@ public class DayuanDailyDatabase {
      * @param studentNumber 学生学号
      * @return 如果数据库中存在这个学生的 Rank，返回 true，不存在，返回 false；
      */
-    public boolean isExitThisRank(int studentNumber){
-        Cursor cursor = sqLiteDatabase.query("Ranks",null," xh = ?",new String[]{String.valueOf(studentNumber)},null,null,null);
+    public boolean isExitThisRank(String studentNumber){
+        Cursor cursor = sqLiteDatabase.query("Ranks",null," username = ?",new String[]{String.valueOf(studentNumber)},null,null,null);
         if(cursor.moveToFirst()){
             do{
-                if(studentNumber == cursor.getInt(cursor.getColumnIndex("xh"))){
+                if(studentNumber.equals(cursor.getString(cursor.getColumnIndex("username")))){
                     return true;
                 }
             }while (cursor.moveToNext());
@@ -333,8 +333,8 @@ public class DayuanDailyDatabase {
      * @param rankModelDetial
      */
     public void saveRank(RankModelDetial rankModelDetial){
-
-        if(isExitThisRank(Integer.parseInt(rankModelDetial.getXh()))){  // 判断表中原先是否有该数据
+        SharedPreferences sharedPreferences = context.getSharedPreferences("User_grades",Context.MODE_PRIVATE);
+        if(isExitThisRank(rankModelDetial.getXh())){  // 判断表中原先是否有该数据
            // Log.d("mlgb","原来有这个数据");
             //Log.d("mlgb","原数据 == " + getOldRanks(Integer.parseInt(rankModelDetial.getXh())));
             //Log.d("mlgb","新数据 == " + Integer.parseInt(rankModelDetial.getPjxfjd()));
@@ -352,6 +352,7 @@ public class DayuanDailyDatabase {
         if(null != rankModelDetial){
 
             ContentValues contentValues = new ContentValues();
+            contentValues.put("username",sharedPreferences.getString("username",""));
             contentValues.put("xh",rankModelDetial.getXh());
             contentValues.put("xm",rankModelDetial.getXm());
             contentValues.put("bjh",rankModelDetial.getBjh());
@@ -387,11 +388,11 @@ public class DayuanDailyDatabase {
         }
     }
 
-    public RankModelDetial getRank(int studentNumber){
+    public RankModelDetial getRank(String username){
         RankModelDetial rankModelDetial = null;
-        if(isExitThisRank(studentNumber)){
+        if(isExitThisRank(username)){
             rankModelDetial = new RankModelDetial();
-            Cursor cursor = sqLiteDatabase.query("Ranks",null," xh = ?",new String[]{String.valueOf(studentNumber)},null,null,null);
+            Cursor cursor = sqLiteDatabase.query("Ranks",null," username = ?",new String[]{String.valueOf(username)},null,null,null);
 
             //Cursor cursor = sqLiteDatabase.query("Ranks",null,null,new String[]{String.valueOf(studentNumber)},null,null,null);
             if(cursor.moveToFirst()){
