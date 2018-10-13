@@ -16,11 +16,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nenguou.dayuandaily.DataBase.DayuanDailyDatabase;
+import com.nenguou.dayuandaily.Listener.CallbackListener;
+import com.nenguou.dayuandaily.Model.College;
 import com.nenguou.dayuandaily.Model.Major;
-import com.nenguou.dayuandaily.Model.YearCollege;
+import com.nenguou.dayuandaily.Model.Term;
+import com.nenguou.dayuandaily.Model.YearCollege2;
 import com.nenguou.dayuandaily.R;
 import com.nenguou.dayuandaily.Listener.RetrofitCallbackListener;
 import com.nenguou.dayuandaily.Utils.RxDayuan;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +42,8 @@ import cn.qqtheme.framework.picker.OptionPicker;
  * isFirstLoadCollege : true / false
  * isScheduleSelected: true / false
  * start : 1520179204000 in rxDayuan (long)
- * collegeId:Int 22 --软件学院
+ * term_id : 2018-2019-1-1
+ * college_id:Int 22 --软件学院
  * majorId:Int 22
  * majorName:String 软件工程
  * className:String 软件1632
@@ -47,8 +53,8 @@ import cn.qqtheme.framework.picker.OptionPicker;
 public class ActivityChooseSchedule extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     private final String AtyCSTag = "ActivityChoosheduleTag";
-    private final int CHOOSE_YEAR = 0;
-    private final int CHOOSE_COLLEGE = 1;
+    private final int CHOOSE_COLLEGE = 0;
+    private final int CHOOSE_TERM = 1;
     private final int CHOOSE_MAJOR = 2;
     private final int CHOOSE_CLASS = 3;
     @BindView(R.id.pleasechooseclass) TextView pleasechooseclass;
@@ -109,11 +115,11 @@ public class ActivityChooseSchedule extends AppCompatActivity implements Adapter
 
 
         SharedPreferences sharedPreferences = getSharedPreferences("User_YearCollege",MODE_PRIVATE);
-        boolean isFirstLoad = sharedPreferences.getBoolean("isFirstLoadCollege",true);
+       // boolean isFirstLoad = sharedPreferences.getBoolean("isFirstLoadCollege",true);
         //boolean isScheduleSelected = sharedPreferences.getBoolean("isScheduleSelected",false);
-        if (isFirstLoad) {
+        //if (isFirstLoad) {
             Toast.makeText(this, "正在加载数据，请稍等", Toast.LENGTH_SHORT).show();
-            rxDayuan.getYearCollege(new RetrofitCallbackListener() {
+            /*rxDayuan.getYearCollege(new RetrofitCallbackListener() {
                 @Override
                 public void onFinish(int status) {
                     Toast.makeText(ActivityChooseSchedule.this, "数据加载成功", Toast.LENGTH_SHORT).show();
@@ -132,8 +138,19 @@ public class ActivityChooseSchedule extends AppCompatActivity implements Adapter
                 public void setText(String msg) {
 
                 }
+            });*/
+            dayuanDailyDatabase.dropYearCollege();
+            rxDayuan.getYearCollege(new CallbackListener() {
+                @Override
+                public void callBack(int status, @NotNull String msg) {
+                    if(msg.contains("suc")){
+                        Toast.makeText(ActivityChooseSchedule.this,"数据加载成功！",Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(ActivityChooseSchedule.this,"数据加载失败，请重新打开此页面！",Toast.LENGTH_SHORT).show();
+                    }
+                }
             });
-        }
+       // }
 //        if(!isFirstLoad){
 //            Intent intent = new Intent(this,ActivityScheduler.class);
 //            startActivity(intent);
@@ -171,13 +188,13 @@ public class ActivityChooseSchedule extends AppCompatActivity implements Adapter
 
     @OnClick(R.id.choose_year_cardview)
     public void chooseYearClick(View view){
-        showChooseDialog(CHOOSE_YEAR);
+        showChooseDialog(CHOOSE_TERM);
     }
 
     @OnClick(R.id.choose_college_cardview)
     public void chooseCollegeClick(View view){
         if(chooseYearText.getText().equals("请选择")){
-            Toast.makeText(this,"请先选择年级",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"请先选择学期",Toast.LENGTH_SHORT).show();
         }else {
             showChooseDialog(CHOOSE_COLLEGE);
         }
@@ -207,7 +224,7 @@ public class ActivityChooseSchedule extends AppCompatActivity implements Adapter
         chooseCollegeText.setText("请选择");
         chooseMajorText.setText("请选择");
         chooseClassText.setText("请选择");
-        pleasechooseclass.setText("请选择年级");
+        pleasechooseclass.setText("请选择学期");
     }
 
     @OnClick(R.id.chooseClassOver)
@@ -230,53 +247,53 @@ public class ActivityChooseSchedule extends AppCompatActivity implements Adapter
         final String[] dataArray;
         OptionPicker picker = null;
         switch (type){
-            case CHOOSE_YEAR:
-
-                final SharedPreferences.Editor editor = getSharedPreferences("User_YearCollege",MODE_PRIVATE).edit();
-                final List<Integer> yearList = dayuanDailyDatabase.loadYearList();
-                if(yearList!=null) {
-                    dataArray = new String[yearList.size()];
-                    for (int i = 0; i < yearList.size(); i++) {
-                        dataArray[i] = yearList.get(i) + "";
-                    }
-                    picker = new OptionPicker(this, dataArray);
-                    picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
-                        @Override
-                        public void onOptionPicked(int index, String item) {
-                            chooseYearText.setText(dataArray[index]);
-                            editor.putInt("year", yearList.get(index));
-                            editor.commit();
-                            pleasechooseclass.setText("请选择学院");
-                            chooseCollegeText.setText("请选择");
-                            chooseMajorText.setText("请选择");
-                            chooseClassText.setText("请选择");
-                        }
-                    });
-                }
-                break;
             case CHOOSE_COLLEGE:
-                final List<YearCollege.DataBean.CollegesBean> collegeslist = dayuanDailyDatabase.loadYearCollege();
-                if(collegeslist!=null) {
-                    dataArray = new String[collegeslist.size()];
-                    for (int i = 0; i < collegeslist.size(); i++) {
-                        dataArray[i] = collegeslist.get(i).getCollege();
+                final SharedPreferences.Editor editor = getSharedPreferences("User_YearCollege",MODE_PRIVATE).edit();
+                final List<College> collegeList = dayuanDailyDatabase.loadCollege();
+                if(null != collegeList){
+                    dataArray = new String[collegeList.size()];
+                    for(int i = 0 ; i < collegeList.size(); i++){
+                        dataArray[i] = collegeList.get(i).getName();
                     }
-                    picker = new OptionPicker(this, dataArray);
+                    picker = new OptionPicker(this,dataArray);
                     picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
                         @Override
                         public void onOptionPicked(int index, String item) {
                             chooseCollegeText.setText(dataArray[index]);
-                            SharedPreferences.Editor editor = getSharedPreferences("User_YearCollege", MODE_PRIVATE).edit();
-                            editor.putInt("collegeId", collegeslist.get(index).getId());
-                            rxDayuan.getMajor(collegeslist.get(index).getId());
+                            editor.putString("college_id", collegeList.get(index).getId());
                             editor.commit();
                             pleasechooseclass.setText("请选择专业");
+                            //chooseCollegeText.setText("请选择");
                             chooseMajorText.setText("请选择");
                             chooseClassText.setText("请选择");
                         }
                     });
                 }
                 break;
+            case CHOOSE_TERM:
+
+                final List<Term> termList = dayuanDailyDatabase.loadTerm();
+                dataArray = new String[termList.size()];
+                for (int i = 0 ; i < termList.size(); i++){
+                    dataArray[i] = termList.get(i).getN();
+                }
+                if(null!=termList){
+                    picker = new OptionPicker(this,dataArray);
+                    picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
+                        @Override
+                        public void onOptionPicked(int index, String item) {
+                            chooseYearText.setText(dataArray[index]);
+                            SharedPreferences.Editor editor = getSharedPreferences("User_YearCollege", MODE_PRIVATE).edit();
+                            editor.putString("term_id", termList.get(index).getV());
+                            editor.commit();
+                            pleasechooseclass.setText("请选择学院");
+                            chooseMajorText.setText("请选择");
+                            chooseClassText.setText("请选择");
+                        }
+                    });
+                }
+                break;
+
             case CHOOSE_MAJOR:
                 SharedPreferences sharedPreferences = getSharedPreferences("User_YearCollege",MODE_PRIVATE);
                 int collegeId = sharedPreferences.getInt("collegeId",22);
@@ -344,6 +361,5 @@ public class ActivityChooseSchedule extends AppCompatActivity implements Adapter
             e.printStackTrace();
         }
     }
-
 
 }

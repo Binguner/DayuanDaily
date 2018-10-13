@@ -11,14 +11,15 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DaYuanDailyDBOpenHelper extends SQLiteOpenHelper{
 
     /**
-     * YearCollege
+     * YearCollege2
      * 存储学院信息
      * {"id": 2,"college": "体育学院"},{"id": 3,"college": "信息与计算机学院"},
      */
-    public static final String CREATE_YEARCOLLEGE = "create table YearCollege(" +
+    public static final String CREATE_COLLEGELISTS = "create table College(" +
             "id integer primary key autoincrement," +
-            "college_id integer," +
-            "college_name text)";
+            "college_id text," +
+            "college_name text," +
+            "college_value text)";
 
     /**
      * Major
@@ -27,9 +28,9 @@ public class DaYuanDailyDBOpenHelper extends SQLiteOpenHelper{
      */
     public static final String CREATE_MAJOR = "create table Major(" +
             "id integer primary key autoincrement," +
-            "major_id integer," +
-            "major_name text," +
-            "college_id integer)";
+            //"major_id integer," +
+            "college_id text," +
+            "major_name text)";    // 机械工程学院
 
     /**
      * ClassName
@@ -74,10 +75,17 @@ public class DaYuanDailyDBOpenHelper extends SQLiteOpenHelper{
             "course_room text)";  // A404
             //"course_time text)";
 
-    public static final String CREATE_YEARLIST = "create table YearList(" +
+    /**
+     *  保存 学期 名称 和值
+     *  {
+     *      "n": "2018-2019学年秋(两学期)",
+     *      "v": "2018-2019-1-1"
+     *  },
+     */
+    public static final String CREATE_TERMSLIST = "create table Terms(" +
             "id integer primary key autoincrement," +
-            "year_id integer," +
-            "year integer)";
+            "terms_name text," +
+            "terms_value text)";
 
     /**
      * studentNumber 学号
@@ -134,11 +142,11 @@ public class DaYuanDailyDBOpenHelper extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL(CREATE_YEARCOLLEGE);
+        sqLiteDatabase.execSQL(CREATE_COLLEGELISTS);
         sqLiteDatabase.execSQL(CREATE_MAJOR);
         sqLiteDatabase.execSQL(CREATE_CLASSNAME);
         sqLiteDatabase.execSQL(CREATE_SCHEDULE);
-        sqLiteDatabase.execSQL(CREATE_YEARLIST);
+        sqLiteDatabase.execSQL(CREATE_TERMSLIST);
         sqLiteDatabase.execSQL(CREATE_GRADES);
         sqLiteDatabase.execSQL(CREATE_RANKS);
     }

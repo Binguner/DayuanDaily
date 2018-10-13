@@ -78,7 +78,7 @@
             android:layout_height="wrap_content">
             <TextView
                 android:id="@+id/chooseYear"
-                android:text="年级"
+                android:text="学期"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

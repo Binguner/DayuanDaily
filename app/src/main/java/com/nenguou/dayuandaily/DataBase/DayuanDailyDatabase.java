@@ -7,15 +7,19 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.google.gson.Gson;
 import com.nenguou.dayuandaily.Model.Class;
 import com.nenguou.dayuandaily.Model.ClassDetial;
 import com.nenguou.dayuandaily.Model.ClassName;
+import com.nenguou.dayuandaily.Model.College;
+import com.nenguou.dayuandaily.Model.DataYearCollege;
 import com.nenguou.dayuandaily.Model.Grades;
 import com.nenguou.dayuandaily.Model.Major;
-import com.nenguou.dayuandaily.Model.RankModel;
+import com.nenguou.dayuandaily.Model.MajorAndClassedData;
+import com.nenguou.dayuandaily.Model.MajorAndClasses;
 import com.nenguou.dayuandaily.Model.RankModelDetial;
+import com.nenguou.dayuandaily.Model.Term;
 import com.nenguou.dayuandaily.Model.YearCollege;
+import com.nenguou.dayuandaily.Model.YearCollege2;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,23 +69,23 @@ public class DayuanDailyDatabase {
 
     }
 
-    public void saveYearCollege(YearCollege yearCollege) {
-        if (yearCollege != null) {
-            int lastYear = yearCollege.getData().getYears().get(yearCollege.getData().getYears().size()-1).getYear();
+    /*public void saveYearCollege(YearCollege2 yearCollege2) {
+        if (yearCollege2 != null) {
+            int lastYear = yearCollege2.getData().getYears().get(yearCollege2.getData().getYears().size()-1).getYear();
             if(!isExitThisCollege(lastYear)) {
                 ContentValues contentValues = new ContentValues();
-                List<YearCollege.DataBean.CollegesBean> collegesBeanList = new ArrayList<>();
-                collegesBeanList = yearCollege.getData().getColleges();
-                for (YearCollege.DataBean.CollegesBean collegesBean : collegesBeanList) {
+                List<YearCollege2.DataBean.CollegesBean> collegesBeanList = new ArrayList<>();
+                collegesBeanList = yearCollege2.getData().getColleges();
+                for (YearCollege2.DataBean.CollegesBean collegesBean : collegesBeanList) {
                     //Log.d("DaYuanTag",collegesBean.getCollege());
                     contentValues.put("college_id", collegesBean.getId());
                     //Log.d("DaYuanTag",collegesBean.getId()+"");
                     contentValues.put("college_name", collegesBean.getCollege());
-                    sqLiteDatabase.insert("YearCollege", null, contentValues);
+                    sqLiteDatabase.insert("YearCollege2", null, contentValues);
                     contentValues.clear();
                 }
-                List<YearCollege.DataBean.YearsBean> yearsBeans = yearCollege.getData().getYears();
-                for (YearCollege.DataBean.YearsBean yearsBean : yearsBeans) {
+                List<YearCollege2.DataBean.YearsBean> yearsBeans = yearCollege2.getData().getYears();
+                for (YearCollege2.DataBean.YearsBean yearsBean : yearsBeans) {
                     contentValues.put("year_id", yearsBean.getId());
                     contentValues.put("year", yearsBean.getYear());
                     sqLiteDatabase.insert("YearList", null, contentValues);
@@ -89,10 +93,96 @@ public class DayuanDailyDatabase {
                 }
             }
         }
+    }*/
+
+    /**
+     * 保存 学期 和 所有专业 名称
+     * @param yearCollege
+     *             {
+     *                 "n": "2018-2019学年秋(两学期)",
+     *                 "v": "2018-2019-1-1"
+     *             },
+     *
+     *              {
+     *                 "id": "01",
+     *                 "name": "机械工程学院",
+     *                 "majors": null
+     *             },
+     */
+    public void saveYearCollege(YearCollege yearCollege) {
+        if(null != yearCollege){
+            ContentValues contentValues = new ContentValues();
+            for (Term term: yearCollege.getData().getTerms()){
+                contentValues.put("terms_name",term.getN());
+                contentValues.put("terms_value",term.getV());
+                sqLiteDatabase.insert("Terms",null,contentValues);
+            }
+
+            contentValues.clear();
+
+            for (College college:yearCollege.getData().getColleges()){
+                contentValues.put("college_id",college.getId());
+                contentValues.put("college_name",college.getName());
+                contentValues.put("college_value","null");
+                sqLiteDatabase.insert("College",null,contentValues);
+            }
+
+            contentValues.clear();
+
+        }
     }
 
-    public void saveMajor(Major major) {
-        if (major != null) {
+    /**
+     * 删除表 Terms
+     * 删除所有 学期 和 专业名称 的数据
+     */
+    public void dropYearCollege(){
+        sqLiteDatabase.execSQL("drop table if exists Terms" );
+        sqLiteDatabase.execSQL("drop table if exists College" );
+        sqLiteDatabase.execSQL(DaYuanDailyDBOpenHelper.CREATE_TERMSLIST);
+        sqLiteDatabase.execSQL(DaYuanDailyDBOpenHelper.CREATE_COLLEGELISTS);
+    }
+
+    /**
+     * @return 返回所有 学期 数据
+     */
+    public List<Term> loadTerm(){
+        List<Term> termList = new ArrayList<>();
+        Term term = null;
+        Cursor cursor = sqLiteDatabase.query("Terms",null,null,null,null,null,null);
+        if(cursor.moveToFirst()){
+            do {
+                term = new Term(
+                        cursor.getString(cursor.getColumnIndex("terms_name")),
+                        cursor.getString(cursor.getColumnIndex("terms_value"))
+                );
+                termList.add(term);
+            }while (cursor.moveToNext());
+        }
+        return termList;
+    }
+
+    /**
+     * @return 返回所有 学院 数据
+     */
+    public List<College> loadCollege(){
+        List<College> collegeList = new ArrayList<>();
+        College college = null;
+        Cursor cursor = sqLiteDatabase.query("College",null,null,null,null,null,null);
+        if (cursor.moveToFirst()){
+            do {
+                college = new College(
+                        cursor.getString(cursor.getColumnIndex("college_id")),
+                        cursor.getString(cursor.getColumnIndex("college_name")),
+                        cursor.getString(cursor.getColumnIndex("college_value"))
+                );
+                collegeList.add(college);
+            }while (cursor.moveToNext());
+        }
+        return collegeList;
+    }
+    public void saveMajor(MajorAndClasses majorAndClasses) {
+        if (majorAndClasses != null) {
             ContentValues contentValues = new ContentValues();
             for(Major.DataBean dataBean: major.getData()){
                 try {
@@ -451,12 +541,12 @@ public class DayuanDailyDatabase {
     /**
      * 返回所有学院的数据
      */
-    public List<YearCollege.DataBean.CollegesBean> loadYearCollege(){
-        List<YearCollege.DataBean.CollegesBean> list = new ArrayList<>();
-        Cursor cursor = sqLiteDatabase.query("YearCollege",null,null,null,null,null,null);
+    public List<YearCollege2.DataBean.CollegesBean> loadYearCollege(){
+        List<YearCollege2.DataBean.CollegesBean> list = new ArrayList<>();
+        Cursor cursor = sqLiteDatabase.query("YearCollege2",null,null,null,null,null,null);
         if(cursor.moveToFirst()){
             do{
-                YearCollege.DataBean.CollegesBean collegesBean = new YearCollege.DataBean.CollegesBean();
+                YearCollege2.DataBean.CollegesBean collegesBean = new YearCollege2.DataBean.CollegesBean();
                 collegesBean.setId(cursor.getInt(cursor.getColumnIndex("college_id")));
                 collegesBean.setCollege(cursor.getString(cursor.getColumnIndex("college_name")));
                 list.add(collegesBean);

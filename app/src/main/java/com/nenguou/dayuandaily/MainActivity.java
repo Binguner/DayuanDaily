@@ -251,8 +251,8 @@ public class MainActivity extends AppCompatActivity implements  OnBannerListener
         test_loadYearColleg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                List<YearCollege.DataBean.CollegesBean> list = dayuanDailyDatabase.loadYearCollege();
-                for (YearCollege.DataBean.CollegesBean collegesBean : list) {
+                List<YearCollege2.DataBean.CollegesBean> list = dayuanDailyDatabase.loadYearCollege();
+                for (YearCollege2.DataBean.CollegesBean collegesBean : list) {
                     //Log.d(mainTag, "Id: "+collegesBean.getId() + "  College: " + collegesBean.getCollege());
                 }
             }

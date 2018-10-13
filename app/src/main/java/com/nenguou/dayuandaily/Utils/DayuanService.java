@@ -7,16 +7,17 @@ import com.nenguou.dayuandaily.Model.Evaluate;
 import com.nenguou.dayuandaily.Model.Grades;
 import com.nenguou.dayuandaily.Model.LoginBean;
 import com.nenguou.dayuandaily.Model.Major;
+import com.nenguou.dayuandaily.Model.MajorAndClasses;
 import com.nenguou.dayuandaily.Model.RankLoginModel;
 import com.nenguou.dayuandaily.Model.RankModel;
 import com.nenguou.dayuandaily.Model.YearCollege;
+import com.nenguou.dayuandaily.Model.YearCollege2;
 
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -26,12 +27,14 @@ import rx.Observable;
 public interface DayuanService {
 
     //@POST("https://ssl.liuyinxin.com/univ/api/schedule/year-college")
+    // 获取 学期 和 学院 数据
     @POST("https://www.intyut.cn/api/intyut/class-schedule/choose/v1")
     Observable<YearCollege> getYearCollege();
 
+    // 获取这个学院里的 专业 和 这个专业的所有班级
     @FormUrlEncoded
-    @POST("https://ssl.liuyinxin.com/univ/api/schedule/major")
-    Observable<Major> getMajor(@Field("collegeId") int collegeId);
+    @POST("https://www.intyut.cn/api/intyut/class-schedule/choose/v1")
+    Observable<MajorAndClasses> getMajor(@Field("detail") String detail, @Field("college") String college_id);
 
     @FormUrlEncoded
     @POST("https://ssl.liuyinxin.com/univ/api/schedule/class-name")

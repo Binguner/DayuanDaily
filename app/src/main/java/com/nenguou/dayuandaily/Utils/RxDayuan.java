@@ -23,12 +23,12 @@ import com.nenguou.dayuandaily.Model.Evaluate;
 import com.nenguou.dayuandaily.Model.Grades;
 import com.nenguou.dayuandaily.Model.LoginBean;
 import com.nenguou.dayuandaily.Model.Major;
+import com.nenguou.dayuandaily.Model.MajorAndClasses;
 import com.nenguou.dayuandaily.Model.RankLoginModel;
 import com.nenguou.dayuandaily.Model.RankModel;
 import com.nenguou.dayuandaily.Model.RankModelDetial;
 import com.nenguou.dayuandaily.Model.YearCollege;
-
-import org.jetbrains.annotations.NotNull;
+import com.nenguou.dayuandaily.Model.YearCollege2;
 
 import java.io.File;
 import java.io.IOException;
@@ -342,12 +342,12 @@ public class RxDayuan {
         }
     }
 
-    public void getYearCollege(final RetrofitCallbackListener listener){
+    /*public void getYearCollege(final RetrofitCallbackListener listener){
         service.getYearCollege()
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<YearCollege>() {
+                .subscribe(new Subscriber<YearCollege2>() {
                     @Override
                     public void onCompleted() {
                         //alertDialog.dismiss();
@@ -361,7 +361,7 @@ public class RxDayuan {
                     }
 
                     @Override
-                    public void onNext(YearCollege collegesBean) {
+                    public void onNext(YearCollege2 collegesBean) {
                         if (collegesBean != null){
 //                            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
 //                                @Override
@@ -382,14 +382,14 @@ public class RxDayuan {
                     }
                 });
 
-    }
+    }*/
 
-    public void getMajor(int collegeId){
-        service.getMajor(collegeId)
+    public void getYearCollege(final CallbackListener callbackListener){
+        service.getYearCollege()
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Major>() {
+                .subscribe(new Subscriber<YearCollege>() {
                     @Override
                     public void onCompleted() {
 
@@ -401,13 +401,43 @@ public class RxDayuan {
                     }
 
                     @Override
-                    public void onNext(Major major) {
-                        //Log.d("DaYuanTag",major.getData().get(0).getMajor());
-                        if(major!=null) {
-                            dayuanDailyDatabase.saveMajor(major);
+                    public void onNext(YearCollege yearCollege) {
+                        if(yearCollege.getCode() == 1 && null != yearCollege.getData() && yearCollege.getMsg().contains("suc")){
+                            dayuanDailyDatabase.saveYearCollege(yearCollege);
+                            callbackListener.callBack(yearCollege.getCode(),yearCollege.getMsg());
                         }
                     }
                 });
+    }
+
+    public void getMajor(String detial, String college_id, final CallbackListener callbackListener) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("User_YearCollege",Context.MODE_PRIVATE);
+        college_id = sharedPreferences.getString("college_id","01");
+                service.getMajor("01", college_id)
+                        .subscribeOn(Schedulers.io())
+                        .unsubscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Subscriber<MajorAndClasses>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onNext(MajorAndClasses majorAndClasses) {
+                                //Log.d("DaYuanTag",major.getData().get(0).getMajor());\
+                                if (majorAndClasses.getCode() == 1 && null != majorAndClasses.getData() && majorAndClasses.getMsg().contains("suc")){
+                                    dayuanDailyDatabase.saveMajor(majorAndClasses);
+                                    callbackListener.callBack(majorAndClasses.getCode(),majorAndClasses.getMsg());
+                                }
+
+                            }
+                        });
     }
 
     public void getClassName(final int year, final String name){

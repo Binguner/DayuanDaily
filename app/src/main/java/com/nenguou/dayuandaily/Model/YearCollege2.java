@@ -6,12 +6,48 @@ import java.util.List;
  * Created by binguner on 2018/2/15.
  */
 
-public class YearCollege {
+public class YearCollege2 {
 
     /**
      * code : 1
      * msg : success
-     * data : {"terms":[{"id":1,"start":1518279131000,"name":"2017-2018-2-1"}],"years":[{"id":2,"year":2013},{"id":3,"year":2014},{"id":4,"year":2015},{"id":5,"year":2016},{"id":6,"year":2017}],"colleges":[{"id":2,"college":"体育学院"},{"id":3,"college":"信息与计算机学院"},{"id":4,"college":"力学学院"},{"id":5,"college":"化学化工学院"},{"id":6,"college":"国际教育交流学院"},{"id":7,"college":"外国语学院"},{"id":8,"college":"大数据学院"},{"id":9,"college":"建筑与土木工程学院"},{"id":10,"college":"政法学院"},{"id":11,"college":"数学学院"},{"id":12,"college":"机械工程学院"},{"id":13,"college":"材料科学与工程学院"},{"id":14,"college":"水利科学与工程学院"},{"id":15,"college":"物理与光电工程学院"},{"id":16,"college":"环境科学与工程学院"},{"id":17,"college":"现代科技学院"},{"id":18,"college":"电气与动力工程学院"},{"id":19,"college":"矿业工程学院"},{"id":20,"college":"经济管理学院"},{"id":21,"college":"艺术学院"},{"id":22,"college":"软件学院"},{"id":23,"college":"轻纺工程学院"},{"id":24,"college":"马克思主义学院"}],"classNames":null,"majors":null,"urpClass":null}
+     * data : {"terms":[
+     *                      {
+     *                          "id":1,
+     *                          "start":1518279131000,
+     *                          "name":"2017-2018-2-1"
+     *                      }
+     *                  ],
+     *         "years":[
+     *                      {
+     *                          "id":2,
+     *                          "year":2013
+     *                      },
+     *                      {
+     *                          "id":3,
+     *                          "year":2014
+     *                      },
+     *                      {
+     *                          "id":4,
+     *                          "year":2015
+     *                      },{"id":5,"year":2016},
+     *                        {"id":6,"year":2017}
+     *                  ],
+     *          "colleges":[
+     *                         {"id":2,"college":"体育学院"},
+     *                         {"id":3,"college":"信息与计算机学院"},
+     *                         {"id":4,"college":"力学学院"},
+     *                         {"id":5,"college":"化学化工学院"},
+     *                         {"id":6,"college":"国际教育交流学院"},{"id":7,"college":"外国语学院"},{"id":8,"college":"大数据学院"},{"id":9,"college":"建筑与土木工程学院"},
+     *                         {"id":10,"college":"政法学院"},{"id":11,"college":"数学学院"},{"id":12,"college":"机械工程学院"},{"id":13,"college":"材料科学与工程学院"},
+     *                         {"id":14,"college":"水利科学与工程学院"},{"id":15,"college":"物理与光电工程学院"},{"id":16,"college":"环境科学与工程学院"},{"id":17,"college":"现代科技学院"},
+     *                         {"id":18,"college":"电气与动力工程学院"},{"id":19,"college":"矿业工程学院"},{"id":20,"college":"经济管理学院"},{"id":21,"college":"艺术学院"},{"id":22,"college":"软件学院"},
+     *                         {"id":23,"college":"轻纺工程学院"},{"id":24,"college":"马克思主义学院"}
+     *                     ],
+     *          "classNames":null,
+     *          "majors":null,
+     *          "urpClass":null
+     *       }
      */
 
     private int code;
