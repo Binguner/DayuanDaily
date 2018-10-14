@@ -17,6 +17,7 @@ import com.nenguou.dayuandaily.Listener.CallbackListener;
 import com.nenguou.dayuandaily.Listener.RetrofitCallbackListener;
 import com.nenguou.dayuandaily.Model.Captcha;
 import com.nenguou.dayuandaily.Model.Class;
+import com.nenguou.dayuandaily.Model.ClassBean;
 import com.nenguou.dayuandaily.Model.ClassDetial;
 import com.nenguou.dayuandaily.Model.ClassName;
 import com.nenguou.dayuandaily.Model.Evaluate;
@@ -410,7 +411,7 @@ public class RxDayuan {
                 });
     }
 
-    public void getMajor(String detial, String college_id, final CallbackListener callbackListener) {
+    public void getMajorAndClasses(String detial, String college_id, final CallbackListener callbackListener) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("User_YearCollege",Context.MODE_PRIVATE);
         college_id = sharedPreferences.getString("college_id","01");
                 service.getMajor("01", college_id)
@@ -432,7 +433,7 @@ public class RxDayuan {
                             public void onNext(MajorAndClasses majorAndClasses) {
                                 //Log.d("DaYuanTag",major.getData().get(0).getMajor());\
                                 if (majorAndClasses.getCode() == 1 && null != majorAndClasses.getData() && majorAndClasses.getMsg().contains("suc")){
-                                    dayuanDailyDatabase.saveMajor(majorAndClasses);
+                                    dayuanDailyDatabase.saveMajorAndClass(majorAndClasses);
                                     callbackListener.callBack(majorAndClasses.getCode(),majorAndClasses.getMsg());
                                 }
 
@@ -468,43 +469,43 @@ public class RxDayuan {
                 });
     }
 
-    public void getClass(String name, String term){
+    public void getClass(String cName, String cNumber,String term,String tName ,CallbackListener callbackListener ){
         //String mName = "软件1632";
-        service.getClass(name,term)
+        service.getClass(cName,cNumber,term, tName)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
 //                .map(new Func1<Class, Object>() {
 //                })
-                .subscribe(new Subscriber<Class>() {
+                .subscribe(new Subscriber<ClassBean>() {
                     @Override
                     public void onCompleted() {
-                        Log.d(RxTag,"onCompleted!");
+                        //Log.d(RxTag,"onCompleted!");
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.d(RxTag,"onError: "+ e.toString());
+                        //Log.d(RxTag,"onError: "+ e.toString());
                     }
 
                     @Override
-                    public void onNext(Class aClass) {
+                    public void onNext(ClassBean aClass) {
                         //Log.d("DaYuanTag1",aClass.getData().getData().toString());
                         if(aClass!=null) {
                             SharedPreferences.Editor editor = context.getSharedPreferences("User_YearCollege", Context.MODE_PRIVATE).edit();
-                            editor.putInt("schedule_id", aClass.getData().getId());
+                            editor.putString("schedule_id", "null");
                             editor.commit();
 //                            dayuanDailyDatabase.saveClass(aClass);
                             //Log.d(RxTag,"Over!");
                             //Log.d(RxTag,aClass.getData().getData().getSchedule().size()+"");
                             //Log.d(RxTag,aClass.getData().getData());
                             Gson gson = new Gson();
-                            ClassDetial classDetial = gson.fromJson(aClass.getData().getData(),ClassDetial.class);
+                            //ClassDetial classDetial = gson.fromJson(aClass.getData().getData(),ClassDetial.class);
                             ///Log.d(RxTag,classDetial.getSchedule().size()+"");
                             //Log.d(RxTag,classDetial.getSchedule().get(0).getName()+"");
                             //Log.d(RxTag,classDetial.getSchedule().get(0).getName_suffix()+"");
                             //Log.d(RxTag,classDetial.getSchedule().get(0).getWeeks().toString());
-                            dayuanDailyDatabase.saveClass(aClass,classDetial);
+                            dayuanDailyDatabase.saveClass(aClass);
                         }
                     }
                 });

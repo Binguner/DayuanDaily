@@ -265,23 +265,23 @@ public class MyScheduleButton extends android.support.v7.widget.AppCompatButton 
         weekNum = typedArray.getInteger(R.styleable.MyScheduleButton_weekNum,1);
         classNum = typedArray.getInteger(R.styleable.MyScheduleButton_classNum,1);
         dayuanDailyDatabase = DayuanDailyDatabase.getInstance(context);
-        schedule_id = sharedPreferences.getInt("schedule_id",9514);
+        class_name = sharedPreferences.getString("className","null");
 
         try {
-            class_name_list = dayuanDailyDatabase.loadSchedules(DayuanDailyDatabase.TYPE_GET_SUB_NAME, schedule_id, weekNum, classNum);
+            class_name_list = dayuanDailyDatabase.loadSchedules(DayuanDailyDatabase.TYPE_GET_SUB_NAME, class_name, weekNum, classNum);
         }catch (Exception e){
             Toast.makeText(context,"数据加载失败，请重试",Toast.LENGTH_SHORT).show();
         }
 
-        //Log.d(Tag,"class_Name is : "+ class_name +" Schedule_id is : "+ schedule_id + " weekNum is : " + weekNum + " classNum is : " + classNum);
+        //Log.d(Tag,"class_Name is : "+ class_name +" Schedule_id is : "+ class_name + " weekNum is : " + weekNum + " classNum is : " + classNum);
         if(class_name_list.size() > 0) {
-            length_list = dayuanDailyDatabase.loadSchedules(DayuanDailyDatabase.TYPE_GET_SUB_LENGTH,schedule_id,weekNum,classNum);
-            teacher_list = dayuanDailyDatabase.loadSchedules(DayuanDailyDatabase.TYPE_GET_SUB_TEACHER,schedule_id,weekNum,classNum);
-            ///weeks = dayuanDailyDatabase.loadSchedules(DayuanDailyDatabase.TYPE_GET_SUB_WEEKS, schedule_id, weekNum, classNum);
-            weeks_list = dayuanDailyDatabase.loadSchedules(DayuanDailyDatabase.TYPE_GET_SUB_WEEKS, schedule_id, weekNum, classNum);
-            rawWeeks_list = dayuanDailyDatabase.loadSchedules(DayuanDailyDatabase.TYPE_GET_SUB_RAWWEEK,schedule_id,weekNum,classNum);
-            places_list = dayuanDailyDatabase.loadSchedules(DayuanDailyDatabase.TYPE_GET_SUB_PLACE,schedule_id,weekNum,classNum);
-            detial = dayuanDailyDatabase.loadSchedules(DayuanDailyDatabase.TYPE_GET_SUB_PLACE,schedule_id,weekNum,classNum)+" "+ dayuanDailyDatabase.loadSchedules(DayuanDailyDatabase.TYPE_GET_SUB_TEACHER,schedule_id,weekNum,classNum);
+            length_list = dayuanDailyDatabase.loadSchedules(DayuanDailyDatabase.TYPE_GET_SUB_LENGTH,class_name,weekNum,classNum);
+            teacher_list = dayuanDailyDatabase.loadSchedules(DayuanDailyDatabase.TYPE_GET_SUB_TEACHER,class_name,weekNum,classNum);
+            ///weeks = dayuanDailyDatabase.loadSchedules(DayuanDailyDatabase.TYPE_GET_SUB_WEEKS, class_name, weekNum, classNum);
+            weeks_list = dayuanDailyDatabase.loadSchedules(DayuanDailyDatabase.TYPE_GET_SUB_WEEKS, class_name, weekNum, classNum);
+            rawWeeks_list = dayuanDailyDatabase.loadSchedules(DayuanDailyDatabase.TYPE_GET_SUB_RAWWEEK,class_name,weekNum,classNum);
+            places_list = dayuanDailyDatabase.loadSchedules(DayuanDailyDatabase.TYPE_GET_SUB_PLACE,class_name,weekNum,classNum);
+            detial = dayuanDailyDatabase.loadSchedules(DayuanDailyDatabase.TYPE_GET_SUB_PLACE,class_name,weekNum,classNum)+" "+ dayuanDailyDatabase.loadSchedules(DayuanDailyDatabase.TYPE_GET_SUB_TEACHER,class_name,weekNum,classNum);
             if(weeks_list.size() > 0){
                 for(int i = 0 ; i < weeks_list.size() ; i++) {
                     newString1 = weeks_list.get(i).replace("]", "");

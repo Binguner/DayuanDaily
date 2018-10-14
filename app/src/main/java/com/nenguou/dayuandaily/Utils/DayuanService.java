@@ -2,6 +2,7 @@ package com.nenguou.dayuandaily.Utils;
 
 import com.nenguou.dayuandaily.Model.Captcha;
 import com.nenguou.dayuandaily.Model.Class;
+import com.nenguou.dayuandaily.Model.ClassBean;
 import com.nenguou.dayuandaily.Model.ClassName;
 import com.nenguou.dayuandaily.Model.Evaluate;
 import com.nenguou.dayuandaily.Model.Grades;
@@ -41,8 +42,8 @@ public interface DayuanService {
     Observable<ClassName> getClassName(@Field("year") int year, @Field("name") String name);
 
     @FormUrlEncoded
-    @POST("https://ssl.liuyinxin.com/univ/api/schedule/class")
-    Observable<Class> getClass(@Field("name") String name, @Field("term") String term);
+    @POST("https://www.intyut.cn/api/intyut/class-schedule/v1")
+    Observable<ClassBean> getClass(@Field("cName") String cName, @Field("cNumber") String cNumber, @Field("term") String term, @Field("tName") String tName);
 
     // 获取 captchaUrl，cookies
     @GET("https://grade.liuyinxin.com/univ/captcha/get")

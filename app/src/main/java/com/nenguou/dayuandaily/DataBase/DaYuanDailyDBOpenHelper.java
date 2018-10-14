@@ -30,6 +30,7 @@ public class DaYuanDailyDBOpenHelper extends SQLiteOpenHelper{
             "id integer primary key autoincrement," +
             //"major_id integer," +
             "college_id text," +
+            "college_name text," +
             "major_name text)";    // 机械工程学院
 
     /**
@@ -39,9 +40,11 @@ public class DaYuanDailyDBOpenHelper extends SQLiteOpenHelper{
      */
     public static final String CREATE_CLASSNAME = "create table ClassName(" +
             "id integer primary key autoincrement," +
-            "year integer," +
-            "className text," +
-            "major_name, text)";
+            "college_name text," +
+            "college_id text,"+
+            "major_name text,"+
+            "class_number text,"+
+            "class_name text)";
 
     /**
      * Schedule

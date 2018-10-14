@@ -6,7 +6,7 @@ import java.util.List;
  * Created by binguner on 2018/2/15.
  */
 
-public class Major {
+public class Major2 {
     /**
      * code : 1
      * msg : success

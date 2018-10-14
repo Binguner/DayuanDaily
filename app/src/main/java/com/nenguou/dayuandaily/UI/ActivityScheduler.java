@@ -182,13 +182,11 @@ public class ActivityScheduler extends AppCompatActivity {
         refreshSchedule(list_fri);
         refreshSchedule(list_sat);
         refreshSchedule(list_sun);
-
     }
 
     private void isFitstLoad() {
         editor1 = PreferenceManager.getDefaultSharedPreferences(ActivityScheduler.this).edit(); // 系统设置
         sharedPreferences1 = PreferenceManager.getDefaultSharedPreferences(this);
-
 
         editor = getSharedPreferences("User_YearCollege",MODE_PRIVATE).edit();
         sharedPreferences = getSharedPreferences("User_YearCollege",MODE_PRIVATE);

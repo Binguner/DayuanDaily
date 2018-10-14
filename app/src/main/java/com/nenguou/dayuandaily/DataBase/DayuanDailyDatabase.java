@@ -8,10 +8,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.nenguou.dayuandaily.Model.Class;
+import com.nenguou.dayuandaily.Model.ClassBean;
+import com.nenguou.dayuandaily.Model.ClassBeanData;
 import com.nenguou.dayuandaily.Model.ClassDetial;
 import com.nenguou.dayuandaily.Model.ClassName;
+import com.nenguou.dayuandaily.Model.Classe;
 import com.nenguou.dayuandaily.Model.College;
 import com.nenguou.dayuandaily.Model.DataYearCollege;
+import com.nenguou.dayuandaily.Model.Detail;
 import com.nenguou.dayuandaily.Model.Grades;
 import com.nenguou.dayuandaily.Model.Major;
 import com.nenguou.dayuandaily.Model.MajorAndClassedData;
@@ -181,11 +185,18 @@ public class DayuanDailyDatabase {
         }
         return collegeList;
     }
-    public void saveMajor(MajorAndClasses majorAndClasses) {
+
+    /***
+     * 将专业 和班级保存到数据库中
+     * @param majorAndClasses   MajorAndClasses
+     */
+    public void saveMajorAndClass(MajorAndClasses majorAndClasses) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("User_YearCollege",Context.MODE_PRIVATE);
         if (majorAndClasses != null) {
             ContentValues contentValues = new ContentValues();
-            for(Major.DataBean dataBean: major.getData()){
-                try {
+            // 保存专业
+            for(Major major: majorAndClasses.getData().getMajors()){
+                /*try {
                     if(!isExitThisMajor(dataBean.getId())){
                         contentValues.put("major_id", dataBean.getId());
                         contentValues.put("major_name", dataBean.getMajor());
@@ -195,9 +206,62 @@ public class DayuanDailyDatabase {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                }*/
+                contentValues.put("college_id",sharedPreferences.getString("college_id","null"));
+               // Log.d("qweqweqwe",sharedPreferences.getString("college_name","null"));
+                contentValues.put("college_name",sharedPreferences.getString("college_name","null"));
+                contentValues.put("major_name",major.getName());
+                sqLiteDatabase.insert("Major",null,contentValues);
+                contentValues.clear();
+
+                for (Classe classe:major.getClasses()){
+                    contentValues.put("college_name",sharedPreferences.getString("college_name","null"));
+                    contentValues.put("college_id",sharedPreferences.getString("college_id","null"));
+                    contentValues.put("major_name",major.getName());
+                    contentValues.put("class_number",classe.getNumber());
+                    contentValues.put("class_name",classe.getName());
+                    sqLiteDatabase.insert("ClassName",null,contentValues);
+                    contentValues.clear();
                 }
+
             }
         }
+    }
+
+    /**
+     * 删除 专业 和专业内所有班级
+     */
+    public void dropMajorAndClasses(){
+        sqLiteDatabase.execSQL("drop table if exists Major" );
+        sqLiteDatabase.execSQL("drop table if exists ClassName" );
+        sqLiteDatabase.execSQL(DaYuanDailyDBOpenHelper.CREATE_MAJOR);
+        sqLiteDatabase.execSQL(DaYuanDailyDBOpenHelper.CREATE_CLASSNAME);
+    }
+
+    /**
+     * @return 返回专业下所有专业名称
+     */
+    public List<String> loadMajors(){
+        List<String> majorList = new ArrayList<>();
+        Cursor cursor = sqLiteDatabase.query("Major",null,null,null,null,null,null);
+        if (cursor.moveToFirst()){
+            do {
+                majorList.add(cursor.getString(cursor.getColumnIndex("major_name")));
+            }while (cursor.moveToNext());
+        }
+        return majorList;
+    }
+
+    public boolean isMajorListEmpty(){
+        Cursor cursor = sqLiteDatabase.query("Major",null,null,null,null,null,null);
+        if (cursor.moveToFirst()){
+            do {
+                if (!cursor.getString(cursor.getColumnIndex("college_name")).equals("")){
+                    return false;
+                }
+            }while (cursor.moveToNext());
+        }
+        return true;
     }
 
     public void saveClassName(ClassName className, String major_name, int year) {
@@ -221,34 +285,59 @@ public class DayuanDailyDatabase {
         }
     }
 
-
-    public void saveClass(Class mClass, ClassDetial classDetial){
-        if(mClass != null && classDetial != null){
+    public void saveClass(ClassBean mClass){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("User_YearCollege",Context.MODE_PRIVATE);
+        if(mClass != null ){
             ContentValues contentValues = new ContentValues();
             try {
-                if(!isExitThisSchedule(mClass.getData().getId())){
-                    for(ClassDetial.ScheduleBean scheduleBean: classDetial.getSchedule()){
-                        for(ClassDetial.ScheduleBean.DetailsBean detailsBean:scheduleBean.getDetails()){
-                            contentValues.put("schedule_id",mClass.getData().getId());
-                            contentValues.put("term",mClass.getData().getTerm());
-                            contentValues.put("year",mClass.getData().getYear());
-                            contentValues.put("class_name",mClass.getData().getName());
-                            contentValues.put("college_name",mClass.getData().getCollege());
-                            contentValues.put("major_name",mClass.getData().getMajor());
-                            contentValues.put("course_start_week",scheduleBean.getWeeks().toString().split(",")[0].toString().split("\\[")[1]);
+                if(!isExitThisSchedule(sharedPreferences.getString("className","null"),sharedPreferences.getString("term_name","null"))){
+                    //for(ClassDetial.ScheduleBean scheduleBean: classDetial.getSchedule()){
+                    //for( ClassBeanData classBeanData : mClass.getData()){
+                    Log.d("ertef", "Class size : "+mClass.getData().size());
+                    for( int i = 0; i < mClass.getData().size(); i++){
+                        Log.d("ertef","Class name is :" + mClass.getData().get(i).getName());
+                        for(Detail detail :mClass.getData().get(i).getDetails()){
+
+                            contentValues.put("schedule_id",0);
+                            contentValues.put("term",sharedPreferences.getString("term_name","null"));
+                            contentValues.put("year",sharedPreferences.getString("term_value","null"));
+                            contentValues.put("class_name",sharedPreferences.getString("className","null"));
+                            contentValues.put("college_name",sharedPreferences.getString("college_name","null"));
+                            contentValues.put("major_name",sharedPreferences.getString("major_name","null"));
+                            //contentValues.put("course_start_week",scheduleBean.getWeeks().toString().split(",")[0].toString().split("\\[")[1]);
+                            //contentValues.put("course_start_week",mClass.getData().get(i).getWeeks().get(0).toString());
+                            contentValues.put("course_start_week",mClass.getData().get(i).getRawWeek().split("\\d+")[0]);
+                            Log.d("ertef",mClass.getData().get(i).getRawWeek().toString());
+                            //try
+                            Log.d("ertef",mClass.getData().get(i).getName()+" "+ mClass.getData().get(i).getRawWeek().split("\\d+")[0]+"");
+                           // }catch (Exception e){
+                            //    e.toString();
+                            //}
                             //contentValues.put("link",mClass.getData().getLink().toString());
-                            contentValues.put("class_term",classDetial.getTerm());
-                            contentValues.put("week_num",detailsBean.getDay()+1);
-                            contentValues.put("course_start",detailsBean.getStart()+1);
-                            contentValues.put("course_length",detailsBean.getLength());
-                            contentValues.put("course_name",scheduleBean.getName());
-                            contentValues.put("course_name_suffix",scheduleBean.getName_suffix());
-                            contentValues.put("teacher_name",scheduleBean.getTeacher());
-                            contentValues.put("course_rawWeek",scheduleBean.getRawWeek());
-                            contentValues.put("course_weeks",scheduleBean.getWeeks().toString());
-                            contentValues.put("course_build",detailsBean.getBuild());
-                            contentValues.put("course_campus",detailsBean.getCampus());
-                            contentValues.put("course_room",detailsBean.getRoom());
+                            //contentValues.put("class_term",classDetial.getTerm());
+                            contentValues.put("class_term",sharedPreferences.getString("term_name","null"));
+                            //contentValues.put("week_num",detailsBean.getDay()+1);
+                            contentValues.put("week_num",detail.getDay()+1);
+                            //contentValues.put("course_start",detailsBean.getStart()+1);
+                            contentValues.put("course_start",detail.getStart()+1);
+                            ///contentValues.put("course_length",detailsBean.getLength());
+                            contentValues.put("course_length",detail.getLength());
+                            //contentValues.put("course_name",scheduleBean.getName());
+                            contentValues.put("course_name",mClass.getData().get(i).getName());
+                            //contentValues.put("course_name_suffix",scheduleBean.getName_suffix());
+                            contentValues.put("course_name_suffix",mClass.getData().get(i).getSuffix());
+                            //contentValues.put("teacher_name",scheduleBean.getTeacher());
+                            contentValues.put("teacher_name",mClass.getData().get(i).getTeacher());
+                            //contentValues.put("course_rawWeek",scheduleBean.getRawWeek());
+                            contentValues.put("course_rawWeek",mClass.getData().get(i).getRawWeek());
+                            //contentValues.put("course_weeks",scheduleBean.getWeeks().toString());
+                            contentValues.put("course_weeks",mClass.getData().get(i).getWeeks().toString());
+                            //contentValues.put("course_build",detailsBean.getBuild());
+                            contentValues.put("course_build",detail.getBuild());
+                            //contentValues.put("course_campus",detailsBean.getCampus());
+                            contentValues.put("course_campus",detail.getCampus());
+                            // contentValues.put("course_room",detailsBean.getRoom());
+                            contentValues.put("course_room",detail.getRoom());
                             sqLiteDatabase.insert("Schedule",null,contentValues);
                             contentValues.clear();
                         }
@@ -261,7 +350,7 @@ public class DayuanDailyDatabase {
     }
 
 
-    public void saveClass(Class mClass) {
+    public void saveClasss(Class mClass) {
 
         if (mClass != null) {
             ContentValues contentValues = new ContentValues();
@@ -283,7 +372,7 @@ public class DayuanDailyDatabase {
             Pattern pattern2 = Pattern.compile(regex4Week);
             Matcher matcher2 = null;
             try {
-                if (!isExitThisSchedule(mClass.getData().getId())) {
+                if (!isExitThisSchedule("sad","s")) {
                     while (matcher.find()) {
                         //Log.d("WocaoNiMaTag",matcher.groupCount()+"");
                         for (int i = 1; i <= matcher.groupCount(); i++) {
@@ -577,7 +666,7 @@ public class DayuanDailyDatabase {
      * @param collegeId 根据传入的 collegeId 获得该学院的所有专业
      * @return 该学院的专业集合
      */
-    public List<Major.DataBean> loadMajor(int collegeId){
+   /* public List<Major.DataBean> loadMajor(int collegeId){
         List<Major.DataBean> list = new ArrayList<>();
         Cursor cursor = sqLiteDatabase.query("Major",null,"college_id = ?",new String[]{String.valueOf(collegeId)},null,null,null);
         if(cursor.moveToFirst()){
@@ -591,7 +680,7 @@ public class DayuanDailyDatabase {
         }
         cursor.close();
         return list;
-    }
+    }*/
 
     /**
      * @param id 根据传入的 专业 ID 判断表中是否存在这节课
@@ -611,22 +700,27 @@ public class DayuanDailyDatabase {
     }
 
     /**
-     * @param year 专业的学年
      * @param major_name 专业名称
      * @return 返回该专业该学年的所有班级
      */
-    public List<String> loadClassName(int year, String major_name){
-        List<String> list = new ArrayList<>();
-        Cursor cursor = sqLiteDatabase.query("ClassName",null,"year = ? and major_name like ?",new String[]{String.valueOf(year),major_name},null,null,null);
+    public List<Classe> loadClassName(String major_name){
+        List<Classe> list = new ArrayList<>();
+        Classe classe = null;
+        Cursor cursor = sqLiteDatabase.query("ClassName",null,"major_name like ?",new String[]{major_name},null,null,null);
         if(cursor.moveToFirst()){
             do{
-                String s = cursor.getString(cursor.getColumnIndex("className"));
-                list.add(s);
+                classe = new Classe(
+                        cursor.getString(cursor.getColumnIndex("class_name")),
+                        cursor.getString(cursor.getColumnIndex("class_number"))
+                );
+                list.add(classe);
             }while (cursor.moveToNext());
         }
         cursor.close();
         return list;
     }
+
+
 
     /**
      * @param year 这些班级的入学年日期
@@ -652,17 +746,16 @@ public class DayuanDailyDatabase {
 
     /**
      * @param Type TYPE_GET_SUB_NAME = 1; TYPE_GET_SUB_PLACE = 2;TYPE_GET_SUB_TEACHER = 3;TYPE_GET_SUB_TIME = 4;
-     * @param schedule_id 课表的唯一 id
      * @param week_num 课表的周几
      * @param course_start 课表的周几的第几节
      * @return 根据 Type 不同，分别返回课程名字，上课地点，上课老师，上课的周数
      */
-    public List<String> loadSchedules(int Type,int schedule_id,int week_num,int course_start){
+    public List<String> loadSchedules(int Type,String class_name,int week_num,int course_start){
         //List<String> list = new ArrayList<>();
         //String s = null;
         List<String> s = new ArrayList<>();
-        Cursor cursor = sqLiteDatabase.query("Schedule",null,"schedule_id = ? and week_num = ? and course_start = ?",
-                        new String[]{String.valueOf(schedule_id),String.valueOf(week_num),String.valueOf(course_start)},null,null,null);
+        Cursor cursor = sqLiteDatabase.query("Schedule",null,"class_name = ? and week_num = ? and course_start = ?",
+                        new String[]{String.valueOf(class_name),String.valueOf(week_num),String.valueOf(course_start)},null,null,null);
         if(cursor.moveToFirst()){
             //Log.d(DbTag,"Type is : " + Type+"");
             do{
@@ -708,16 +801,16 @@ public class DayuanDailyDatabase {
     }
 
     /**
-     * @param schedule_id 传入课表的唯一 id
      * @return 如果数据库中存在这个课表，返回为 true
      * @throws Exception 「不知道什么」异常c
      */
-    private boolean isExitThisSchedule(int schedule_id) throws Exception{
-        Cursor cursor = sqLiteDatabase.query("Schedule",null,"schedule_id = ?",new String[]{String.valueOf(schedule_id)},null,null,null);
+    private boolean isExitThisSchedule(String className,String term_name) throws Exception{
+        Cursor cursor = sqLiteDatabase.query("Schedule",null,"class_name = ? and term = ?",new String[]{String.valueOf(className),String.valueOf(term_name)},null,null,null);
         if(cursor.moveToFirst()){
             do {
-                int id = cursor.getInt(cursor.getColumnIndex("schedule_id"));
-                if(id == schedule_id){
+                String cname = cursor.getString(cursor.getColumnIndex("class_name"));
+                String tname = cursor.getString(cursor.getColumnIndex("term"));
+                if(className.equals(cname) && tname.equals(tname)){
                     cursor.close();
                     return true;
                 }
