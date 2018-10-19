@@ -773,7 +773,11 @@ public class DayuanDailyDatabase {
                         s.add(cursor.getString(cursor.getColumnIndex("course_rawWeek")));
                         break;
                     case DayuanDailyDatabase.TYPE_GET_SUB_WEEKS:
-                        s.add(cursor.getString(cursor.getColumnIndex("course_weeks")));
+                        try {
+                            s.add(cursor.getString(cursor.getColumnIndex("course_weeks")));
+                        }catch (Exception e){
+
+                        }
                         break;
                     case DayuanDailyDatabase.TYPE_GET_SUB_LENGTH:
                         s.add(cursor.getString(cursor.getColumnIndex("course_length")));

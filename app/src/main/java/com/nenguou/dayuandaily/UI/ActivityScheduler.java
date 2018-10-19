@@ -191,12 +191,12 @@ public class ActivityScheduler extends AppCompatActivity {
         editor = getSharedPreferences("User_YearCollege",MODE_PRIVATE).edit();
         sharedPreferences = getSharedPreferences("User_YearCollege",MODE_PRIVATE);
         nowTime = (int) (((System.currentTimeMillis() - sharedPreferences.getLong("start",1)) / 604800000)) + 1;
-        isScheduleSelected = sharedPreferences.getBoolean("isScheduleSelected",false);
+        /*isScheduleSelected = sharedPreferences.getBoolean("isScheduleSelected",false);
         if(!isScheduleSelected){
             Intent intent = new Intent(this,ActivityChooseSchedule.class);
             startActivity(intent);
             this.finish();
-        }
+        }*/
     }
 
     @OnClick(R.id.search_schedule)

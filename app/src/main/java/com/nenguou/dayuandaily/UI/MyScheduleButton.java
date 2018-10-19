@@ -290,7 +290,11 @@ public class MyScheduleButton extends android.support.v7.widget.AppCompatButton 
                     String [] temWeeksList = newString3.split(",");
                     List<Integer> weeksArrayList = new ArrayList<>();
                     for (int j = 0; j < temWeeksList.length; j++) {
-                        weeksArrayList.add(Integer.parseInt(temWeeksList[j]));
+                        try {
+                            weeksArrayList.add(Integer.parseInt(temWeeksList[j]));
+                        }catch (Exception e){
+
+                        }
                     }
                     all_class_week_list.add(weeksArrayList);
                 }

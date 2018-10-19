@@ -34,6 +34,7 @@ import com.github.clans.fab.FloatingActionMenu;
 import com.nenguou.dayuandaily.DataBase.DayuanDailyDatabase;
 import com.nenguou.dayuandaily.ImageLoader.MyImageLoader;
 import com.nenguou.dayuandaily.Listener.CallbackListener;
+import com.nenguou.dayuandaily.UI.ActivityChooseSchedule;
 import com.nenguou.dayuandaily.UI.ActivityLogin;
 import com.nenguou.dayuandaily.UI.ActivityScheduler;
 import com.nenguou.dayuandaily.UI.Activity_Ranks;
@@ -68,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements  OnBannerListener
     SharedPreferences sharedPreferences1 = null;    // 系统设置
     DayuanDailyDatabase dayuanDailyDatabase;
     private static final int GET_CAPTCHA = 0;
+    private boolean isScheduleSelected = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -361,7 +363,14 @@ public class MainActivity extends AppCompatActivity implements  OnBannerListener
 //                    editor.commit();
 //                    openAlibaba();
 //                }else {
-                Intent intent = new Intent(MainActivity.this, ActivityScheduler.class);
+                sharedPreferences = getSharedPreferences("User_YearCollege",MODE_PRIVATE);
+                isScheduleSelected = sharedPreferences.getBoolean("isScheduleSelected",false);
+                Intent intent = null;
+                if (!isScheduleSelected) {
+                    intent = new Intent(MainActivity.this,ActivityChooseSchedule.class);
+                } else {
+                    intent = new Intent(MainActivity.this, ActivityScheduler.class);
+                }
                 startActivity(intent);
 //                }
             }
@@ -442,16 +451,16 @@ public class MainActivity extends AppCompatActivity implements  OnBannerListener
                             intent.putExtra("fromWhere","MainActivity");
                             dialog.dismiss();
                             startActivity (intent);
-
-
                         }
                     });
+
                     cap_refresh_cancle.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             dialog.dismiss();
                         }
                     });
+
                     cap_refresh_ok.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
