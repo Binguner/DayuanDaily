@@ -46,7 +46,6 @@ public class ActivityGrades extends AppCompatActivity {
     @BindView(R.id.grade_out_recyclerview) RecyclerView grade_out_recyclerview;
     @BindView(R.id.grades_toolbar) Toolbar grades_toolbar;
     @BindView(R.id.grades_refresh) ImageView grades_refresh;
-
     ImageView cap_pic;
 
     private GradeOutAdapter gradeOutAdapter;

@@ -173,6 +173,7 @@ public class ActivityChooseSchedule extends AppCompatActivity implements Adapter
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        String [] newArray;
         if( i == 1){
             dayuanDailyDatabase.clearTheSchedule();
             class_name_list.clear();
@@ -180,13 +181,14 @@ public class ActivityChooseSchedule extends AppCompatActivity implements Adapter
             class_name_list.add("清空课表");
             editor.putBoolean("isScheduleSelected",false);
             editor.commit();
-            String[] newArray = class_name_list.toArray(new String[0]);
+            /*String[] */newArray = class_name_list.toArray(new String[0]);
             ArrayAdapter<String> Adapter = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,android.R.id.text1,newArray);
 
             the_saved_schedule.setAdapter(Adapter);
         }
         if(i != 0 && i != 1){
-            editor.putInt("schedule_id", dayuanDailyDatabase.getScheduleId(classNameArray[i]));
+            //editor.putInt("schedule_id", dayuanDailyDatabase.getScheduleId(classNameArray[i]));
+            editor.putString("className",class_name_list.get(i));
             editor.commit();
             Intent intent = new Intent(ActivityChooseSchedule.this,ActivityScheduler.class);
             startActivity(intent);

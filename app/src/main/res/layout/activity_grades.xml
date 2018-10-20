@@ -30,7 +30,7 @@
             android:paddingEnd="10dp"
             android:paddingStart="15dp"
             android:layout_height="?attr/actionBarSize"
-            android:src="@mipmap/more_white"/>
+            android:src="@mipmap/refresh_white_48"/>
     </android.support.v7.widget.Toolbar>
 
     <android.support.v7.widget.RecyclerView

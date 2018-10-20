@@ -386,8 +386,6 @@ public class MainActivity extends AppCompatActivity implements  OnBannerListener
 
                 //if((newTIme - oldTime) > 86400000) {
                   //  Log.d("QEWR","get in");
-
-
                     editor.putLong("time", newTIme);
                     editor.commit();
                     openAlibaba();

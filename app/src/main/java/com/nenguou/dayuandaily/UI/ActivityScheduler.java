@@ -20,6 +20,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nenguou.dayuandaily.R;
@@ -126,6 +127,7 @@ public class ActivityScheduler extends AppCompatActivity {
     @BindView(R.id.choose_week_sideBar) MySideBar choose_week_sideBar;
 
     @BindView(R.id.isFirstView) Switch isFirstView;
+    @BindView(R.id.schedule_week) TextView schedule_week;
 
     List<MyScheduleButton> list_mon;
     List<MyScheduleButton> list_tues;
@@ -145,6 +147,7 @@ public class ActivityScheduler extends AppCompatActivity {
     SharedPreferences.Editor editor1;   // 系统设置
     SharedPreferences sharedPreferences = null;
     SharedPreferences sharedPreferences1 = null;    // 系统设置
+    private String weekNum = "第 0 周";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.myAppTheme);
@@ -161,6 +164,15 @@ public class ActivityScheduler extends AppCompatActivity {
     private void checkTheLastTime() {
         ///*SharedPreferences*/ sharedPreferences = getSharedPreferences("User_YearCollege",MODE_PRIVATE);
         theSelectedTime = sharedPreferences.getString("theSelectedTime","");
+        switch (theSelectedTime){
+            case "N":
+                weekNum = "第 "+ nowTime +" 周";
+                break;
+            default:
+                weekNum = "第 "+theSelectedTime+" 周";
+                break;
+            }
+        schedule_week.setText(weekNum);
         //Log.d("sadfas",theSelectedTime +" ");
         if(theSelectedTime.equals("")){
             MySideBar.setTheSelectedOne("N");
@@ -205,6 +217,19 @@ public class ActivityScheduler extends AppCompatActivity {
         startActivity(intent);
         this.finish();
     }
+    @OnClick(R.id.schedule_week)
+    public void go2Slider(View view){
+        Toast.makeText(this,"请在右侧侧边栏选择周数 :)",Toast.LENGTH_SHORT).show();
+    }
+
+    private void chandeTitleTime(String s){
+        if (s.contains("N")){
+            schedule_week.setText("第 " + nowTime + " 周");
+
+        }else {
+            schedule_week.setText("第 " + s + " 周");
+        }
+    }
 
     private void initViews() {
 //        hideTheRepeatedClass(list_mon);
@@ -231,6 +256,7 @@ public class ActivityScheduler extends AppCompatActivity {
                 }else {
                     selectedTime = Integer.parseInt(s);
                 }
+                chandeTitleTime(s);
                 try {
                     refreshSchedule(list_mon);
                     refreshSchedule(list_tues);
