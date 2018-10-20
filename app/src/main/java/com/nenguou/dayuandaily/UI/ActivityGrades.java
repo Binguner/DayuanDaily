@@ -128,9 +128,28 @@ public class ActivityGrades extends AppCompatActivity {
             }
         });
         popupMenu.show();*/
+       Toast.makeText(ActivityGrades.this,"正在努力刷新，请稍后...",Toast.LENGTH_SHORT).show();
+        rxDayuan.getLoginSuccess2(new CallbackListener() {
+            @Override
+            public void callBack(int status, @NotNull String msg) {
+                if (status == 1 && msg.contains("suc")){
+                    rxDayuan.getGrades2(new CallbackListener() {
+                        @Override
+                        public void callBack(int status, @NotNull String msg) {
+                            Toast.makeText(ActivityGrades.this,msg,Toast.LENGTH_SHORT).show();
+                            if (status == 1){
+                                Intent intent = new Intent(ActivityGrades.this,ActivityGrades.class);
+                                startActivity(intent);
+                                ActivityGrades.this.finish();
+                            }
+                        }
+                    });
 
-        Toast.makeText(ActivityGrades.this,"正在努力刷新，请稍后...",Toast.LENGTH_SHORT).show();
-        rxDayuan.getGrades2(new CallbackListener() {
+                }
+            }
+        });
+
+        /*rxDayuan.getGrades2(new CallbackListener() {
             @Override
             public void callBack(int status, @NotNull String msg) {
                 Toast.makeText(ActivityGrades.this,msg,Toast.LENGTH_SHORT).show();
@@ -140,11 +159,12 @@ public class ActivityGrades extends AppCompatActivity {
                     ActivityGrades.this.finish();
                 }
             }
-        });
+        });*/
         //sqLiteDatabase.dropAndCreateTableGrades();
         //showRefreshGradesAlerDialog();
     }
 
+    // 不用了
     private void showRefreshGradesAlerDialog() {
         rxDayuan.getCaptcha(new RetrofitCallbackListener() {
             @Override

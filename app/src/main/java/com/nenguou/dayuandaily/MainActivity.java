@@ -333,9 +333,6 @@ public class MainActivity extends AppCompatActivity implements  OnBannerListener
         //});
 
 
-
-
-
         check_grades.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -547,7 +544,6 @@ public class MainActivity extends AppCompatActivity implements  OnBannerListener
             }
         });
 
-
         get_rank_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -558,6 +554,7 @@ public class MainActivity extends AppCompatActivity implements  OnBannerListener
                 String password = sharedPreferences.getString("password","0000");
                 if(!isLoadedData){
                     Intent intent = new Intent(MainActivity.this,ActivityLogin.class);
+                    intent.putExtra("fromWhere","ActivityLogin2Ranks");
                     startActivity(intent);
                     return;
                 }

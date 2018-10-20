@@ -256,6 +256,7 @@ public class ActivityLogin extends AppCompatActivity {
 
     @OnClick(R.id.loginbtn)
     public void loginBtnClick(View view){
+
         if(username_textinputlayout.getEditText().getText().toString().isEmpty()){
             username_textinputlayout.setError("请输入学号");
         }else {
@@ -286,7 +287,7 @@ public class ActivityLogin extends AppCompatActivity {
         if(!username_textinputlayout.getEditText().getText().toString().isEmpty()
                 && !password_textinputlayout.getEditText().getText().toString().isEmpty()
                 //&& !code_textinputlayout.getEditText().getText().toString().isEmpty()
-                ) {
+                ){
 
             rxDayuan.getLoginSuccess2(new CallbackListener() {
                 @Override
@@ -303,13 +304,21 @@ public class ActivityLogin extends AppCompatActivity {
                         if(null != fromWhere && (fromWhere.equals("MainActivity2Grades") || fromWhere.equals("ActivityGrades2Login"))){
                             Intent intent = new Intent(ActivityLogin.this, ActivityGrades.class);
                             startActivity(intent);
-                            loginbtn.setClickable(true);
-                            ActivityLogin.this.finish();
+                        }else if( null != fromWhere && fromWhere.equals("ActivityLogin2Ranks")){
+                            rxDayuan.getRanks(new CallbackListener() {
+                                @Override
+                                public void callBack(int status, @NotNull String msg) {
+                                    if (status == 1 && msg.contains("suc")){
+                                        Intent intent = new Intent(ActivityLogin.this,Activity_Ranks.class);
+                                        startActivity(intent);
+                                    }
+                                }
+                            });
                         }
-
+                        loginbtn.setClickable(true);
+                        ActivityLogin.this.finish();
                     }else {
                         loginbtn.setClickable(true);
-
                     }
 
                 }

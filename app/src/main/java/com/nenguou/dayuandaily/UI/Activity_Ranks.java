@@ -207,6 +207,22 @@ public class Activity_Ranks extends AppCompatActivity {
                 String password = sharedPreferences.getString("password","");
                 //Toast.makeText(Activity_Ranks.this,"正在加载数据，请稍等...",Toast.LENGTH_SHORT).show();
                 Toast.makeText(Activity_Ranks.this,"正在加载数据，请耐心等待...",Toast.LENGTH_SHORT).show();
+                rxDayuan.getLoginSuccess2(new CallbackListener() {
+                    @Override
+                    public void callBack(int status, @NotNull String msg) {
+                        Toast.makeText(Activity_Ranks.this,msg,Toast.LENGTH_SHORT).show();
+                        if (status == 1 ){
+                            rxDayuan.getRanks(new CallbackListener() {
+                                @Override
+                                public void callBack(int status, @NotNull String msg) {
+                                    if (status == 1){
+                                        initDatas();
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
 
                 /*rxDayuan.rankLogin(username, password, new RetrofitCallbackListener() {
                     @Override
@@ -219,7 +235,7 @@ public class Activity_Ranks extends AppCompatActivity {
                         }
                     }
 
-                    @Override
+                    @Overridez
                     public void onError(Exception e) {
                         //Log.d("tatata","2222");
 
@@ -233,7 +249,7 @@ public class Activity_Ranks extends AppCompatActivity {
                     }
                 });*/
                 //wLog.d("tatata","4444");
-                rxDayuan.getRanks(new CallbackListener() {
+               /* rxDayuan.getRanks(new CallbackListener() {
                     @Override
                     public void callBack(int status, @NotNull String msg) {
                         Toast.makeText(Activity_Ranks.this,msg,Toast.LENGTH_SHORT).show();
@@ -243,7 +259,7 @@ public class Activity_Ranks extends AppCompatActivity {
                             }catch (Exception e){ }
                         }
                     }
-                });
+                });*/
             }
         });
         ranks_appbarlayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {

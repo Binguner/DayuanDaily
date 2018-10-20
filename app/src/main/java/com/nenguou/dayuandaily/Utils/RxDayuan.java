@@ -257,7 +257,6 @@ public class RxDayuan {
 
                     @Override
                     public void onError(Throwable e) {
-
                     }
 
                     @Override
@@ -272,7 +271,6 @@ public class RxDayuan {
                                 }
                             });
                         }*/
-
                     }
                 });
     }
@@ -548,6 +546,7 @@ public class RxDayuan {
                 });
     }
 
+    // 不用了
     public void rankLogin(final String username, final String password, final RetrofitCallbackListener listener){
 //        service.rankLogin(username,password)
 //                .subscribeOn(Schedulers.io())
