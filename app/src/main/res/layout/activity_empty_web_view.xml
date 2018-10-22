@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UI.EmptyWebView">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/empty_webview_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/colorToolbar"
+                android:theme="@style/tool_bar_style"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:navigationIcon="@mipmap/back_bg">
+
+                <TextView
+                    android:id="@+id/empty_webview_toolbar_title"
+                    android:textSize="20sp"
+                    android:textColor="@color/colorWhite"
+                    android:layout_gravity="center"
+                    android:text="title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </android.support.v7.widget.Toolbar>
+
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/webview_net1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <WebView
+                android:id="@+id/empty_webview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </WebView>
+
+        </android.support.v4.widget.NestedScrollView>
+
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/webview_net2"
+            android:visibility="gone"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/webview_constrainlayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:id="@+id/text1"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:textColor="@color/colorDeepBlackText"
+                    android:text="学校新校园卡上线了"
+                    android:textStyle="bold"
+                    android:textSize="28sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/text2"
+                    android:layout_marginTop="@dimen/dp_4"
+                    android:text="该 App 提供查询余额、消费记录和挂失功能，"
+                    android:textColor="@color/colorLittleDeepBlackText"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:textSize="18sp"
+                    app:layout_constraintTop_toBottomOf="@id/text1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/text3"
+                    android:text="初始密码为「123456」，"
+                    android:layout_marginTop="@dimen/dp_4"
+                    android:textColor="@color/colorLittleDeepBlackText"
+                    app:layout_constraintTop_toBottomOf="@id/text2"
+                    app:layout_constraintStart_toStartOf="@id/text2"
+                    android:textSize="18sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/text4"
+                    android:text="修改的密码也必须是 6 位数字，"
+                    android:layout_marginTop="@dimen/dp_4"
+                    android:textColor="@color/colorLittleDeepBlackText"
+                    app:layout_constraintTop_toBottomOf="@id/text3"
+                    app:layout_constraintStart_toStartOf="@id/text2"
+                    android:textSize="18sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/text5"
+                    android:text="点击右上角，从浏览器中打开进入下载页面。"
+                    app:layout_constraintTop_toBottomOf="@id/text4"
+                    app:layout_constraintStart_toStartOf="@id/text2"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorLittleDeepBlackText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </android.support.constraint.ConstraintLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+    </android.support.design.widget.CoordinatorLayout>
+
+</android.support.constraint.ConstraintLayout>

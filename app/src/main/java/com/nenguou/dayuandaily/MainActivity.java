@@ -39,6 +39,8 @@ import com.nenguou.dayuandaily.UI.ActivityLogin;
 import com.nenguou.dayuandaily.UI.ActivityScheduler;
 import com.nenguou.dayuandaily.UI.Activity_Ranks;
 import com.nenguou.dayuandaily.Listener.RetrofitCallbackListener;
+import com.nenguou.dayuandaily.UI.ChooseEmptyClassroom;
+import com.nenguou.dayuandaily.UI.EmptyWebView;
 import com.nenguou.dayuandaily.Utils.RxDayuan;
 import com.nenguou.dayuandaily.Utils.StatusBarUtil;
 import com.squareup.picasso.Picasso;
@@ -56,7 +58,8 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity implements  OnBannerListener {
 
     private Button test_YearCollege,test_Major,test_classname,test_Class,test_loadYearColleg,test_loadMajor,test_loadClassName,test_loadClass,
-            go_to_choose_class_aty,test_login,test_getCaptcha,openAliPay,check_grades,check_schedule,get_money,oneKeyTestTeatch,get_rank_btn;
+            go_to_choose_class_aty,test_login,test_getCaptcha,openAliPay,check_grades,check_schedule,get_money,oneKeyTestTeatch,get_rank_btn,get_bus,goToSchoolCard,
+            gotoLibrary,gotoPutonghua,gotoCalender,gotoChooseClassroom;
     List<Uri> imageUrls;
 
     RxDayuan rxDayuan;
@@ -81,10 +84,10 @@ public class MainActivity extends AppCompatActivity implements  OnBannerListener
         ButterKnife.bind(this);
         StatusBarUtil.transparentStatusbar(this);
         initId();
+        initBanner();
         editor = getSharedPreferences("test",MODE_PRIVATE).edit();
         sharedPreferences = getSharedPreferences("test",MODE_PRIVATE);
         setListener();
-        initBanner();
         initFloatingButton();
     }
 
@@ -98,6 +101,8 @@ public class MainActivity extends AppCompatActivity implements  OnBannerListener
         imageUrls = new ArrayList<>();
 
         //imageView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+        imageUrls.add(Uri.parse("https://ssl.liuyinxin.com/static/img/banner2.8246025.png"));
+        imageUrls.add(Uri.parse("https://ssl.liuyinxin.com/static/img/banner1.173a5d9.png"));
         imageUrls.add(Uri.parse("https://api.lylares.com/bing/image/?400/240/-1"));
         imageUrls.add(Uri.parse("https://api.lylares.com/bing/image/?400/240/0"));
         imageUrls.add(Uri.parse("https://api.lylares.com/bing/image/?400/240/1"));
@@ -193,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements  OnBannerListener
     protected void onStart() {
         super.onStart();
         main_banner.startAutoPlay();
-        Log.d(mainTag,"onStart");
+        //Log.d(mainTag,"onStart");
 
     }
 
@@ -201,138 +206,11 @@ public class MainActivity extends AppCompatActivity implements  OnBannerListener
     protected void onStop() {
         super.onStop();
         main_banner.stopAutoPlay();
-        Log.d(mainTag,"onStop");
+        //Log.d(mainTag,"onStop");
 
     }
 
     private void setListener() {
-/*        test_YearCollege.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                rxDayuan.getYearCollege(new RetrofitCallbackListener() {
-                    @Override
-                    public void onFinish(int status) {
-
-                    }
-
-                    @Override
-                    public void onError(Exception e) {
-
-                    }
-
-                    @Override
-                    public void setText(String msg) {
-
-                    }
-
-                });
-            }
-        });
-
-        test_Major.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                rxDayuan.getMajor(12);
-            }
-        });
-
-        test_classname.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                rxDayuan.getClassName(2016,"工业设计");
-            }
-        });
-
-        test_Class.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                rxDayuan.getClass("软件1632","2017-2018-2-1");
-            }
-        });
-
-        test_loadYearColleg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                List<YearCollege2.DataBean.CollegesBean> list = dayuanDailyDatabase.loadYearCollege();
-                for (YearCollege2.DataBean.CollegesBean collegesBean : list) {
-                    //Log.d(mainTag, "Id: "+collegesBean.getId() + "  College: " + collegesBean.getCollege());
-                }
-            }
-        });
-
-        test_loadMajor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                List<Major.DataBean> list = dayuanDailyDatabase.loadMajor(12);
-                for(Major.DataBean dataBean : list){
-                    //Log.d(mainTag, "Id: "+dataBean.getId() + "  College_id : " + dataBean.getCollegeId()+"  Major: "+dataBean.getMajor());
-
-                }
-            }
-        });
-
-        test_loadClassName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                List<String> s = dayuanDailyDatabase.loadClassName(2016,"工业设计");
-                for(String s1: s){
-//                    Log.d(mainTag, "class: " + s1);
-                }
-            }
-        });
-        test_loadClass.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //String s = dayuanDailyDatabase.loadSchedules(DayuanDailyDatabase.TYPE_GET_SUB_NAME,2465,1,2);
-                //Log.d(mainTag, "class_name is : " + s);
-            }
-        });
-        go_to_choose_class_aty.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, ActivityScheduler.class);
-                startActivity(intent);
-            }
-        });
-        test_login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, ActivityLogin.class);
-                startActivity(intent);
-            }
-        });
-        test_getCaptcha.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //rxDayuan.getCaptcha();
-            }
-        });*/
-
-        /*openAliPay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ApplicationInfo applicationInfo = null;
-                try {
-                    applicationInfo = MainActivity.this.getPackageManager().getApplicationInfo("com.eg.android.AlipayGphone", PackageManager.GET_UNINSTALLED_PACKAGES);
-                } catch (PackageManager.NameNotFoundException e) {
-                    e.printStackTrace();
-                    Snackbar.make(view,"尚未安装支付宝",Snackbar.LENGTH_SHORT).show();
-                }
-                if (null!=applicationInfo){
-                    ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                    clipboardManager.setPrimaryClip(new ClipData(ClipData.newPlainText("Label","快来领支付宝红包！人人可领，天天可领！复制此消息，打开最新版支付宝就能领取！2FnQKo55L9")));
-                    PackageManager packageManager = MainActivity.this.getApplicationContext().getPackageManager();
-                    Intent intent = packageManager.getLaunchIntentForPackage("com.eg.android.AlipayGphone");
-                    //List<ApplicationInfo> list = packageManager.getInstalledApplications(0);
-                    //for(ApplicationInfo info:list){
-                        //Log.d("FGHJNBGH",info.packageName);
-                    //}
-                    startActivity(intent);
-                }
-            }*/
-        //});
-
-
         check_grades.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -551,7 +429,7 @@ public class MainActivity extends AppCompatActivity implements  OnBannerListener
                 sharedPreferences = getSharedPreferences("User_grades",MODE_PRIVATE);
                 Boolean isLoadedData = sharedPreferences.getBoolean("isLoadedData",false);
                 String username = sharedPreferences.getString("username","0000");
-                String password = sharedPreferences.getString("password","0000");
+                //String password = sharedPreferences.getString("password","0000");
                 if(!isLoadedData){
                     Intent intent = new Intent(MainActivity.this,ActivityLogin.class);
                     intent.putExtra("fromWhere","ActivityLogin2Ranks");
@@ -598,8 +476,58 @@ public class MainActivity extends AppCompatActivity implements  OnBannerListener
             }
         });
 
+        get_bus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,EmptyWebView.class);
+                intent.putExtra("tag","bus");
+                startActivity(intent);
+            }
+        });
 
+        goToSchoolCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,EmptyWebView.class);
+                intent.putExtra("tag","school_card");
+                startActivity(intent);
+            }
+        });
 
+        gotoLibrary.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,EmptyWebView.class);
+                intent.putExtra("tag","library");
+                startActivity(intent);
+            }
+        });
+
+        gotoPutonghua.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,EmptyWebView.class);
+                intent.putExtra("tag","putonghua");
+                startActivity(intent);
+            }
+        });
+
+        gotoCalender.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,EmptyWebView.class);
+                intent.putExtra("tag","calender");
+                startActivity(intent);
+            }
+        });
+
+        gotoChooseClassroom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,ChooseEmptyClassroom.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -668,12 +596,14 @@ public class MainActivity extends AppCompatActivity implements  OnBannerListener
         }
     }
     private void initId() {
+        main_banner = findViewById(R.id.main_banner);
         get_rank_btn = findViewById(R.id.get_rank_btn);
         //openAlbabaWebView = findViewById(R.id.openAlbabaWebView);
         oneKeyTestTeatch = findViewById(R.id.oneKeyTestTeatch);
         get_money = findViewById(R.id.get_money);
         check_schedule = findViewById(R.id.check_schedule);
         check_grades = findViewById(R.id.check_grades);
+        get_bus = findViewById(R.id.get_bus);
         //openAliPay = findViewById(R.id.openAliPay);
        //test_getCaptcha = findViewById(R.id.test_getCaptcha);
        // test_login = findViewById(R.id.test_login);
@@ -688,6 +618,11 @@ public class MainActivity extends AppCompatActivity implements  OnBannerListener
         test_loadMajor = findViewById(R.id.test_loadMajor);
         test_loadClassName = findViewById(R.id.test_loadClassName);*/
         dayuanDailyDatabase = DayuanDailyDatabase.getInstance(this);
+        goToSchoolCard = findViewById(R.id.goToSchoolCard);
+        gotoLibrary = findViewById(R.id.gotoLibrary);
+        gotoPutonghua = findViewById(R.id.gotoPutonghua);
+        gotoCalender = findViewById(R.id.gotoCalender);
+        gotoChooseClassroom = findViewById(R.id.gotoChooseClassroom);
     }
 
 

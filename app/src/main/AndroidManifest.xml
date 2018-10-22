@@ -33,7 +33,9 @@
         <activity android:name=".UI.ActivityGrades" />
         <activity android:name=".UI.ActivityGradesDetial" />
         <activity android:name=".UI.Activity_Ranks" />
-        <activity android:name=".UI.Activity_account"></activity>
+        <activity android:name=".UI.Activity_account" />
+        <activity android:name=".UI.EmptyWebView" />
+        <activity android:name=".UI.ChooseEmptyClassroom"></activity>
     </application>
 
 </manifest>

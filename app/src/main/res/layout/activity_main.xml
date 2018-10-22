@@ -23,139 +23,121 @@
         android:layout_height="wrap_content">
 
     </com.github.clans.fab.FloatingActionMenu>
-    <Button
-        android:id="@+id/check_grades"
-        android:clickable="true"
-        android:layout_marginTop="@dimen/dp_4"
-        app:layout_constraintTop_toBottomOf="@id/main_banner"
-        android:text="查成绩"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
-    <Button
-        app:layout_constraintTop_toBottomOf="@id/check_grades"
+    <android.support.v7.widget.CardView
         android:layout_marginTop="@dimen/dp_10"
-        android:id="@+id/check_schedule"
-        android:text="课程表"
+        android:layout_marginStart="@dimen/dp_10"
+        android:layout_marginEnd="@dimen/dp_10"
+        app:cardCornerRadius="@dimen/dp_10"
+        app:cardElevation="@dimen/dp_4"
+        android:id="@+id/main_cardview_func"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:id="@+id/get_money"
-        android:layout_marginTop="@dimen/dp_10"
-        app:layout_constraintTop_toBottomOf="@id/check_schedule"
-        android:text="薅羊毛"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:id="@+id/oneKeyTestTeatch"
-        android:text="一键评教"
-        android:layout_marginTop="@dimen/dp_10"
-        app:layout_constraintTop_toBottomOf="@id/get_money"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:id="@+id/get_rank_btn"
-        android:text="查排名"
-        android:layout_marginTop="@dimen/dp_10"
-        app:layout_constraintTop_toBottomOf="@id/oneKeyTestTeatch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-
-
-    <!--<ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/main_banner">
 
         <android.support.constraint.ConstraintLayout
+            android:id="@+id/main_cardview_func_cons"
             android:layout_width="match_parent"
-            android:visibility="gone"
             android:layout_height="match_parent">
-
             <Button
-                android:id="@+id/test_YearCollege"
-                android:text="test_YearCollege"
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <Button
-                android:id="@+id/test_Major"
-                android:text="test_Major"
-                app:layout_constraintTop_toBottomOf="@id/test_YearCollege"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <Button
-                android:id="@+id/test_classname"
-                android:text="test_classname"
-                app:layout_constraintTop_toBottomOf="@+id/test_Major"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <Button
-                android:id="@+id/test_Class"
-                android:text="test_Class"
-                app:layout_constraintTop_toBottomOf="@id/test_classname"
-                android:layout_width="match_parent"
+                android:id="@+id/check_grades"
+                android:clickable="true"
+                android:layout_marginTop="@dimen/dp_4"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/check_schedule"
+                android:text="查成绩"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content" />
 
             <Button
-                android:id="@+id/test_loadYearColleg"
-                android:text="test_loadYearCollege"
-                app:layout_constraintTop_toBottomOf="@id/test_Class"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <Button
-                android:id="@+id/test_loadMajor"
-                android:text="test_loadMajor"
-                app:layout_constraintTop_toBottomOf="@id/test_loadYearColleg"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <Button
-                android:id="@+id/test_loadClassName"
-                android:text="test_loadClassName"
-                app:layout_constraintTop_toBottomOf="@id/test_loadMajor"
-                android:layout_width="match_parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/check_grades"
+                app:layout_constraintEnd_toStartOf="@id/get_rank_btn"
+                android:layout_marginTop="@dimen/dp_4"
+                android:id="@+id/check_schedule"
+                android:text="课程表"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content" />
 
             <Button
-                android:id="@+id/test_loadClass"
-                android:text="test_loadClass"
-                app:layout_constraintTop_toBottomOf="@id/test_loadClassName"
-                android:layout_width="match_parent"
+                android:id="@+id/get_rank_btn"
+                android:text="查排名"
+                android:layout_marginTop="@dimen/dp_4"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/check_schedule"
+                app:layout_constraintEnd_toStartOf="@id/get_bus"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content" />
+
             <Button
-                android:id="@+id/go_to_choose_class_aty"
-                app:layout_constraintTop_toBottomOf="@id/test_loadClass"
-                android:text="go_to_choose_class_aty"
-                android:layout_width="match_parent"
-                android:background="@color/colorToolbar"
+                android:id="@+id/get_bus"
+                android:text="看公交"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="@dimen/dp_4"
+                app:layout_constraintStart_toEndOf="@id/get_rank_btn"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content" />
+
             <Button
-                android:id="@+id/test_login"
-                android:background="@color/colorToolbar"
-                android:text="test_login"
-                app:layout_constraintTop_toBottomOf="@id/go_to_choose_class_aty"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <Button
-                android:id="@+id/test_getCaptcha"
-                android:text="test_getCaptcha"
-                app:layout_constraintTop_toBottomOf="@id/test_login"
+                android:id="@+id/get_money"
+                android:layout_marginTop="@dimen/dp_10"
+                app:layout_constraintTop_toBottomOf="@id/check_schedule"
+                android:text="薅羊毛"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
             <Button
-                android:id="@+id/openAliPay"
-                android:text="test_openAlipay"
-                app:layout_constraintTop_toBottomOf="@id/test_getCaptcha"
+                android:id="@+id/oneKeyTestTeatch"
+                android:text="一键评教"
+                android:layout_marginTop="@dimen/dp_10"
+                app:layout_constraintTop_toBottomOf="@id/get_money"
+                app:layout_constraintStart_toEndOf="@id/check_schedule"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/goToSchoolCard"
+                android:text="学生卡"
+                app:layout_constraintTop_toBottomOf="@id/oneKeyTestTeatch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/gotoLibrary"
+                android:text="图书馆"
+                app:layout_constraintTop_toBottomOf="@id/goToSchoolCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/gotoPutonghua"
+                android:text="普通话水平测试成绩查询系统"
+                app:layout_constraintTop_toBottomOf="@id/gotoLibrary"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/gotoCalender"
+                android:text="校历"
+                app:layout_constraintTop_toBottomOf="@id/gotoPutonghua"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/gotoChooseClassroom"
+                android:text="空教室查询"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
         </android.support.constraint.ConstraintLayout>
-    </ScrollView>-->
+
+    </android.support.v7.widget.CardView>
 
 
 

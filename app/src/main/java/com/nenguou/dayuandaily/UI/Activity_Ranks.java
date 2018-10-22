@@ -166,7 +166,7 @@ public class Activity_Ranks extends AppCompatActivity {
         sharedPreferences = getSharedPreferences("User_grades",MODE_PRIVATE);
         String username = sharedPreferences.getString("username","2016006328");
         RankModelDetial rankModelDetial = dayuanDailyDatabase.getRank(username);
-        Log.d("rewsdf",username);
+        //reLog.d("rewsdf",username);
         if (null != rankModelDetial){
             ranks_card_name_name.setText(rankModelDetial.getXm());
             ranks_card_name_majorname.setText(rankModelDetial.getZym());

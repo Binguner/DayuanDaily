@@ -15,12 +15,20 @@
         <item name="windowNoTitle">true</item>
         <item name="android:statusBarColor">#00bcd4</item>
     </style>
+
     <style name="myAppTheme.login" parent="myAppTheme">
         <item name="windowNoTitle">true</item>
         <item name="android:statusBarColor">@color/colorToolbar</item>
         <item name="android:windowTranslucentStatus">false</item>
         <item name="windowActionBar">false</item>
 
+    </style>
+
+    <style name="tool_bar_style" parent="AppTheme">
+        <item name="actionOverflowButtonStyle">@style/Action.Overflow</item>
+    </style>
+    <style name="Action.Overflow" parent="android:Widget.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_more_vert_white_24dp</item>
     </style>
 
 
