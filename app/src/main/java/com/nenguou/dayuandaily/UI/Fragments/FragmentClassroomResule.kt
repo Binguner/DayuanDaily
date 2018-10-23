@@ -9,6 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.nenguou.dayuandaily.R
+import org.jetbrains.anko.AnkoComponent
+import org.jetbrains.anko.AnkoContext
+import org.jetbrains.anko.backgroundColor
+import org.jetbrains.anko.constraint.layout.constraintLayout
 
 
 class FragmentClassroomResule : Fragment() {
@@ -45,4 +49,13 @@ class FragmentClassroomResule : Fragment() {
                 FragmentClassroomResule().apply {
                 }
     }
+}
+
+class ResultUI:AnkoComponent<FragmentClassroomResule>{
+    override fun createView(ui: AnkoContext<FragmentClassroomResule>)= with(ui) {
+        constraintLayout {
+            backgroundColor = R.color.colorDeepBlackText
+        }
+    }
+
 }

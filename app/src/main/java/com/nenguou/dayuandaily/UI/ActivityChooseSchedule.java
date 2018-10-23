@@ -5,6 +5,7 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -127,7 +128,7 @@ public class ActivityChooseSchedule extends AppCompatActivity implements Adapter
         the_saved_schedule.setAdapter(arrayAdapter);
 
 
-        SharedPreferences sharedPreferences = getSharedPreferences("User_YearCollege",MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences( "User_YearCollege",MODE_PRIVATE);
        // boolean isFirstLoad = sharedPreferences.getBoolean("isFirstLoadCollege",true);
         //boolean isScheduleSelected = sharedPreferences.getBoolean("isScheduleSelected",false);
         //if (isFirstLoad) {

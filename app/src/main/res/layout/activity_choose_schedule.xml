@@ -22,9 +22,22 @@
             android:textColor="@color/colorBackground"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
+
     </android.support.v7.widget.Toolbar>
 
+    <Spinner
+        android:id="@+id/the_saved_schedule"
+        android:layout_marginEnd="@dimen/dp_10"
+        android:layout_gravity="end"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/pleasechooseclass"
+        app:layout_constraintBottom_toBottomOf="@id/pleasechooseclass"
+        android:layout_width="wrap_content"
+        android:spinnerMode="dropdown"
+        android:layout_height="wrap_content">
 
+    </Spinner>
 
     <TextView
         android:id="@+id/pleasechooseclass"
@@ -39,16 +52,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <Spinner
-        android:id="@+id/the_saved_schedule"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="@dimen/dp_10"
-        app:layout_constraintTop_toTopOf="@id/pleasechooseclass"
-        app:layout_constraintBottom_toBottomOf="@id/pleasechooseclass"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
 
-    </Spinner>
     <ImageView
         android:id="@+id/choose_class_shadow1"
         app:layout_constraintTop_toBottomOf="@+id/pleasechooseclass"

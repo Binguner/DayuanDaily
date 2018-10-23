@@ -132,6 +132,7 @@
             <Button
                 android:id="@+id/gotoChooseClassroom"
                 android:text="空教室查询"
+                app:layout_constraintTop_toBottomOf="@id/gotoCalender"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
