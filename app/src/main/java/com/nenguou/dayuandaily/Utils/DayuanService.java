@@ -11,6 +11,7 @@ import com.nenguou.dayuandaily.Model.Major;
 import com.nenguou.dayuandaily.Model.MajorAndClasses;
 import com.nenguou.dayuandaily.Model.RankLoginModel;
 import com.nenguou.dayuandaily.Model.RankModel;
+import com.nenguou.dayuandaily.Model.RestClass;
 import com.nenguou.dayuandaily.Model.YearCollege;
 import com.nenguou.dayuandaily.Model.YearCollege2;
 
@@ -70,6 +71,9 @@ public interface DayuanService {
     // 排名
     @POST("https://www.intyut.cn/api/intyut/rank/v1")
     Observable<RankModel> getRankModel();
+
+    @POST("https://www.intyut.cn/api/intyut/restclass/choose/v1")
+    Observable<RestClass> getRestClass();
 
 }
 

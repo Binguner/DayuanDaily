@@ -21,12 +21,16 @@ import com.nenguou.dayuandaily.Model.Major;
 import com.nenguou.dayuandaily.Model.MajorAndClassedData;
 import com.nenguou.dayuandaily.Model.MajorAndClasses;
 import com.nenguou.dayuandaily.Model.RankModelDetial;
+import com.nenguou.dayuandaily.Model.RestClass;
 import com.nenguou.dayuandaily.Model.Term;
 import com.nenguou.dayuandaily.Model.YearCollege;
 import com.nenguou.dayuandaily.Model.YearCollege2;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -934,5 +938,69 @@ public class DayuanDailyDatabase {
 
     public List<String> getTeacherNameList(){
         return teacherNameList;
+    }
+
+    /**
+     * 保存所有到校区和教室信息
+     */
+    public void saveRestclass(RestClass restClass){
+        if (null != restClass){
+            ContentValues contentValues = new ContentValues();
+            SharedPreferences.Editor editor = context.getSharedPreferences("RestClass",Context.MODE_PRIVATE).edit();
+            editor.putString("term_name",restClass.getData().getTerm());
+            editor.putString("term_value",restClass.getData().getTermValue());
+            editor.commit();
+            for (int i = 0 ; i < restClass.getData().getCampus().size(); i++){
+
+                for (int j = 0 ; j < restClass.getData().getCampus().get(i).getBuilds().size(); j++){
+                    contentValues.put("campus_name",restClass.getData().getCampus().get(i).getName());
+                    contentValues.put("campus_value",restClass.getData().getCampus().get(i).getValue());
+                    contentValues.put("build_name",restClass.getData().getCampus().get(i).getBuilds().get(j).getName());
+                    contentValues.put("build_value",restClass.getData().getCampus().get(i).getBuilds().get(j).getValue());
+                    sqLiteDatabase.insert("RestClass",null,contentValues);
+                    contentValues.clear();
+                }
+            }
+        }
+    }
+
+    /**
+     * @return 返回所有校区列表
+     */
+    public Map<String,String> getCampusMap(){
+        Map<String,String>  campusMap = new LinkedHashMap<>();
+        Cursor cursor = sqLiteDatabase.query("RestClass",null,null,null,null,null,null,null);
+        if (null != cursor && cursor.moveToFirst()){
+            do {
+                campusMap.put(
+                        cursor.getString(cursor.getColumnIndex("campus_value")),
+                        cursor.getString(cursor.getColumnIndex("campus_name"))
+                );
+            }while (cursor.moveToNext());
+        }
+        return campusMap;
+    }
+
+    /**
+     * @param campusKey 校区的编号
+     * @return 返回该校区的所有
+     */
+    public Map<String,String> getBuildMap(String campusKey){
+        Map<String,String> buildsMap = new LinkedHashMap<>();
+        Cursor cursor = sqLiteDatabase.query("RestClass",null,"campus_value like ?",new String[]{campusKey},null,null,null,null);
+        if (null != cursor && cursor.moveToFirst()){
+            do {
+                buildsMap.put(
+                        cursor.getString(cursor.getColumnIndex("build_value")),
+                        cursor.getString(cursor.getColumnIndex("build_name"))
+                );
+            }while (cursor.moveToNext());
+        }
+        return buildsMap;
+    }
+
+    public void rebuildRestClassTable(){
+        sqLiteDatabase.execSQL("DROP TABLE if exists RestClass");
+        sqLiteDatabase.execSQL(DaYuanDailyDBOpenHelper.CREATE_RESTCLASS);
     }
 }

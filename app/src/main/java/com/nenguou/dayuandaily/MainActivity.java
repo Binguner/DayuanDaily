@@ -70,9 +70,12 @@ public class MainActivity extends AppCompatActivity implements  OnBannerListener
     SharedPreferences.Editor editor = null;
     SharedPreferences sharedPreferences = null;
     SharedPreferences sharedPreferences1 = null;    // 系统设置
+    SharedPreferences restsp = null;    // 系统设置
+    SharedPreferences.Editor restEditor = null;
     DayuanDailyDatabase dayuanDailyDatabase;
     private static final int GET_CAPTCHA = 0;
     private boolean isScheduleSelected = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,6 +92,31 @@ public class MainActivity extends AppCompatActivity implements  OnBannerListener
         sharedPreferences = getSharedPreferences("test",MODE_PRIVATE);
         setListener();
         initFloatingButton();
+        initDatas();
+    }
+    private void initDatas(){
+        new Thread(){
+            @Override
+            public void run() {
+                long oldTime = restsp.getLong("last_load_time",0);
+                long newTime = System.currentTimeMillis();
+                //Log.d("sdfsdf","oldTime is " + oldTime + " new Time is " + newTime + " --" + (newTime - oldTime));
+                if ((newTime - oldTime) > (24 * 60 * 60 * 1000)){
+                    //Log.d("sdfsdf","rr");
+                    restEditor.putLong("last_load_time",newTime);
+                    restEditor.commit();
+                    dayuanDailyDatabase.rebuildRestClassTable();
+                    rxDayuan.getRestClass(new CallbackListener() {
+                        @Override
+                        public void callBack(int status, @NotNull String msg) {
+                            if (status != 1){
+                                Toast.makeText(MainActivity.this,"数据加载出错",Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+            }
+        }.start();
     }
 
     private void initFloatingButton() {
@@ -172,12 +200,12 @@ public class MainActivity extends AppCompatActivity implements  OnBannerListener
         return false;
     }
 
-    Handler handler = new Handler(){
+    /*static Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what){
-                case GET_CAPTCHA:
+                *//*case GET_CAPTCHA:
                     String imageUrl = (String) msg.obj;
                     //Log.d(loginTag,"in Handler: "+imageUrl);
                     try {
@@ -189,10 +217,10 @@ public class MainActivity extends AppCompatActivity implements  OnBannerListener
                     }catch (Exception e){
                         e.printStackTrace();
                     }
-                    break;
+                    break;*//*
             }
         }
-    };
+    };*/
 
     @Override
     protected void onStart() {
@@ -283,7 +311,7 @@ public class MainActivity extends AppCompatActivity implements  OnBannerListener
                                 Message message = new Message();
                                 message.what = GET_CAPTCHA;
                                 message.obj = imageUrl;
-                                handler.sendMessage(message);
+                                //handler.sendMessage(message);
                             }else if(status == 1){
                                 Toast.makeText(MainActivity.this,"请重新点击验证码",Toast.LENGTH_SHORT).show();
                             }
@@ -623,6 +651,8 @@ public class MainActivity extends AppCompatActivity implements  OnBannerListener
         gotoPutonghua = findViewById(R.id.gotoPutonghua);
         gotoCalender = findViewById(R.id.gotoCalender);
         gotoChooseClassroom = findViewById(R.id.gotoChooseClassroom);
+        restEditor = getSharedPreferences("RestClass",MODE_PRIVATE).edit();
+        restsp = getSharedPreferences("RestClass",MODE_PRIVATE);
     }
 
 

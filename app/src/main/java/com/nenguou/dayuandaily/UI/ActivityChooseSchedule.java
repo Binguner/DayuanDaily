@@ -5,6 +5,8 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -464,6 +466,14 @@ public class ActivityChooseSchedule extends AppCompatActivity implements Adapter
         }catch (IllegalArgumentException e){
             Toast.makeText(this,"正在加载数据，请稍等 :)",Toast.LENGTH_SHORT).show();
             e.printStackTrace();
+        }
+    }
+
+    class MyHandler extends Handler{
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
         }
     }
 

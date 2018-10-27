@@ -28,6 +28,7 @@ import com.nenguou.dayuandaily.Model.MajorAndClasses;
 import com.nenguou.dayuandaily.Model.RankLoginModel;
 import com.nenguou.dayuandaily.Model.RankModel;
 import com.nenguou.dayuandaily.Model.RankModelDetial;
+import com.nenguou.dayuandaily.Model.RestClass;
 import com.nenguou.dayuandaily.Model.YearCollege;
 import com.nenguou.dayuandaily.Model.YearCollege2;
 
@@ -652,6 +653,33 @@ public class RxDayuan {
 
                     }
                 });
+    }
+
+    public void getRestClass(final CallbackListener callbackListener){
+        service.getRestClass()
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<RestClass>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(RestClass restClass) {
+                        callbackListener.callBack(restClass.getCode(),restClass.getMsg());
+                        if (restClass.getCode() == 1 && null != restClass.getData()){
+                            dayuanDailyDatabase.saveRestclass(restClass);
+                        }
+                    }
+                });
+
     }
 
 

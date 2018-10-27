@@ -138,6 +138,14 @@ public class DaYuanDailyDBOpenHelper extends SQLiteOpenHelper{
             "zyrs text," +  // 1006
             "dlrs text," +
             "gpadlpm text)"; //3446
+
+    public static final String CREATE_RESTCLASS = "create table RestClass(" +
+            "id integer primary key autoincrement," +
+            "campus_name text," +
+            "campus_value text," +
+            "build_name text," +
+            "build_value text)";
+
     public DaYuanDailyDBOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
@@ -152,6 +160,7 @@ public class DaYuanDailyDBOpenHelper extends SQLiteOpenHelper{
         sqLiteDatabase.execSQL(CREATE_TERMSLIST);
         sqLiteDatabase.execSQL(CREATE_GRADES);
         sqLiteDatabase.execSQL(CREATE_RANKS);
+        sqLiteDatabase.execSQL(CREATE_RESTCLASS);
     }
 
     @Override
