@@ -37,8 +37,6 @@ import org.jetbrains.anko.sdk27.coroutines.onClick
 private lateinit var chooseEmptyClassroom: ChooseEmptyClassroom
 private lateinit var mhandler: Handler
 
-
-
 class FragmentSearchClassroom : Fragment() {
     private lateinit var dayuanDailyDatabase: DayuanDailyDatabase
     private lateinit var rxDayuan: RxDayuan
@@ -99,21 +97,33 @@ class FragmentSearchClassroomUI : AnkoComponent<FragmentSearchClassroom> {
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var addressPicker: AddressPicker
     val campusList = mutableListOf<String>()
-    val campusMap = dayuanDailyDatabase.campusMap
-    val list = mutableListOf(Province)
+    //val campusMap = dayuanDailyDatabase.campusMap
+    var campusMap = mutableMapOf<String,String>()
+    var buildMap = mutableMapOf<String,String>()
+    //val list = mutableListOf(Province)
 
     override fun createView(ui: AnkoContext<FragmentSearchClassroom>) = with(ui) {
         dayuanDailyDatabase = DayuanDailyDatabase.getInstance(ctx)
+        campusMap = dayuanDailyDatabase.campusMap
         rxDayuan = RxDayuan(ctx)
         sharedPreferences = ctx.getSharedPreferences("RestClass",0)
 
         for (values in campusMap.values){
             if (null!=values && !values.equals("")){
                 campusList.add(values)
-            }else{
-                toast("没有查询到数据")
             }
         }
+        buildMap = dayuanDailyDatabase.getBuildMap(campusList[0])
+        for (entry in campusMap.entries){
+            Log.d("campusListTag",entry.key + " = " + entry.value)
+        }
+
+        for(entry in buildMap.entries){
+            Log.d("campusListTag",entry.key + " = " + entry.value)
+        }
+
+
+
 
         constraintLayout {
             backgroundColor = ContextCompat.getColor(ctx,R.color.colorBackground)
@@ -207,7 +217,7 @@ class FragmentSearchClassroomUI : AnkoComponent<FragmentSearchClassroom> {
                         textSize = 20f
                         leftPadding = dip(70)
                         onClick {
-                            toast("Clicked!")
+                            toast("choose place")
                             addressPicker = AddressPicker(ctx,campusList)
                         }
                     }.lparams(width = matchParent){
@@ -227,7 +237,7 @@ class FragmentSearchClassroomUI : AnkoComponent<FragmentSearchClassroom> {
                         textSize = 20f
                         leftPadding = dip(70)
                         onClick {
-                            toast("Clicked!")
+                            toast("choose week")
                         }
                     }.lparams(width = matchParent){
                         topToTop = id_sheduler_week
@@ -246,7 +256,7 @@ class FragmentSearchClassroomUI : AnkoComponent<FragmentSearchClassroom> {
                         textSize = 20f
                         leftPadding = dip(70)
                         onClick {
-                            toast("Clicked!")
+                            toast("choose time")
                         }
                     }.lparams(width = matchParent){
                         topToTop = id_sheduler_time

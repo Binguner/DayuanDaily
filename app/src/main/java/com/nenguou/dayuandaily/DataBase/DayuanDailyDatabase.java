@@ -982,12 +982,12 @@ public class DayuanDailyDatabase {
     }
 
     /**
-     * @param campusKey 校区的编号
+     * @param campusName 校区的名称
      * @return 返回该校区的所有
      */
-    public Map<String,String> getBuildMap(String campusKey){
+    public Map<String,String> getBuildMap(String campusName){
         Map<String,String> buildsMap = new LinkedHashMap<>();
-        Cursor cursor = sqLiteDatabase.query("RestClass",null,"campus_value like ?",new String[]{campusKey},null,null,null,null);
+        Cursor cursor = sqLiteDatabase.query("RestClass",null,"campus_name like ?",new String[]{campusName},null,null,null,null);
         if (null != cursor && cursor.moveToFirst()){
             do {
                 buildsMap.put(

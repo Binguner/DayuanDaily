@@ -11,7 +11,7 @@ import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.view.View
 import com.nenguou.dayuandaily.R
-import com.nenguou.dayuandaily.UI.Fragments.FragmentClassroomResule
+import com.nenguou.dayuandaily.UI.Fragments.FragmentClassroomResult
 import com.nenguou.dayuandaily.UI.Fragments.FragmentSearchClassroom
 import org.jetbrains.anko.*
 import org.jetbrains.anko.constraint.layout.constraintLayout
@@ -26,7 +26,7 @@ import org.jetbrains.anko.constraint.layout.constraintLayout
 class ChooseEmptyClassroom : AppCompatActivity() {
 
     private var searchFragment : FragmentSearchClassroom? = null
-    private var searchResuleResuleFragment: FragmentClassroomResule? = null
+    private var searchResultResultFragment: FragmentClassroomResult? = null
     private var mfragmentManager: FragmentManager? = null
     lateinit var editor: SharedPreferences.Editor
     lateinit var sharedPreferences: SharedPreferences
@@ -44,12 +44,12 @@ class ChooseEmptyClassroom : AppCompatActivity() {
         if ( null == searchFragment ){
             searchFragment = FragmentSearchClassroom.newInstance()
         }
-        if (null == searchResuleResuleFragment){
-            searchResuleResuleFragment = FragmentClassroomResule.newInstance()
+        if (null == searchResultResultFragment){
+            searchResultResultFragment = FragmentClassroomResult.newInstance()
         }
         mfragmentManager = supportFragmentManager
-        mfragmentManager?.beginTransaction()?.add(containerId!!,searchFragment)?.add(containerId!!,searchResuleResuleFragment)?.commit()
-        mfragmentManager?.beginTransaction()?.hide(searchResuleResuleFragment)?.commit()
+        mfragmentManager?.beginTransaction()?.add(containerId!!,searchFragment)?.add(containerId!!,searchResultResultFragment)?.commit()
+        mfragmentManager?.beginTransaction()?.hide(searchResultResultFragment)?.commit()
     }
 
     val handler = Handler{

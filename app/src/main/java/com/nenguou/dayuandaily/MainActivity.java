@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements  OnBannerListener
                 long oldTime = restsp.getLong("last_load_time",0);
                 long newTime = System.currentTimeMillis();
                 //Log.d("sdfsdf","oldTime is " + oldTime + " new Time is " + newTime + " --" + (newTime - oldTime));
-                if ((newTime - oldTime) > (24 * 60 * 60 * 1000)){
+                if ((newTime - oldTime) > (24 * 60 * 60 * 1000)){   // 一天
                     //Log.d("sdfsdf","rr");
                     restEditor.putLong("last_load_time",newTime);
                     restEditor.commit();

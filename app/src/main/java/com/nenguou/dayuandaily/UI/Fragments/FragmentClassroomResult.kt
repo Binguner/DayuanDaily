@@ -15,7 +15,7 @@ import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.constraint.layout.constraintLayout
 
 
-class FragmentClassroomResule : Fragment() {
+class FragmentClassroomResult : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -24,7 +24,7 @@ class FragmentClassroomResule : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_fragment_classroom_resule, container, false)
+        return inflater.inflate(R.layout.fragment_fragment_classroom_result, container, false)
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -46,13 +46,13 @@ class FragmentClassroomResule : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance() =
-                FragmentClassroomResule().apply {
+                FragmentClassroomResult().apply {
                 }
     }
 }
 
-class ResultUI:AnkoComponent<FragmentClassroomResule>{
-    override fun createView(ui: AnkoContext<FragmentClassroomResule>)= with(ui) {
+class ResultUI:AnkoComponent<FragmentClassroomResult>{
+    override fun createView(ui: AnkoContext<FragmentClassroomResult>)= with(ui) {
         constraintLayout {
             backgroundColor = R.color.colorDeepBlackText
         }
